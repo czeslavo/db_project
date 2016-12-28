@@ -19,3 +19,8 @@ TEST_F(DummyClassTest, shouldAddNumbers)
 {
     EXPECT_EQ(sut.addNumbers(2, 5), 7);
 }
+
+TEST_F(DummyClassTest, shouldAddNegativeNumbers)
+{
+    EXPECT_EQ(sut.addNumbers(-2, -5), -7);
+}
