@@ -1,22 +1,17 @@
 language: cpp
 sudo: required
 dist: trusty
-compiler:
-- g++
+compiler: g++-6
 addons:
   apt:
     sources:
       - ubuntu-toolchain-r-test
     packages:
       - g++-6
-env:
-- C_COMPILER=gcc-6
-- CXX_COMPILER=g++-6
 
-os:
-- linux
+os: linux
 
-before_install:
-- ./scripts/ci/dependencies.sh
+before_install: ./scripts/ci/dependencies.sh
+
 script:
 - mkdir server/build && cd server/build && cmake .. && make && make test
