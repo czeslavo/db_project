@@ -3,7 +3,7 @@
 # pistache
 echo 'Installing pistache.io'
 
-git clone https://github.com/oktal/pistache.git server/externals/
+git clone https://github.com/oktal/pistache.git server/externals/pistache
 cd server/externals/pistache
 mkdir build
 cd build
