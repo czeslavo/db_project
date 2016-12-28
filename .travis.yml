@@ -3,6 +3,16 @@ sudo: required
 dist: trusty
 compiler:
 - g++
+addons:
+  apt:
+    sources:
+      - ubuntu-toolchain-r-test
+    packages:
+      - g++-6
+env:
+- C_COMPILER=gcc-6
+- CXX_COMPILER=g++-6
+
 os:
 - linux
 
