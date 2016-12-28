@@ -1,0 +1,16 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+../include/common/DummyClass.h
+string
+-
+
+/home/czeslavo/Projects/db_project/server/source/common/DummyClass.cpp
+common/DummyClass.h
+/home/czeslavo/Projects/db_project/server/source/common/common/DummyClass.h
+
