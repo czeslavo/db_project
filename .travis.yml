@@ -12,8 +12,14 @@ addons:
       - libboost-all-dev
 
 os: linux
+services: 
+- postgresql
 
 before_install: ./scripts/ci/dependencies.sh
+
+before_script: 
+- psql -c 'create database flat_mate;' -U postgres
+- cp server/tests/include/db/PostgreConfigCI.h server/tests/include/db/PostgreConfig.h 
 
 script:
 - mkdir server/build && cd server/build

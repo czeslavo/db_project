@@ -4,7 +4,8 @@ project (flat_mate_server)
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-include_directories (${CMAKE_CURRENT_SOURCE_DIR}/include)
+include_directories (${CMAKE_CURRENT_SOURCE_DIR}/include
+                     ${CMAKE_CURRENT_SOURCE_DIR}/tests/include)
 file(GLOB HEADER_FILES "include/*.h")
 
 add_subdirectory (source)

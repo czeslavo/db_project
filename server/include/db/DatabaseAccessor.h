@@ -18,4 +18,17 @@ public:
     virtual std::shared_ptr<FlatAccessor> getFlatAccessor() = 0;
 
 };
+
+class DatabaseAccessorImpl : public DatabaseAccessor
+{
+public:
+    DatabaseAccessorImpl(const std::string& opts);
+    
+    std::shared_ptr<UserAccessor> getUserAccessor() override;
+    std::shared_ptr<FlatAccessor> getFlatAccessor() override;
+
+private:
+    std::shared_ptr<pqxx::connection> connection;
+
+};
 }
