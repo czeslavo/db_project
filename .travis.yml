@@ -9,6 +9,7 @@ addons:
     packages:
       - g++-6
       - libpqxx-dev
+      - libboost-all-dev
 
 os: linux
 
