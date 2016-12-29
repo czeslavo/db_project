@@ -5,7 +5,7 @@ file (GLOB MAIN_SOURCE_FILES "*.cpp")
 
 SET(Boost_USE_STATIC_LIBS ON)
 find_package(Boost REQUIRED COMPONENTS
-    log log_setup system filesystem date_time) 
+    log log_setup system filesystem date_time thread) 
 include_directories(${Boost_INCLUDE_DIRS})
 
 add_library(common_lib ${COMMON_SOURCE_FILES})
