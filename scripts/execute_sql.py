@@ -4,7 +4,7 @@ import sys
 
 def main():
 	try:
-		conn = pg.connect(host="localhost", database="flat_mate", user="flat_mate", password="flat_mate_pass")
+		conn = pg.connect(host="localhost", database="flat_mate", user="flat_mate", password="flat_mate_password")
 	except Exception as e:
 		log.error("Cannot connect to the db: " + str(e))
 		exit()
