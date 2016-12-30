@@ -1,6 +1,6 @@
 DROP SCHEMA flat_mate CASCADE;
 
-CREATE SCHEMA IF NOT EXISTS flat_mate;
+CREATE SCHEMA flat_mate;
 
 CREATE TABLE flat_mate.chore_frequency (
                 id VARCHAR(15) NOT NULL,
