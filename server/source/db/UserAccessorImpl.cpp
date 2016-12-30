@@ -89,14 +89,19 @@ models::User UserAccessorImpl::getByEmail(const std::string& email)
     w.commit();
     helpers::logStatementResult(result);
 
+    LOG_DEBUG << "Result size: " << result.size(); 
+
     const auto row = result.at(0);
-    
+
+
     models::User user;
     user.mail = row["mail"].as<std::string>();
-    user.username = row["username"].as<std::string>();
+    user.username = row["nickname"].as<std::string>();
     user.name = row["name"].as<std::string>();
     user.surname = row["surname"].as<std::string>();
     user.password = row["password"].as<std::string>();
+    
+    LOG_DEBUG << user;
 
     return user;
 }

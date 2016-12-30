@@ -23,7 +23,7 @@ public:
 
 protected:
     models::User newUser{"test@gmail.com", "Testy", "Test", "TestMe", "pass"};
-    models::User existingUser{"czeslavo@gmail.com", "Grzegorz", "Burzynski", "pass"};
+    models::User existingUser{"czeslavo@gmail.com", "czeslavo", "Grzegorz", "Burzynski", "pass"};
 
     std::shared_ptr<pqxx::connection> 
         connection{std::make_shared<pqxx::connection>(config::db_opts)};
@@ -50,7 +50,8 @@ TEST_F(UserAccessorTest, shouldUpdateUser)
 
 TEST_F(UserAccessorTest, shouldGetUserByEmail)
 {
-    const auto user = sut.getByEmail(existingUser.mail);
+    const auto user = sut.getByEmail("czeslavo@gmail.com");
     EXPECT_EQ(user, existingUser);
 }
+
 
