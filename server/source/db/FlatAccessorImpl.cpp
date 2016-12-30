@@ -3,7 +3,7 @@
 namespace db 
 {
 
-FlatAccessorImpl::FlatAccessorImpl(std::shared_ptr<pqxx::connection> connection)
+FlatAccessorImpl::FlatAccessorImpl(std::shared_ptr<pqxx::connection_base> connection)
     : connection(connection)
 {
 }

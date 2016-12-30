@@ -11,5 +11,8 @@ struct User
     std::string name;
     std::string surname;
     std::string mail;
+    std::string password;
+
+    bool operator==(const User& rhs) const;
 };
 }

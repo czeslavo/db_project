@@ -4,10 +4,10 @@ INSERT INTO chore_frequency VALUES('DAILY', 1, 0, 0);
 INSERT INTO chore_frequency VALUES('WEEKLY', 0, 1, 0);
 INSERT INTO chore_frequency VALUES('MONTHLY', 0, 0, 1);
 
-INSERT INTO system_user VALUES('czeslavo@gmail.com', 'czeslavo', 'Grzegorz', 'Burzynski', E'\\xEEDD');
-INSERT INTO system_user VALUES('piotr@gmail.com', 'waclaw', 'Piotr', 'Hanusiak', E'\\xEEDD');
-INSERT INTO system_user VALUES('ania@gmail.com', 'ania', 'Ania', 'Bogusz', E'\\xEEDD');
-INSERT INTO system_user VALUES('kasia@gmail.com', 'kasia', 'Kasia', 'Nalepka', E'\\xEEDD');
+INSERT INTO system_user VALUES('czeslavo@gmail.com', 'czeslavo', 'Grzegorz', 'Burzynski', 'pass');
+INSERT INTO system_user VALUES('piotr@gmail.com', 'waclaw', 'Piotr', 'Hanusiak', 'pass1');
+INSERT INTO system_user VALUES('ania@gmail.com', 'ania', 'Ania', 'Bogusz', 'pass2');
+INSERT INTO system_user VALUES('kasia@gmail.com', 'kasia', 'Kasia', 'Nalepka', 'pass3');
 
 INSERT INTO flat (name, flat_admin_mail) VALUES('Symfoniczna 1/13', 'czeslavo@gmail.com');
 

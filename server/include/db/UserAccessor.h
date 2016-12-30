@@ -23,7 +23,7 @@ public:
 class UserAccessorImpl : public UserAccessor
 {
 public:
-    UserAccessorImpl(std::shared_ptr<pqxx::connection> connection);
+    UserAccessorImpl(std::shared_ptr<pqxx::connection_base> connection);
 
     void create(const models::User& user) override;
     void drop(const std::string& email) override;
@@ -32,7 +32,8 @@ public:
     models::User getByUsername(const std::string& username) override;
 
 private:
-    std::shared_ptr<pqxx::connection> connection;
+    void prepareStatements();
+    std::shared_ptr<pqxx::connection_base> connection;
 
 };
 }

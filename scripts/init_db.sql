@@ -16,7 +16,7 @@ CREATE TABLE flat_mate.system_user (
                 nickname VARCHAR NOT NULL,
                 name VARCHAR(50),
                 surname VARCHAR(50),
-                password_hash BYTEA NOT NULL,
+                password VARCHAR(20) NOT NULL,
                 CONSTRAINT system_user_pk PRIMARY KEY (mail)
 );
 

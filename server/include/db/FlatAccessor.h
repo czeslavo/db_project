@@ -27,7 +27,7 @@ public:
 class FlatAccessorImpl : public FlatAccessor
 {
 public:
-    FlatAccessorImpl(std::shared_ptr<pqxx::connection> connection);
+    FlatAccessorImpl(std::shared_ptr<pqxx::connection_base> connection);
 
     void create(const models::Flat& flat) override;
     void update(const models::Flat& flat) override;
@@ -38,6 +38,6 @@ public:
     void removeUser(const models::User& user) override;
 
 private:
-    std::shared_ptr<pqxx::connection> connection;    
+    std::shared_ptr<pqxx::connection_base> connection;    
 };
 }

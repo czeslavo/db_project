@@ -28,7 +28,7 @@ public:
     std::shared_ptr<FlatAccessor> getFlatAccessor() override;
 
 private:
-    std::shared_ptr<pqxx::connection> connection;
+    std::shared_ptr<pqxx::connection_base> connection;
 
 };
 }

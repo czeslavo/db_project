@@ -5,7 +5,6 @@
 #include "db/DatabaseInitializer.h"
 
 using namespace ::testing;
-using namespace ::std::literals;
 
 class DatabaseAccessorTest : public Test
 {
