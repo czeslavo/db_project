@@ -11,10 +11,12 @@ class DatabaseInitializer
 public:
     DatabaseInitializer(const std::string& opts);
 
-    void initializeFromFile(const std::string& file);
-    void fillFromFile(const std::string& file);
+    void init();
+    void fill();
 
 private:
+    void execute(const std::string& file);
+
     pqxx::connection connection;
 };
 }

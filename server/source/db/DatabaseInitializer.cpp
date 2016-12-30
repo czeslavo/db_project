@@ -3,6 +3,12 @@
 #include "db/DatabaseInitializer.h"
 #include "common/Logger.h"
 
+namespace 
+{
+constexpr auto initSqlPath{"/tmp/init_db.sql"};
+constexpr auto fillSqlPath{"/tmp/fill_db.sql"};
+}
+
 namespace db
 {
 
@@ -17,9 +23,19 @@ DatabaseInitializer::DatabaseInitializer(const std::string& opts)
     }
 }
 
-void DatabaseInitializer::initializeFromFile(const std::string& file)
+void DatabaseInitializer::init()
 {
-    LOG_INFO << "Initializing db from file " << file;
+    execute(initSqlPath);
+}
+
+void DatabaseInitializer::fill()
+{
+    execute(fillSqlPath);
+}
+
+void DatabaseInitializer::execute(const std::string& file)
+{
+    LOG_INFO << "Executing SQL from file " << file << " on " << connection.dbname();
 
     std::ifstream input{file, std::ifstream::in};
     if (not input.is_open())
@@ -34,9 +50,7 @@ void DatabaseInitializer::initializeFromFile(const std::string& file)
     {
         inputString += line + "\n";
     }
-    
-    LOG_DEBUG << "--- Database initialization ---\n" + inputString;
-        
+     
     try 
     {
         w.exec(inputString);
@@ -48,10 +62,4 @@ void DatabaseInitializer::initializeFromFile(const std::string& file)
         throw;
     }
 }
-
-void DatabaseInitializer::fillFromFile(const std::string& file)
-{
-
-}
-
 }

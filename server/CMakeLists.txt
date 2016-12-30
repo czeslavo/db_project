@@ -9,6 +9,7 @@ include_directories (${CMAKE_CURRENT_SOURCE_DIR}/include
 file(GLOB HEADER_FILES "include/*.h")
 
 file(COPY ../scripts/init_db.sql DESTINATION /tmp/)
+file(COPY ../scripts/fill_db.sql DESTINATION /tmp/)
 
 add_subdirectory (source)
 include_directories (source)

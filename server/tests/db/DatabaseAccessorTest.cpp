@@ -29,6 +29,7 @@ TEST_F(DatabaseAccessorTest, whenWrongOptsProvided_shouldThrow)
 TEST(DatabaseInitializer, shouldInitializeDatabase)
 {
     db::DatabaseInitializer sut{config::db_opts};
-    sut.initializeFromFile("/tmp/init_db.sql");
+    sut.init();
+    sut.fill();
 }
 
