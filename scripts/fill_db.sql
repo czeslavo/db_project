@@ -8,6 +8,7 @@ INSERT INTO system_user VALUES('czeslavo@gmail.com', 'czeslavo', 'Grzegorz', 'Bu
 INSERT INTO system_user VALUES('piotr@gmail.com', 'waclaw', 'Piotr', 'Hanusiak', 'pass1');
 INSERT INTO system_user VALUES('ania@gmail.com', 'ania', 'Ania', 'Bogusz', 'pass2');
 INSERT INTO system_user VALUES('kasia@gmail.com', 'kasia', 'Kasia', 'Nalepka', 'pass3');
+INSERT INTO system_user VALUES('andrzej@gmail.com', 'Andrew', 'Andrzej', 'Andrzejowski', 'pass3');
 
 INSERT INTO flat (name, flat_admin_mail) VALUES('Symfoniczna 1/13', 'czeslavo@gmail.com');
 

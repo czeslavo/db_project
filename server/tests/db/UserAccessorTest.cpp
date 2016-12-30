@@ -53,5 +53,3 @@ TEST_F(UserAccessorTest, shouldGetUserByEmail)
     const auto user = sut.getByEmail("czeslavo@gmail.com");
     EXPECT_EQ(user, existingUser);
 }
-
-

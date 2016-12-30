@@ -1,6 +1,7 @@
 #pragma once
 
 #include <memory>
+#include <vector>
 #include <pqxx/pqxx>
 
 #include "models/Flat.h"
@@ -19,8 +20,9 @@ public:
     virtual void drop(const int id) = 0;
     virtual models::Flat get(const int id) = 0;
     
-    virtual void addUser(const models::User& user) = 0;
-    virtual void removeUser(const models::User& user) = 0;
+    virtual void addUser(const int flatId, const std::string& userMail) = 0;
+    virtual void removeUser(const int flatId, const std::string& userMail) = 0;
+    virtual std::vector<models::User> getUsers(const int id) = 0;
 };
 
 
@@ -34,10 +36,13 @@ public:
     void drop(const int id) override;
     models::Flat get(const int id) override;
 
-    void addUser(const models::User& user) override;
-    void removeUser(const models::User& user) override;
+    void addUser(const int flatId, const std::string& userMail) override;
+    void removeUser(const int flatId, const std::string& userMail) override;
+    std::vector<models::User> getUsers(const int id) override;
 
 private:
+    void prepareStatements();
+
     std::shared_ptr<pqxx::connection_base> connection;    
 };
 }
