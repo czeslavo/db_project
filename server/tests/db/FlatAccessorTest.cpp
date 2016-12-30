@@ -23,8 +23,10 @@ public:
 
 protected:
     models::User newUser{"test@gmail.com", "Testy", "Test", "TestMe", "pass"};
-    models::User existingUser{"czeslavo@gmail.com", "czeslavo", "Grzegorz", "Burzynski", "pass"};
-    models::User existingUser2{"andrzej@gmail.com", "Andrew", "Andrzej", "Andrzejowski", "pass3"};
+    models::User existingUser{"czeslavo@gmail.com", "czeslavo", 
+        "Grzegorz", "Burzynski", "pass"};
+    models::User existingUser2{"andrzej@gmail.com", "Andrew", 
+        "Andrzej", "Andrzejowski", "pass3"};
     
     models::Flat newFlat{0, "Szkolna 52", "czeslavo@gmail.com"};
     models::Flat existingFlat{1, "Symfoniczna 1/13", "czeslavo@gmail.com"};

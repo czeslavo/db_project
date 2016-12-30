@@ -15,7 +15,7 @@ target_link_libraries(common_lib ${Boost_LIBRARIES})
 add_library(models_lib ${MODELS_SOURCE_FILES})
 
 add_library(api_lib ${API_SOURCE_FILES})
-target_link_libraries(api_lib net_static pthread)
+target_link_libraries(api_lib net_static pthread common_lib db_lib)
 
 add_library(db_lib ${DB_SOURCE_FILES})
 target_link_libraries(db_lib pqxx pthread)
