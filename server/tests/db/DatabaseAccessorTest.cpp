@@ -2,9 +2,10 @@
 
 #include "db/DatabaseAccessor.h"
 #include "db/PostgreConfig.h"
+#include "db/DatabaseInitializer.h"
 
 using namespace ::testing;
-using namespace std::literals;
+using namespace ::std::literals;
 
 class DatabaseAccessorTest : public Test
 {
@@ -23,5 +24,11 @@ TEST_F(DatabaseAccessorTest, shouldConnectToDb)
 TEST_F(DatabaseAccessorTest, whenWrongOptsProvided_shouldThrow)
 {
     EXPECT_THROW(getSut("wrong opts string"), std::runtime_error);
+}
+
+TEST(DatabaseInitializer, shouldInitializeDatabase)
+{
+    db::DatabaseInitializer sut{config::db_opts};
+    sut.initializeFromFile("/tmp/init_db.sql");
 }
 

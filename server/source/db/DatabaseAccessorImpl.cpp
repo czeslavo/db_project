@@ -10,7 +10,7 @@ DatabaseAccessorImpl::DatabaseAccessorImpl(const std::string& opts)
     if (connection->is_open())
     {
         LOG_INFO << "Successfully connected to the database: " << connection->dbname() <<
-                    "as user: " << connection->username();
+                    " as user: " << connection->username();
     }
     else
     {
