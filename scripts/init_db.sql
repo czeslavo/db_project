@@ -1,4 +1,4 @@
-DROP SCHEMA flat_mate CASCADE;
+DROP SCHEMA IF EXISTS flat_mate CASCADE;
 
 CREATE SCHEMA flat_mate;
 
