@@ -14,8 +14,8 @@ class DatabaseAccessor
 public:
     virtual ~DatabaseAccessor() = default;
 
-    virtual std::shared_ptr<UserAccessor> getUserAccessor() = 0;
-    virtual std::shared_ptr<FlatAccessor> getFlatAccessor() = 0;
+    virtual std::unique_ptr<UserAccessor> getUserAccessor() = 0;
+    virtual std::unique_ptr<FlatAccessor> getFlatAccessor() = 0;
 
 };
 
@@ -24,11 +24,10 @@ class DatabaseAccessorImpl : public DatabaseAccessor
 public:
     DatabaseAccessorImpl(const std::string& opts);
     
-    std::shared_ptr<UserAccessor> getUserAccessor() override;
-    std::shared_ptr<FlatAccessor> getFlatAccessor() override;
+    std::unique_ptr<UserAccessor> getUserAccessor() override;
+    std::unique_ptr<FlatAccessor> getFlatAccessor() override;
 
 private:
-    std::shared_ptr<pqxx::connection_base> connection;
-
+    const std::string dbOpts;
 };
 }

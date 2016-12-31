@@ -43,22 +43,22 @@ void ApiEndpoint::getUser(const Net::Rest::Request& req,
              Net::Http::ResponseWriter response)
 {
     const auto mail = req.param(":mail").as<std::string>();
-
-    auto userAccess = db->getUserAccessor();
     
+    auto userAccess = db->getUserAccessor();
+
     try 
     {
         const auto user = userAccess->getByEmail(mail);
         std::stringstream output;
         output << user;
-
+        
+        response.setMime(MIME(Application, Json));
         response.send(Net::Http::Code::Ok, output.str());
     }
     catch (const std::exception& e)
     {
         response.send(Net::Http::Code::Not_Found);
-    }
-    
+    } 
 }
 
 

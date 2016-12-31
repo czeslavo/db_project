@@ -1,4 +1,7 @@
 #include "models/User.h"
+#include "json.hpp"
+
+using json = nlohmann::json;
 
 namespace models
 {
@@ -11,15 +14,19 @@ bool User::operator==(const User& rhs) const
 }
 
 std::ostream& operator<<(std::ostream& os, const User& u)
-{
-    os << "user: {\n" <<
-              "\tmail: " << u.mail << ",\n" << 
-              "\tusername: " << u.username << ",\n" << 
-              "\tname: " << u.name << ",\n" << 
-              "\tsurname: " << u.surname << ",\n" << 
-          "}";
-
+{ 
+    os << u.toJson();
     return os;
+}
+
+json User::toJson() const
+{    
+    return json{
+        {"mail", mail},
+        {"username", username},
+        {"name", name},
+        {"surname", surname}
+    }; 
 }
 }
 
