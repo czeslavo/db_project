@@ -1,12 +1,11 @@
-#include <sstream>
-
 #include "api/ApiEndpoint.h"
 
 namespace api
 {
 
 ApiEndpoint::ApiEndpoint(Net::Address address)
-    : httpEndpoint(std::make_shared<Net::Http::Endpoint>(address))
+    : httpEndpoint(std::make_shared<Net::Http::Endpoint>(address)),
+      desc("Flat mate API", "0.1")
 {
 
 }
@@ -17,11 +16,14 @@ void ApiEndpoint::init(std::size_t threads)
         .threads(threads)
         .flags(Net::Tcp::Options::InstallSignalHandler);
     httpEndpoint->init(opts);
-    setupRoutes();
+
+    createDescription();
 }
 
 void ApiEndpoint::start()
 {
+    router.initFromDescription(desc);
+
     httpEndpoint->setHandler(router.handler());
     httpEndpoint->serve();
 }
@@ -31,35 +33,45 @@ void ApiEndpoint::shutdown()
     httpEndpoint->shutdown();
 }
 
-void ApiEndpoint::setupRoutes()
+void ApiEndpoint::createDescription()
 {
     using namespace Net::Rest;
 
-    Routes::Get(router, "/user/:mail", Routes::bind(&ApiEndpoint::getUser, this));
+    desc
+        .schemes(Scheme::Http)
+        .basePath("/v1")
+        .produces(MIME(Application, Json))
+        .consumes(MIME(Application, Json));
+
+    auto versionPath = desc.path("/v1");
+
+    auto userPath = versionPath.path("/user");
+
+    userPath
+        .route(desc.post("/"))
+        .bind(&UserHandler::create, &userHandler)
+        .produces(MIME(Application, Json))
+        .response(Net::Http::Code::Created, "Successfully created the user"); 
+
+    userPath
+        .route(desc.get("/:mail"))
+        .bind(&UserHandler::getByEmail, &userHandler)
+        .produces(MIME(Application, Json))
+        .response(Net::Http::Code::Ok, "User with a given e-mail");
+
+    userPath
+        .route(desc.del("/"))
+        .bind(&UserHandler::deleteByEmail, &userHandler)
+        .produces(MIME(Application, Json))
+        .response(Net::Http::Code::Ok, "User deleted.");
+
+    userPath
+        .route(desc.put("/"))
+        .bind(&UserHandler::update, &userHandler)
+        .produces(MIME(Application, Json))
+        .response(Net::Http::Code::Ok, "User updated.");
 }
 
- 
-void ApiEndpoint::getUser(const Net::Rest::Request& req, 
-             Net::Http::ResponseWriter response)
-{
-    const auto mail = req.param(":mail").as<std::string>();
-    
-    auto userAccess = db->getUserAccessor();
-
-    try 
-    {
-        const auto user = userAccess->getByEmail(mail);
-        std::stringstream output;
-        output << user;
-        
-        response.setMime(MIME(Application, Json));
-        response.send(Net::Http::Code::Ok, output.str());
-    }
-    catch (const std::exception& e)
-    {
-        response.send(Net::Http::Code::Not_Found);
-    } 
-}
 
 
 }

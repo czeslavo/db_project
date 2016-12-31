@@ -1,5 +1,6 @@
 file (GLOB COMMON_SOURCE_FILES "common/*.cpp")
-file (GLOB API_SOURCE_FILES "api/*.cpp")
+file (GLOB API_SOURCE_FILES "api/*.cpp"
+                            "api/handlers/*.cpp")
 file (GLOB DB_SOURCE_FILES "db/*.cpp")
 file (GLOB MODELS_SOURCE_FILES "models/*.cpp")
 file (GLOB MAIN_SOURCE_FILES "*.cpp")
