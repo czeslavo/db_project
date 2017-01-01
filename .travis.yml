@@ -11,6 +11,7 @@ addons:
       - g++-6
       - libpqxx-dev
       - libboost-all-dev
+      - postgresql-contrib-9.5
 
 os: linux
 services: 
