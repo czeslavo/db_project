@@ -1,5 +1,9 @@
 SET SCHEMA 'flat_mate';
 
+CREATE EXTENSION IF NOT EXISTS pgcrypto;
+
+SELECT gen_salt('bf', 8);
+
 INSERT INTO chore_frequency VALUES('DAILY', 1, 0, 0);
 INSERT INTO chore_frequency VALUES('WEEKLY', 0, 1, 0);
 INSERT INTO chore_frequency VALUES('MONTHLY', 0, 0, 1);
