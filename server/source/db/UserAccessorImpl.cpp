@@ -28,7 +28,7 @@ constexpr auto authUserQuery{
     "SELECT mail, nickname, name, surname, password \
         FROM flat_mate.system_user \
         WHERE mail = $1 AND \
-              password = crypt($2, password);"};
+              password = flat_mate.crypt($2, password);"};
 }
 
 namespace db
