@@ -273,7 +273,7 @@ NOT DEFERRABLE;
 
 /* Add crypto library */
 
-CREATE EXTENSION pgcrypto;
+CREATE EXTENSION IF NOT EXISTS pgcrypto;
 
 
 
