@@ -16,7 +16,7 @@ CREATE TABLE flat_mate.system_user (
                 nickname VARCHAR NOT NULL,
                 name VARCHAR(50),
                 surname VARCHAR(50),
-                password VARCHAR(20) NOT NULL,
+                password TEXT NULL,
                 CONSTRAINT system_user_pk PRIMARY KEY (mail)
 );
 
@@ -270,3 +270,10 @@ REFERENCES flat_mate.chore (id)
 ON DELETE NO ACTION
 ON UPDATE NO ACTION
 NOT DEFERRABLE;
+
+/* Add crypto library */
+
+CREATE EXTENSION pgcrypto;
+
+
+

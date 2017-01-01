@@ -7,7 +7,8 @@ namespace
 constexpr auto createUserQuery{
     "INSERT INTO flat_mate.system_user \
         (mail, nickname, name, surname, password) \
-        VALUES($1, $2, $3, $4, $5);"};
+        VALUES($1, $2, $3, $4, \
+        crypt($5, gen_salt('bf', 8)));"}; // hash with random salt
 
 constexpr auto deleteUserQuery{
     "DELETE FROM flat_mate.system_user \
@@ -22,6 +23,12 @@ constexpr auto getUserByEmailQuery{
     "SELECT mail, nickname, name, surname, password \
         FROM flat_mate.system_user \
         WHERE mail = $1;"};
+
+constexpr auto authUserQuery{
+    "SELECT mail, nickname, name, surname, password \
+        FROM flat_mate.system_user \
+        WHERE mail = $1 AND \
+              password = crypt($2, password);"};
 }
 
 namespace db
@@ -40,6 +47,18 @@ void UserAccessorImpl::prepareStatements()
     connection->prepare("deleteUser", deleteUserQuery);
     connection->prepare("updateUser", updateUserQuery);
     connection->prepare("getUserByEmail", getUserByEmailQuery);
+    connection->prepare("authUser", authUserQuery);
+}
+
+bool UserAccessorImpl::auth(const std::string& mail,
+                            const std::string& password) 
+{
+    pqxx::work w{*connection};
+    const auto result = w.prepared("authUser")
+                                  (mail)
+                                  (password).exec();
+
+    return result.size() == 1;
 }
 
 void UserAccessorImpl::create(const models::User& user)

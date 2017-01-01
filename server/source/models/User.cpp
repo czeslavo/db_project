@@ -1,5 +1,6 @@
 #include "models/User.h"
 #include "json.hpp"
+#include <tuple>
 
 using json = nlohmann::json;
 
@@ -8,9 +9,8 @@ namespace models
     
 bool User::operator==(const User& rhs) const
 {
-    return mail == rhs.mail && username == rhs.username &&
-           name == rhs.name && surname == rhs.surname &&
-           password == rhs.password;
+    return std::tie(mail, username, name, surname) ==
+           std::tie(rhs.mail, rhs.username, rhs.name, rhs.surname);
 }
 
 std::ostream& operator<<(std::ostream& os, const User& u)

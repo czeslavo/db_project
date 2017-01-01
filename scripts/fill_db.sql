@@ -4,11 +4,11 @@ INSERT INTO chore_frequency VALUES('DAILY', 1, 0, 0);
 INSERT INTO chore_frequency VALUES('WEEKLY', 0, 1, 0);
 INSERT INTO chore_frequency VALUES('MONTHLY', 0, 0, 1);
 
-INSERT INTO system_user VALUES('czeslavo@gmail.com', 'czeslavo', 'Grzegorz', 'Burzynski', 'pass');
-INSERT INTO system_user VALUES('piotr@gmail.com', 'waclaw', 'Piotr', 'Hanusiak', 'pass1');
-INSERT INTO system_user VALUES('ania@gmail.com', 'ania', 'Ania', 'Bogusz', 'pass2');
-INSERT INTO system_user VALUES('kasia@gmail.com', 'kasia', 'Kasia', 'Nalepka', 'pass3');
-INSERT INTO system_user VALUES('andrzej@gmail.com', 'Andrew', 'Andrzej', 'Andrzejowski', 'pass3');
+INSERT INTO system_user VALUES('czeslavo@gmail.com', 'czeslavo', 'Grzegorz', 'Burzynski', crypt('pass', gen_salt('bf', 8)));
+INSERT INTO system_user VALUES('piotr@gmail.com', 'waclaw', 'Piotr', 'Hanusiak', crypt('pass', gen_salt('bf', 8)));
+INSERT INTO system_user VALUES('ania@gmail.com', 'ania', 'Ania', 'Bogusz', crypt('pass', gen_salt('bf', 8)));
+INSERT INTO system_user VALUES('kasia@gmail.com', 'kasia', 'Kasia', 'Nalepka', crypt('pass', gen_salt('bf', 8)));
+INSERT INTO system_user VALUES('andrzej@gmail.com', 'Andrew', 'Andrzej', 'Andrzejowski', crypt('pass', gen_salt('bf', 8)));
 
 INSERT INTO flat (name, flat_admin_mail) VALUES('Symfoniczna 1/13', 'czeslavo@gmail.com');
 

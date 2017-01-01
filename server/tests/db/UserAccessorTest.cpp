@@ -31,6 +31,21 @@ protected:
     db::UserAccessorImpl sut{connection};
 };
 
+TEST_F(UserAccessorTest, whenProvidedValidCredentials_shouldAuthUser)
+{
+    EXPECT_TRUE(sut.auth(existingUser.mail, existingUser.password));
+}
+
+TEST_F(UserAccessorTest, whenProvidingInvalidCredentials_shouldNotAuth)
+{
+    EXPECT_FALSE(sut.auth(existingUser.mail, "invalidPass"));
+}
+
+TEST_F(UserAccessorTest, whenUserNotExist_shouldNotAuth)
+{
+    EXPECT_FALSE(sut.auth(newUser.mail, newUser.password));
+}
+
 TEST_F(UserAccessorTest, shouldCreateUser)
 {
     sut.create(newUser);

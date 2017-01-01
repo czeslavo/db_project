@@ -20,7 +20,7 @@ if (GTEST_FOUND)
     include_directories(${GTEST_INCLUDE_DIRS})
 else()
     ADD_SUBDIRECTORY (externals/googletest-release-1.8.0)
-    include_directories(${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR})
+    include_directories(${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR} ${gmock_SOURCE_DIR}/include)
 endif()
 
 enable_testing()
