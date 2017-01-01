@@ -25,4 +25,4 @@ script:
 - mkdir server/build && cd server/build
 - env CXX=g++-6 cmake .. 
 - make -j `nproc` 
-- ctest -j `nproc` -V
+- ctest -V
