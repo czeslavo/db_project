@@ -3,6 +3,7 @@ sudo: required
 dist: trusty
 compiler: g++
 addons:
+  postgresql: "9.5"
   apt:
     sources:
       - ubuntu-toolchain-r-test
