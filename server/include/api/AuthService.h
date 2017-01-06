@@ -30,7 +30,8 @@ public:
                               const std::string& password) = 0;
     virtual void authPassword(const Net::Rest::Request& req) = 0;
 
-
+    virtual void forceIsFlatAdmin(const Net::Rest::Request& req) = 0;
+    virtual void forceIsFlatUser(const Net::Rest::Request& req) = 0;
 };
 
 class AuthServiceImpl : public AuthService
@@ -52,6 +53,9 @@ public:
 
     void authToken(const Net::Rest::Request& req) override;
     void authPassword(const Net::Rest::Request& req) override;
+
+    void forceIsFlatAdmin(const Net::Rest::Request& req) override;
+    void forceIsFlatUser(const Net::Rest::Request& req) override;
 
     class AuthServiceException : public std::runtime_error {
     public:

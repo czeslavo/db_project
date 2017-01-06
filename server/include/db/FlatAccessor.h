@@ -19,9 +19,10 @@ public:
     virtual void update(const models::Flat& flat) = 0;
     virtual void drop(const int id) = 0;
     virtual models::Flat get(const int id) = 0;
-    
+
     virtual void addUser(const int flatId, const std::string& userMail) = 0;
     virtual void removeUser(const int flatId, const std::string& userMail) = 0;
+    virtual bool isFlatUser(const int flatId, const std::string& userMail) = 0;
     virtual std::vector<models::User> getUsers(const int id) = 0;
 };
 
@@ -38,11 +39,12 @@ public:
 
     void addUser(const int flatId, const std::string& userMail) override;
     void removeUser(const int flatId, const std::string& userMail) override;
+    bool isFlatUser(const int flatId, const std::string& userMail) override;
     std::vector<models::User> getUsers(const int id) override;
 
 private:
     void prepareStatements();
 
-    std::shared_ptr<pqxx::connection_base> connection;    
+    std::shared_ptr<pqxx::connection_base> connection;
 };
 }

@@ -100,4 +100,36 @@ void AuthServiceImpl::authPassword(const Net::Rest::Request& req)
     std::tie(mail, password) = common::getLoginInfoFromRequest(req);
     authPassword(mail, password);
 }
+
+void AuthServiceImpl::forceIsFlatAdmin(const Net::Rest::Request& req)
+{
+    using json = nlohmann::json;
+
+    authToken(req);
+
+    auto flatAccess = db->getFlatAccessor();
+
+    auto body = json::parse(req.body());
+    auto flat = flatAccess->get(body["flat_id"]);
+
+    if (flat.admin_mail.compare(body["mail"]) != 0)
+        throw AuthServiceException("You are not this flat's owner");
+}
+
+void AuthServiceImpl::forceIsFlatUser(const Net::Rest::Request& req)
+{
+    using json = nlohmann::json;
+
+    authToken(req);
+
+    auto flatAccess = db->getFlatAccessor();
+
+    auto body = json::parse(req.body());
+    auto flatId = body["flat_id"];
+    auto userMail = body["mail"];
+
+    if (not flatAccess->isFlatUser(flatId, userMail))
+        throw AuthServiceException("You are not this flat's user");
+}
+
 }
