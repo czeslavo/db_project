@@ -9,6 +9,7 @@
 
 #include "db/DatabaseAccessor.h"
 
+#include "api/AuthService.h"
 #include "api/handlers/UserHandler.h"
 
 #include "db/PostgreConfig.h"
@@ -34,10 +35,11 @@ private:
     std::shared_ptr<Net::Http::Endpoint> httpEndpoint;
     std::shared_ptr<db::DatabaseAccessor> db{
         std::make_shared<db::DatabaseAccessorImpl>(config::db_opts)};
+    std::shared_ptr<api::AuthService> auth{
+        std::make_shared<AuthServiceImpl>(db)};
 
-    api::UserHandler userHandler{db};
+    api::UserHandler userHandler{db, auth};
 
-    // add handlers here
     Net::Rest::Description desc;
     Net::Rest::Router router;
 };

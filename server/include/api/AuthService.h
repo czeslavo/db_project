@@ -4,24 +4,32 @@
 #include <string>
 #include <memory>
 
-#include <db/DatabaseAccessor.h>
+#include "db/DatabaseAccessor.h"
+#include "api/Common.h"
 
 namespace api
 {
 
-class AuthService 
-{ 
+class AuthService
+{
 public:
     virtual ~AuthService() = default;
 
     virtual std::string login(const std::string& username,
                               const std::string& password) = 0;
-    virtual void logout(const std::string& username) = 0;
+    virtual std::string login(const Net::Rest::Request& req) = 0;
 
-    virtual bool authCookies(const std::string& username,
+    virtual void logout(const std::string& username) = 0;
+    virtual void logout(const Net::Rest::Request& req) = 0;
+
+    virtual void authToken(const std::string& username,
                              const std::string& apikey) = 0;
-    virtual bool authPassword(const std::string& username,
+    virtual void authToken(const Net::Rest::Request& req) = 0;
+
+    virtual void authPassword(const std::string& username,
                               const std::string& password) = 0;
+    virtual void authPassword(const Net::Rest::Request& req) = 0;
+
 
 };
 
@@ -30,19 +38,25 @@ class AuthServiceImpl : public AuthService
 public:
     AuthServiceImpl(std::shared_ptr<db::DatabaseAccessor> db);
 
-    std::string login(const std::string& username, 
+    std::string login(const std::string& username,
                const std::string& password) override;
-    void logout(const std::string& username) override;
+    std::string login(const Net::Rest::Request& req) override;
 
-    bool authCookies(const std::string& username, 
+    void logout(const std::string& username) override;
+    void logout(const Net::Rest::Request& req) override;
+
+    void authToken(const std::string& username,
                      const std::string& apikey) override;
-    bool authPassword(const std::string& username, 
+    void authPassword(const std::string& username,
                       const std::string& password) override;
 
+    void authToken(const Net::Rest::Request& req) override;
+    void authPassword(const Net::Rest::Request& req) override;
+
     class AuthServiceException : public std::runtime_error {
-    public: 
-        AuthServiceException(const std::string& msg) 
-            : std::runtime_error(msg) 
+    public:
+        AuthServiceException(const std::string& msg)
+            : std::runtime_error(msg)
         {}
     };
 
@@ -52,7 +66,7 @@ private:
 
     std::unordered_map<std::string, std::string> loggedIn;
     std::shared_ptr<db::DatabaseAccessor> db;
-    
+
 };
 
 }

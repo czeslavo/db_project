@@ -47,29 +47,44 @@ void ApiEndpoint::createDescription()
 
     auto userPath = versionPath.path("/user");
 
-    userPath
-        .route(desc.post("/"))
-        .bind(&UserHandler::create, &userHandler)
-        .produces(MIME(Application, Json))
-        .response(Net::Http::Code::Created, "Successfully created the user"); 
+        userPath
+            .route(desc.post("/login"))
+            .bind(&UserHandler::login, &userHandler)
+            .produces(MIME(Application, Json))
+            .response(Net::Http::Code::Ok, "Successfully logged in");
 
-    userPath
-        .route(desc.get("/:mail"))
-        .bind(&UserHandler::getByEmail, &userHandler)
-        .produces(MIME(Application, Json))
-        .response(Net::Http::Code::Ok, "User with a given e-mail");
+        userPath
+            .route(desc.post("/logout"))
+            .bind(&UserHandler::logout, &userHandler)
+            .produces(MIME(Application, Json))
+            .response(Net::Http::Code::Ok, "Successfully logged out");
 
-    userPath
-        .route(desc.del("/"))
-        .bind(&UserHandler::deleteByEmail, &userHandler)
-        .produces(MIME(Application, Json))
-        .response(Net::Http::Code::Ok, "User deleted.");
+        userPath
+            .route(desc.post("/signup"))
+            .bind(&UserHandler::signup, &userHandler)
+            .produces(MIME(Application, Json))
+            .response(Net::Http::Code::Created, "Successfully signed up");
 
-    userPath
-        .route(desc.put("/"))
-        .bind(&UserHandler::update, &userHandler)
-        .produces(MIME(Application, Json))
-        .response(Net::Http::Code::Ok, "User updated.");
+        userPath
+            .route(desc.del("/remove"))
+            .bind(&UserHandler::deleteByEmail, &userHandler)
+            .produces(MIME(Application, Json))
+            .response(Net::Http::Code::Ok, "User deleted.");
+
+        userPath
+            .route(desc.put("/update"))
+            .bind(&UserHandler::update, &userHandler)
+            .produces(MIME(Application, Json))
+            .response(Net::Http::Code::Ok, "User updated.");
+
+        userPath
+            .route(desc.get("/:mail"))
+            .bind(&UserHandler::getByEmail, &userHandler)
+            .produces(MIME(Application, Json))
+            .response(Net::Http::Code::Ok, "User with a given e-mail");
+
+
+
 }
 
 

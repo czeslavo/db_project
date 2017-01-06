@@ -6,29 +6,38 @@
 #include "pistache/description.h"
 
 #include "db/DatabaseAccessor.h"
+#include "api/AuthService.h"
 
-namespace api 
+namespace api
 {
 
 class UserHandler
 {
 public:
-    UserHandler(std::shared_ptr<db::DatabaseAccessor> db);
+    UserHandler(std::shared_ptr<db::DatabaseAccessor> db,
+                std::shared_ptr<api::AuthService> auth);
 
-    void getByEmail(const Net::Rest::Request& req, 
+    void getByEmail(const Net::Rest::Request& req,
                     Net::Http::ResponseWriter resp);
 
-    void create(const Net::Rest::Request& req, 
+    void signup(const Net::Rest::Request& req,
                     Net::Http::ResponseWriter resp);
 
-    void deleteByEmail(const Net::Rest::Request& req, 
+    void deleteByEmail(const Net::Rest::Request& req,
                     Net::Http::ResponseWriter resp);
-    
-    void update(const Net::Rest::Request& req, 
+
+    void update(const Net::Rest::Request& req,
+                    Net::Http::ResponseWriter resp);
+
+    void login(const Net::Rest::Request& req,
+                    Net::Http::ResponseWriter resp);
+
+    void logout(const Net::Rest::Request& req,
                     Net::Http::ResponseWriter resp);
 
 private:
     std::shared_ptr<db::DatabaseAccessor> db;
+    std::shared_ptr<api::AuthService> auth;
 };
 
 }

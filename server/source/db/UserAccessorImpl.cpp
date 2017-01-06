@@ -16,7 +16,8 @@ constexpr auto deleteUserQuery{
 
 constexpr auto updateUserQuery{
     "UPDATE flat_mate.system_user \
-        SET nickname = $1, name = $2, surname = $3, password = $4 \
+        SET nickname = $1, name = $2, surname = $3, \
+            password = flat_mate.crypt($4, flat_mate.gen_salt('bf', 8)) \
         WHERE mail = $5;"};
 
 constexpr auto getUserByEmailQuery{
@@ -51,7 +52,7 @@ void UserAccessorImpl::prepareStatements()
 }
 
 bool UserAccessorImpl::auth(const std::string& mail,
-                            const std::string& password) 
+                            const std::string& password)
 {
     pqxx::work w{*connection};
     const auto result = w.prepared("authUser")
@@ -64,7 +65,7 @@ bool UserAccessorImpl::auth(const std::string& mail,
 void UserAccessorImpl::create(const models::User& user)
 {
     pqxx::work w{*connection};
-    
+
     const auto result = w.prepared("createUser")
                             (user.mail)
                             (user.username)
@@ -78,7 +79,7 @@ void UserAccessorImpl::create(const models::User& user)
 void UserAccessorImpl::drop(const std::string& email)
 {
     pqxx::work w{*connection};
-    
+
     const auto result = w.prepared("deleteUser")(email).exec();
 
     w.commit();
@@ -89,7 +90,7 @@ void UserAccessorImpl::update(const models::User& user)
 {
     pqxx::work w{*connection};
 
-    const auto result = w.prepared("updateUser") 
+    const auto result = w.prepared("updateUser")
                             (user.username)
                             (user.name)
                             (user.surname)
@@ -102,13 +103,13 @@ void UserAccessorImpl::update(const models::User& user)
 models::User UserAccessorImpl::getByEmail(const std::string& email)
 {
     pqxx::work w{*connection};
-    
+
     const auto result = w.prepared("getUserByEmail")(email).exec();
 
     w.commit();
     helpers::logStatementResult(result);
 
-    LOG_DEBUG << "Result size: " << result.size(); 
+    LOG_DEBUG << "Result size: " << result.size();
 
     const auto row = result.at(0);
 
@@ -119,13 +120,15 @@ models::User UserAccessorImpl::getByEmail(const std::string& email)
     user.name = row["name"].as<std::string>();
     user.surname = row["surname"].as<std::string>();
     user.password = row["password"].as<std::string>();
-    
+
     LOG_DEBUG << user;
 
     return user;
 }
 
 models::User UserAccessorImpl::getByUsername(const std::string& username)
-{}
+{
+    return {};
+}
 
 }

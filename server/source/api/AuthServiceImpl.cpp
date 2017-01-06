@@ -1,4 +1,5 @@
 #include "api/AuthService.h"
+#include "common/Logger.h"
 
 namespace api
 {
@@ -8,47 +9,82 @@ AuthServiceImpl::AuthServiceImpl(std::shared_ptr<db::DatabaseAccessor> db)
 {
 }
 
-std::string AuthServiceImpl::login(const std::string& username, const std::string& password) 
+std::string AuthServiceImpl::login(const std::string& mail, const std::string& password)
 {
     auto userAccess = db->getUserAccessor();
-     
-    if (not userAccess->auth(username, password))
+
+    if (not userAccess->auth(mail, password))
         throw AuthServiceException("Invalid email and/or password");
 
     const auto token = generateApiToken();
-    
+
     loggedIn.emplace(
-        username,
+        mail,
         token
     );
 
-    return loggedIn[username];
+    LOG_INFO << "User [" << mail << "] logged in";
+
+    return loggedIn[mail];
+}
+
+std::string AuthServiceImpl::login(const Net::Rest::Request& req)
+{
+    std::string mail, password;
+    std::tie(mail, password) = common::getLoginInfoFromRequest(req);
+    return login(mail, password);
 }
 
 std::string AuthServiceImpl::generateApiToken() const
 {
     // implement generating random keys
-    return "dummyapitoken"; 
+    return "dummyapitoken";
 }
 
-void AuthServiceImpl::logout(const std::string& username)
-{    
-    forceUserLoggedIn(username);
-    loggedIn.erase(username); 
-}
-
-bool AuthServiceImpl::authCookies(const std::string& username,
-                                  const std::string& apikey)
+void AuthServiceImpl::logout(const std::string& mail)
 {
-    forceUserLoggedIn(username);
-    return loggedIn[username].compare(apikey) == 0;
+    forceUserLoggedIn(mail);
+    loggedIn.erase(mail);
+
+    LOG_INFO << "User [" << mail << "] logged in";
 }
 
-bool AuthServiceImpl::authPassword(const std::string& username,
+void AuthServiceImpl::logout(const Net::Rest::Request& req)
+{
+    authToken(req);
+
+    std::string mail;
+    std::tie(mail, std::ignore) = common::getTokenInfoFromRequest(req);
+    logout(mail);
+}
+
+void AuthServiceImpl::authToken(const Net::Rest::Request& req)
+{
+    std::string mail, token;
+    std::tie(mail, token) = common::getTokenInfoFromRequest(req);
+    authToken(mail, token);
+}
+
+void AuthServiceImpl::authToken(const std::string& mail,
+                                const std::string& apikey)
+{
+    forceUserLoggedIn(mail);
+    if (loggedIn[mail].compare(apikey) != 0)
+    {
+        LOG_INFO << "User [" << mail << "] token auth failed.";
+        throw AuthServiceException("Token authentication failed");
+    }
+}
+
+void AuthServiceImpl::authPassword(const std::string& mail,
                                    const std::string& password)
 {
     auto userAccess = db->getUserAccessor();
-    return userAccess->auth(username, password);
+    if (not userAccess->auth(mail, password))
+    {
+        LOG_INFO << "User [" << mail << "] password auth failed.";
+        throw AuthServiceException("Password authentication failed");
+    }
 }
 
 void AuthServiceImpl::forceUserLoggedIn(const std::string& username) const
@@ -56,5 +92,12 @@ void AuthServiceImpl::forceUserLoggedIn(const std::string& username) const
     if (loggedIn.count(username) != 1)
         throw AuthServiceException(
             "The user is not logged in: " + username);
+}
+
+void AuthServiceImpl::authPassword(const Net::Rest::Request& req)
+{
+    std::string mail, password;
+    std::tie(mail, password) = common::getLoginInfoFromRequest(req);
+    authPassword(mail, password);
 }
 }
