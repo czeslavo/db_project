@@ -22,7 +22,7 @@ class Urls:
     get_users = api_url + '/flat/2/getusers'
 
 
-class FlatApiTest(unittest.TestCase):
+class FlatApiTests(unittest.TestCase):
 
     def setUp(self):
         FNULL = open(os.devnull, 'w')
@@ -57,7 +57,6 @@ class FlatApiTest(unittest.TestCase):
         self.create_flat()
         self.add_user()
         self.get_users()
-
 
 
 if __name__ == '__main__':

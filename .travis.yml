@@ -13,11 +13,15 @@ addons:
       - libboost-all-dev
       - postgresql-contrib-9.5
 
+python: 2.7
+
 os: linux
 services:
 - postgresql
 
-before_install: ./scripts/ci/dependencies.sh
+before_install:
+- ./scripts/ci/dependencies.sh
+- pip install requests
 
 before_script:
 - psql -c 'create database flat_mate;' -U postgres
