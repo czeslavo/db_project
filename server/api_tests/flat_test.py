@@ -19,6 +19,8 @@ class Urls:
     login = api_url + '/user/login'
     create_flat = api_url + '/flat/create'
     add_user = api_url + '/flat/adduser'
+    get_users = api_url + '/flat/2/getusers'
+
 
 class FlatApiTest(unittest.TestCase):
 
@@ -46,10 +48,15 @@ class FlatApiTest(unittest.TestCase):
         r = req.post(Urls.add_user, data=Payload.add_user)
         self.assertRegexpMatches(self.get_resp(r), 'Successfully added user')
 
+    def get_users(self):
+        r = req.get(Urls.get_users, data=Payload.get_users)
+        self.assertRegexpMatches(self.get_resp(r), 'Got users of flat')
+
     def test_shouldCreateFlatAndAddUsers(self):
         self.login()
         self.create_flat()
         self.add_user()
+        self.get_users()
 
 
 

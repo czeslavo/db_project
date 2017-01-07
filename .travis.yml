@@ -28,4 +28,4 @@ script:
 - env CXX=g++-6 cmake ..
 - make install -j `nproc`
 - ctest -V
-- server/api_tests/apiTests.sh
+- ../api_tests/apiTests.sh
