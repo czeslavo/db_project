@@ -84,6 +84,43 @@ void ApiEndpoint::createDescription()
             .response(Net::Http::Code::Ok, "User with a given e-mail");
 
 
+    auto flatPath = versionPath.path("/flat");
+
+        flatPath
+            .route(desc.post("/create"))
+            .bind(&FlatHandler::create, &flatHandler)
+            .produces(MIME(Application, Json))
+            .response(Net::Http::Code::Created, "Successfully created flat");
+
+        flatPath
+            .route(desc.put("/update"))
+            .bind(&FlatHandler::update, &flatHandler)
+            .produces(MIME(Application, Json))
+            .response(Net::Http::Code::Ok, "Successfully updated flat");
+
+        flatPath
+            .route(desc.del("/remove"))
+            .bind(&FlatHandler::remove, &flatHandler)
+            .produces(MIME(Application, Json))
+            .response(Net::Http::Code::Ok, "Successfully removed flat");
+
+        flatPath
+            .route(desc.post("/adduser"))
+            .bind(&FlatHandler::addUser, &flatHandler)
+            .produces(MIME(Application, Json))
+            .response(Net::Http::Code::Ok, "Successfuly added user");
+
+        flatPath
+            .route(desc.del("/removeuser"))
+            .bind(&FlatHandler::removeUser, &flatHandler)
+            .produces(MIME(Application, Json))
+            .response(Net::Http::Code::Ok, "Successfuly removed user from flat");
+
+        flatPath
+            .route(desc.get("/:flat_id/getusers"))
+            .bind(&FlatHandler::getUsers, &flatHandler)
+            .produces(MIME(Application, Json))
+            .response(Net::Http::Code::Ok, "Users of flat");
 
 }
 

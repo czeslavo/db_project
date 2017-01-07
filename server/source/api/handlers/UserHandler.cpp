@@ -8,11 +8,6 @@ using json = nlohmann::json;
 namespace api
 {
 
-void setJsonMime(Net::Http::ResponseWriter& resp)
-{
-    resp.setMime(MIME(Application, Json));
-}
-
 UserHandler::UserHandler(std::shared_ptr<db::DatabaseAccessor> db,
                          std::shared_ptr<api::AuthService> auth)
     : db(db), auth(auth)
@@ -23,7 +18,7 @@ void UserHandler::getByEmail(const Net::Rest::Request& req,
                     Net::Http::ResponseWriter resp)
 {
     LOG_DEBUG << "Handling request in UserHandler::getByEmail";
-    setJsonMime(resp);
+    common::setJsonMime(resp);
 
     const auto mail = req.param(":mail").as<std::string>();
 
@@ -44,7 +39,7 @@ void UserHandler::signup(const Net::Rest::Request& req,
                     Net::Http::ResponseWriter resp)
 {
     LOG_DEBUG << "Handling request in UserHandler::create";
-    setJsonMime(resp);
+    common::setJsonMime(resp);
 
     json reqBody = json::parse(req.body());
 
@@ -75,7 +70,7 @@ void UserHandler::deleteByEmail(const Net::Rest::Request& req,
                                 Net::Http::ResponseWriter resp)
 {
     LOG_DEBUG << "Handling request in UserHandler::deleteByEmail";
-    setJsonMime(resp);
+    common::setJsonMime(resp);
 
     json reqBody = json::parse(req.body());
     auth->authPassword(req);
@@ -98,7 +93,7 @@ void UserHandler::update(const Net::Rest::Request& req,
                          Net::Http::ResponseWriter resp)
 {
     LOG_DEBUG << "Handling request in UserHandler::update";
-    setJsonMime(resp);
+    common::setJsonMime(resp);
 
     json reqBody = json::parse(req.body());
 
@@ -131,7 +126,7 @@ void UserHandler::login(const Net::Rest::Request& req,
                         Net::Http::ResponseWriter resp)
 {
     LOG_DEBUG << "Handling request in UserHandler::login";
-    setJsonMime(resp);
+    common::setJsonMime(resp);
 
     try
     {
@@ -154,7 +149,7 @@ void UserHandler::logout(const Net::Rest::Request& req,
                          Net::Http::ResponseWriter resp)
 {
     LOG_DEBUG << "Handling request in UserHandler::logout";
-    setJsonMime(resp);
+    common::setJsonMime(resp);
 
     std::string mail, apiToken;
     std::tie(mail, apiToken) = common::getTokenInfoFromRequest(req);

@@ -11,17 +11,18 @@
 
 #include "api/AuthService.h"
 #include "api/handlers/UserHandler.h"
+#include "api/handlers/FlatHandler.h"
 
 #include "db/PostgreConfig.h"
 
 namespace api
 {
 
-class ApiEndpoint 
+class ApiEndpoint
 {
 public:
     ApiEndpoint(Net::Address addres);
-    
+
     void init(std::size_t threads = 2);
     void start();
     void shutdown();
@@ -29,7 +30,7 @@ public:
 private:
     void createDescription();
 
-    void getUser(const Net::Rest::Request& req, 
+    void getUser(const Net::Rest::Request& req,
                  Net::Http::ResponseWriter response);
 
     std::shared_ptr<Net::Http::Endpoint> httpEndpoint;
@@ -39,6 +40,7 @@ private:
         std::make_shared<AuthServiceImpl>(db)};
 
     api::UserHandler userHandler{db, auth};
+    api::FlatHandler flatHandler{db, auth};
 
     Net::Rest::Description desc;
     Net::Rest::Router router;

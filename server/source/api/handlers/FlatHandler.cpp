@@ -1,5 +1,7 @@
 #include "api/handlers/FlatHandler.h"
 #include "models/Flat.h"
+#include "common/Logger.h"
+#include "api/Common.h"
 
 using json = nlohmann::json;
 
@@ -15,14 +17,16 @@ FlatHandler::FlatHandler(std::shared_ptr<db::DatabaseAccessor> db,
 void FlatHandler::create(const Net::Rest::Request& req,
             Net::Http::ResponseWriter resp)
 {
+    common::setJsonMime(resp);
     auth->authToken(req);
 
     auto flatAccess = db->getFlatAccessor();
 
-    auto flatReq = json::parse(req.body())["flat"];
+    auto body = json::parse(req.body());
     models::Flat flat{
-        flatReq["name"],
-        flatReq["admin_mail"]
+        0,
+        body["flat"]["name"],
+        body["mail"]
     };
 
     flatAccess->create(flat);
@@ -34,6 +38,7 @@ void FlatHandler::create(const Net::Rest::Request& req,
 void FlatHandler::update(const Net::Rest::Request& req,
             Net::Http::ResponseWriter resp)
 {
+    common::setJsonMime(resp);
     auth->forceIsFlatAdmin(req);
 
     auto flatAccess = db->getFlatAccessor();
@@ -53,6 +58,7 @@ void FlatHandler::update(const Net::Rest::Request& req,
 void FlatHandler::remove(const Net::Rest::Request& req,
             Net::Http::ResponseWriter resp)
 {
+    common::setJsonMime(resp);
     auth->forceIsFlatAdmin(req);
 
     auto flatAccess = db->getFlatAccessor();
@@ -68,6 +74,7 @@ void FlatHandler::remove(const Net::Rest::Request& req,
 void FlatHandler::addUser(const Net::Rest::Request& req,
              Net::Http::ResponseWriter resp)
 {
+    common::setJsonMime(resp);
     auth->forceIsFlatAdmin(req);
 
     auto flatAccess = db->getFlatAccessor();
@@ -91,13 +98,14 @@ void FlatHandler::removeUser(const Net::Rest::Request& req,
 void FlatHandler::getUsers(const Net::Rest::Request& req,
               Net::Http::ResponseWriter resp)
 {
+    common::setJsonMime(resp);
+    LOG_DEBUG << "Handling request in FlatHandler::getUsers";
+
     auth->forceIsFlatUser(req);
 
+    const int flatId = req.param(":flat_id").as<int>();
+
     auto flatAccess = db->getFlatAccessor();
-    auto reqBody = json::parse(req.body());
-
-    const int flatId = reqBody["flat_id"];
-
     const auto users = flatAccess->getUsers(flatId);
     json usersJson = json::array();
 
@@ -105,7 +113,7 @@ void FlatHandler::getUsers(const Net::Rest::Request& req,
         { usersJson.push_back(u.toJson()); });
 
     json respBody{{"response", "Got users of flat id " + std::to_string(flatId)},
-                  {"users", usersJson.dump()}};
+                  {"users", usersJson}};
 
     resp.send(Net::Http::Code::Ok, respBody.dump());
 }

@@ -20,4 +20,9 @@ std::pair<std::string, std::string> getTokenInfoFromRequest(const Net::Rest::Req
              reqBody["apiToken"].get<std::string>() };
 }
 
+void setJsonMime(Net::Http::ResponseWriter& resp)
+{
+    resp.setMime(MIME(Application, Json));
+}
+
 }
