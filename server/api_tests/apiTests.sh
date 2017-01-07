@@ -1,6 +1,6 @@
 #!/bin/bash
 
-../artifacts/run_server &
+../artifacts/run_server &>/dev/null &
 
 #http POST localhost:9080/v1/user/login mail=czeslavo@gmail.com password=pass
 #http POST localhost:9080/v1/flat/create --verbose < bodies/createFlat.json
