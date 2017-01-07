@@ -122,6 +122,38 @@ void ApiEndpoint::createDescription()
             .produces(MIME(Application, Json))
             .response(Net::Http::Code::Ok, "Users of flat");
 
+    auto notePath = versionPath.path("/note");
+
+        notePath
+            .route(desc.post("/add"))
+            .bind(&NoteHandler::add, &noteHandler)
+            .produces(MIME(Application, Json))
+            .response(Net::Http::Code::Created, "Successfully created note");
+
+        notePath
+            .route(desc.put("/update"))
+            .bind(&NoteHandler::update, &noteHandler)
+            .produces(MIME(Application, Json))
+            .response(Net::Http::Code::Ok, "Successfully updated note");
+
+        notePath
+            .route(desc.del("/remove"))
+            .bind(&NoteHandler::remove, &noteHandler)
+            .produces(MIME(Application, Json))
+            .response(Net::Http::Code::Ok, "Successfully removed note");
+
+        notePath
+            .route(desc.get("/getforflat"))
+            .bind(&NoteHandler::getForFlat, &noteHandler)
+            .produces(MIME(Application, Json))
+            .response(Net::Http::Code::Ok, "Notes which belong to the flat");
+
+        notePath
+            .route(desc.get("/get"))
+            .bind(&NoteHandler::get, &noteHandler)
+            .produces(MIME(Application, Json))
+            .response(Net::Http::Code::Ok, "Note with given id");
+
 }
 
 

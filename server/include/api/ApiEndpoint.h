@@ -12,6 +12,7 @@
 #include "api/AuthService.h"
 #include "api/handlers/UserHandler.h"
 #include "api/handlers/FlatHandler.h"
+#include "api/handlers/NoteHandler.h"
 
 #include "db/PostgreConfig.h"
 
@@ -39,8 +40,9 @@ private:
     std::shared_ptr<api::AuthService> auth{
         std::make_shared<AuthServiceImpl>(db)};
 
-    api::UserHandler userHandler{db, auth};
-    api::FlatHandler flatHandler{db, auth};
+    UserHandler userHandler{db, auth};
+    FlatHandler flatHandler{db, auth};
+    NoteHandler noteHandler{db, auth};
 
     Net::Rest::Description desc;
     Net::Rest::Router router;
