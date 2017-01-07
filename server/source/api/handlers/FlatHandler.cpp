@@ -31,7 +31,7 @@ void FlatHandler::create(const Net::Rest::Request& req,
 
     flatAccess->create(flat);
 
-    json respBody{{"response", "Flat created successfuly"}};
+    json respBody{{"response", "Successfully created flat"}};
     resp.send(Net::Http::Code::Created, respBody.dump());
 }
 
@@ -51,7 +51,7 @@ void FlatHandler::update(const Net::Rest::Request& req,
 
     flatAccess->update(updateFlat);
 
-    json respBody{{"response", "Flat updated successfuly"}};
+    json respBody{{"response", "Successfully updated flat"}};
     resp.send(Net::Http::Code::Ok, respBody.dump());
 }
 
@@ -67,7 +67,7 @@ void FlatHandler::remove(const Net::Rest::Request& req,
 
     flatAccess->drop(flatId);
 
-    json respBody{{"response", "Flat removed successfuly"}};
+    json respBody{{"response", "Successfully removed flat"}};
     resp.send(Net::Http::Code::Ok, respBody.dump());
 }
 
@@ -85,7 +85,7 @@ void FlatHandler::addUser(const Net::Rest::Request& req,
 
     flatAccess->addUser(flatId, userMail);
 
-    json respBody{{"response", "Successfuly added user " + userMail}};
+    json respBody{{"response", "Successfully added user " + userMail}};
     resp.send(Net::Http::Code::Ok, respBody.dump());
 }
 
@@ -112,7 +112,7 @@ void FlatHandler::getUsers(const Net::Rest::Request& req,
     std::for_each(std::cbegin(users), std::cend(users), [&](const models::User u)
         { usersJson.push_back(u.toJson()); });
 
-    json respBody{{"response", "Got users of flat id " + std::to_string(flatId)},
+    json respBody{{"response", "Got users of flat"},
                   {"users", usersJson}};
 
     resp.send(Net::Http::Code::Ok, respBody.dump());

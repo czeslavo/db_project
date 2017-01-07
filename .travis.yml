@@ -14,17 +14,18 @@ addons:
       - postgresql-contrib-9.5
 
 os: linux
-services: 
+services:
 - postgresql
 
 before_install: ./scripts/ci/dependencies.sh
 
-before_script: 
+before_script:
 - psql -c 'create database flat_mate;' -U postgres
-- cp server/tests/include/db/PostgreConfigCI.h server/tests/include/db/PostgreConfig.h 
+- cp server/tests/include/db/PostgreConfigCI.h server/tests/include/db/PostgreConfig.h
 
 script:
 - mkdir server/build && cd server/build
-- env CXX=g++-6 cmake .. 
-- make -j `nproc` 
+- env CXX=g++-6 cmake ..
+- make install -j `nproc`
 - ctest -V
+- server/api_tests/apiTests.sh

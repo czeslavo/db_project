@@ -1,3 +1,6 @@
 *.swp
 server/build/
+server/artifacts
 *.log
+*.pyc
+
