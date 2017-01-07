@@ -2,7 +2,6 @@
 
 #include "gmock/gmock.h"
 #include "db/DatabaseAccessor.h"
-#include "db/UserAccessorMock.h"
 
 namespace db
 {
@@ -17,6 +16,7 @@ public:
 
     MOCK_METHOD0(getUserAccessorProxy, UserAccessor*());
     MOCK_METHOD0(getFlatAccessor, std::unique_ptr<FlatAccessor>());
+    MOCK_METHOD0(getNoteAccessor, std::unique_ptr<NoteAccessor>());
 };
 
 }

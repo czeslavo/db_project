@@ -41,10 +41,11 @@ ALTER SEQUENCE flat_mate.recipe_id_seq OWNED BY flat_mate.recipe.id;
 CREATE TABLE flat_mate.dinner_plan (
                 date INTEGER NOT NULL,
                 recipe_id INTEGER,
+                flat_id INTEGER NOT NULL,
                 assigned_mail VARCHAR(50),
                 final_price NUMERIC(16, 2),
                 done BOOLEAN DEFAULT FALSE NOT NULL,
-                CONSTRAINT dinner_plan_pk PRIMARY KEY (date)
+                CONSTRAINT dinner_plan_pk PRIMARY KEY (date, flat_id)
 );
 
 
@@ -271,5 +272,11 @@ ON DELETE NO ACTION
 ON UPDATE NO ACTION
 NOT DEFERRABLE;
 
-CREATE EXTENSION IF NOT EXISTS pgcrypto 
+ALTER TABLE flat_mate.dinner_plan ADD CONSTRAINT flat_dinner_plan_fk
+FOREIGN KEY (flat_id)
+REFERENCES flat_mate.flat (id)
+ON DELETE CASCADE
+NOT DEFERRABLE;
+
+CREATE EXTENSION IF NOT EXISTS pgcrypto
     WITH SCHEMA flat_mate;

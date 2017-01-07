@@ -27,4 +27,12 @@ std::unique_ptr<FlatAccessor> DatabaseAccessorImpl::getFlatAccessor()
         std::make_unique<pqxx::connection>(dbOpts)
     );
 }
+
+std::unique_ptr<NoteAccessor> DatabaseAccessorImpl::getNoteAccessor()
+{
+    return std::make_unique<NoteAccessorImpl>(
+        std::make_unique<pqxx::connection>(dbOpts)
+    );
+}
+
 }

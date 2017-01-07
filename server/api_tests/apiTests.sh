@@ -1,7 +1,7 @@
 #!/bin/bash
 
 ../artifacts/run_server &
-sleep 10
+sleep 2
 
 #http POST localhost:9080/v1/user/login mail=czeslavo@gmail.com password=pass
 #http POST localhost:9080/v1/flat/create --verbose < bodies/createFlat.json
@@ -9,7 +9,5 @@ sleep 10
 #http GET localhost:9080/v1/flat/2/getusers --verbose < bodies/getFlatUsers.json
 
 python -m unittest discover --verbose . "*_test.py"
-
-gdb $(pwd)/../artifacts/run_server core -ex "thread apply all bt" -ex "set pagination 0" -batch
 
 kill $(ps -ef | grep -m 1 "run_server" | awk '{print $2}')
