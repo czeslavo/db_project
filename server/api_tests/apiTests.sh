@@ -10,4 +10,6 @@ sleep 10
 
 python -m unittest discover --verbose . "*_test.py"
 
+gdb $(pwd)/../artifacts/run_server core -ex "thread apply all bt" -ex "set pagination 0" -batch
+
 kill $(ps -ef | grep -m 1 "run_server" | awk '{print $2}')

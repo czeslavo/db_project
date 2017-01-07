@@ -12,6 +12,7 @@ addons:
       - libpqxx-dev
       - libboost-all-dev
       - postgresql-contrib-9.5
+      - gdb
 
 python: 2.7
 
@@ -21,7 +22,6 @@ services:
 
 before_install:
 - ./scripts/ci/dependencies.sh
-- pip install requests
 
 before_script:
 - psql -c 'create database flat_mate;' -U postgres
@@ -32,4 +32,3 @@ script:
 - env CXX=g++-6 cmake ..
 - make install -j `nproc`
 - ctest -V
-- cd ../api_tests && ./apiTests.sh
