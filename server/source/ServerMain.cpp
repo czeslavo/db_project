@@ -1,3 +1,5 @@
+#include <thread>
+
 #include "api/ApiEndpoint.h"
 #include "common/Logger.h"
 
@@ -5,16 +7,7 @@ int main(int argc, char* argv[])
 {
     Net::Port port{9080};
 
-    int thr = 2;
-    
-    if (argc >= 2)
-    {
-        port = std::stol(argv[1]);
-
-        if (argc == 3)
-            thr = std::stol(argv[2]);
-    }
-
+    int thr = std::thread::hardware_concurrency();
     Net::Address addr(Net::Ipv4::any(), port);
 
     LOG_INFO << "Using " << thr << " threads";
