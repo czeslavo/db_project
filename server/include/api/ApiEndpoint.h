@@ -30,9 +30,7 @@ public:
 
 private:
     void createDescription();
-
-    void getUser(const Net::Rest::Request& req,
-                 Net::Http::ResponseWriter response);
+    void registerHttpHeaders();
 
     std::shared_ptr<Net::Http::Endpoint> httpEndpoint;
     std::shared_ptr<db::DatabaseAccessor> db{

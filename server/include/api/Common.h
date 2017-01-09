@@ -11,6 +11,6 @@ std::pair<std::string, std::string> getLoginInfoFromRequest(const Net::Rest::Req
 
 std::pair<std::string, std::string> getTokenInfoFromRequest(const Net::Rest::Request& req);
 
-void setJsonMime(Net::Http::ResponseWriter& resp);
+void prepareCommonResponse(Net::Http::ResponseWriter& resp);
 
 }

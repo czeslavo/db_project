@@ -18,7 +18,7 @@ NoteHandler::NoteHandler(std::shared_ptr<db::DatabaseAccessor> db,
 void NoteHandler::add(const Net::Rest::Request& req,
                       Net::Http::ResponseWriter resp)
 {
-    common::setJsonMime(resp);
+    common::prepareCommonResponse(resp);
     auth->authToken(req);
     auth->forceIsFlatUser(req);
 
@@ -44,7 +44,7 @@ void NoteHandler::add(const Net::Rest::Request& req,
 void NoteHandler::remove(const Net::Rest::Request& req,
                          Net::Http::ResponseWriter resp)
 {
-    common::setJsonMime(resp);
+    common::prepareCommonResponse(resp);
     auth->authToken(req);
     auth->forceIsFlatUser(req);
 
@@ -60,7 +60,7 @@ void NoteHandler::remove(const Net::Rest::Request& req,
 void NoteHandler::update(const Net::Rest::Request& req,
                          Net::Http::ResponseWriter resp)
 {
-    common::setJsonMime(resp);
+    common::prepareCommonResponse(resp);
     auth->authToken(req);
     auth->forceIsFlatUser(req);
 
@@ -86,7 +86,7 @@ void NoteHandler::update(const Net::Rest::Request& req,
 void NoteHandler::getForFlat(const Net::Rest::Request& req,
                              Net::Http::ResponseWriter resp)
 {
-    common::setJsonMime(resp);
+    common::prepareCommonResponse(resp);
     auth->authToken(req);
     auth->forceIsFlatUser(req);
 
@@ -107,7 +107,7 @@ void NoteHandler::getForFlat(const Net::Rest::Request& req,
 void NoteHandler::get(const Net::Rest::Request& req,
                       Net::Http::ResponseWriter resp)
 {
-    common::setJsonMime(resp);
+    common::prepareCommonResponse(resp);
     auth->authToken(req);
     auth->forceIsFlatUser(req);
 

@@ -1,4 +1,5 @@
 #include "api/ApiEndpoint.h"
+#include "common/http_headers/AuthToken.h"
 
 namespace api
 {
@@ -17,7 +18,13 @@ void ApiEndpoint::init(std::size_t threads)
         .flags(Net::Tcp::Options::InstallSignalHandler);
     httpEndpoint->init(opts);
 
+    registerHttpHeaders();
     createDescription();
+}
+
+void ApiEndpoint::registerHttpHeaders()
+{
+    Net::Http::Header::Registry::registerHeader<AuthToken>();
 }
 
 void ApiEndpoint::start()

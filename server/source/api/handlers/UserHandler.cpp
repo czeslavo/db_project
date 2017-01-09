@@ -18,7 +18,7 @@ void UserHandler::getByEmail(const Net::Rest::Request& req,
                     Net::Http::ResponseWriter resp)
 {
     LOG_DEBUG << "Handling request in UserHandler::getByEmail";
-    common::setJsonMime(resp);
+    common::prepareCommonResponse(resp);
 
     const auto mail = req.param(":mail").as<std::string>();
 
@@ -39,7 +39,7 @@ void UserHandler::signup(const Net::Rest::Request& req,
                     Net::Http::ResponseWriter resp)
 {
     LOG_DEBUG << "Handling request in UserHandler::create";
-    common::setJsonMime(resp);
+    common::prepareCommonResponse(resp);
 
     json reqBody = json::parse(req.body());
 
@@ -70,7 +70,7 @@ void UserHandler::deleteByEmail(const Net::Rest::Request& req,
                                 Net::Http::ResponseWriter resp)
 {
     LOG_DEBUG << "Handling request in UserHandler::deleteByEmail";
-    common::setJsonMime(resp);
+    common::prepareCommonResponse(resp);
 
     json reqBody = json::parse(req.body());
     auth->authPassword(req);
@@ -93,7 +93,7 @@ void UserHandler::update(const Net::Rest::Request& req,
                          Net::Http::ResponseWriter resp)
 {
     LOG_DEBUG << "Handling request in UserHandler::update";
-    common::setJsonMime(resp);
+    common::prepareCommonResponse(resp);
 
     json reqBody = json::parse(req.body());
 
@@ -126,7 +126,7 @@ void UserHandler::login(const Net::Rest::Request& req,
                         Net::Http::ResponseWriter resp)
 {
     LOG_DEBUG << "Handling request in UserHandler::login";
-    common::setJsonMime(resp);
+    common::prepareCommonResponse(resp);
 
     try
     {
@@ -149,7 +149,7 @@ void UserHandler::logout(const Net::Rest::Request& req,
                          Net::Http::ResponseWriter resp)
 {
     LOG_DEBUG << "Handling request in UserHandler::logout";
-    common::setJsonMime(resp);
+    common::prepareCommonResponse(resp);
 
     std::string mail, apiToken;
     std::tie(mail, apiToken) = common::getTokenInfoFromRequest(req);

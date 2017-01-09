@@ -21,6 +21,10 @@ class Urls:
     add_user = api_url + '/flat/adduser'
     get_users = api_url + '/flat/2/getusers'
 
+class Headers:
+
+    auth_token = {'Auth-Token': 'czeslavo@gmail.com:dummyapitoken'}
+
 
 class FlatApiTests(unittest.TestCase):
 
@@ -41,15 +45,15 @@ class FlatApiTests(unittest.TestCase):
         self.assertEqual(self.get_resp(r), 'Successfully logged in')
 
     def create_flat(self):
-        r = req.post(Urls.create_flat, data=Payload.create_flat)
+        r = req.post(Urls.create_flat, data=Payload.create_flat, headers=Headers.auth_token)
         self.assertEqual(self.get_resp(r), 'Successfully created flat')
 
     def add_user(self):
-        r = req.post(Urls.add_user, data=Payload.add_user)
+        r = req.post(Urls.add_user, data=Payload.add_user, headers=Headers.auth_token)
         self.assertRegexpMatches(self.get_resp(r), 'Successfully added user')
 
     def get_users(self):
-        r = req.get(Urls.get_users, data=Payload.get_users)
+        r = req.get(Urls.get_users, data=Payload.get_users, headers=Headers.auth_token)
         self.assertRegexpMatches(self.get_resp(r), 'Got users of flat')
 
     def test_shouldCreateFlatAndAddUsers(self):

@@ -32,6 +32,7 @@ public:
 
     virtual void forceIsFlatAdmin(const Net::Rest::Request& req) = 0;
     virtual void forceIsFlatUser(const Net::Rest::Request& req) = 0;
+
 };
 
 class AuthServiceImpl : public AuthService
@@ -63,6 +64,7 @@ public:
             : std::runtime_error(msg)
         {}
     };
+
 
 private:
     std::string generateApiToken() const;

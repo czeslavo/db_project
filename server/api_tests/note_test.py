@@ -29,6 +29,11 @@ class Urls:
     get_note_by_id = api_url + '/note/get'
 
 
+class Headers:
+
+    auth_token = {'Auth-Token': 'czeslavo@gmail.com:dummyapitoken'}
+
+
 class FlatApiTests(unittest.TestCase):
 
     def setUp(self):
@@ -49,23 +54,23 @@ class FlatApiTests(unittest.TestCase):
         self.assertEqual(self.get_resp(r), 'Successfully logged in')
 
     def create_note(self):
-        r = req.post(Urls.create_note, data=Payload.create_note, timeout=1)
+        r = req.post(Urls.create_note, data=Payload.create_note, headers=Headers.auth_token, timeout=1)
         self.assertEqual(self.get_resp(r), 'Successfully created note')
 
     def remove_note(self):
-        r = req.delete(Urls.remove_note, data=Payload.remove_note, timeout=1)
+        r = req.delete(Urls.remove_note, data=Payload.remove_note, headers=Headers.auth_token, timeout=1)
         self.assertRegexpMatches(self.get_resp(r), 'Successfully removed note')
 
     def update_note(self):
-        r = req.put(Urls.update_note, data=Payload.update_note, timeout=1)
+        r = req.put(Urls.update_note, data=Payload.update_note, headers=Headers.auth_token, timeout=1)
         self.assertRegexpMatches(self.get_resp(r), 'Successfully updated note')
 
     def get_notes_for_flat(self):
-        r = req.get(Urls.get_notes_for_flat, data=Payload.get_notes_for_flat, timeout = 1)
+        r = req.get(Urls.get_notes_for_flat, data=Payload.get_notes_for_flat, headers=Headers.auth_token, timeout = 1)
         self.assertRegexpMatches(self.get_resp(r), 'Got notes for flat')
 
     def get_note_by_id(self):
-        r = req.get(Urls.get_note_by_id, data=Payload.get_note_by_id, timeout = 1)
+        r = req.get(Urls.get_note_by_id, data=Payload.get_note_by_id, headers=Headers.auth_token, timeout = 1)
         self.assertRegexpMatches(self.get_resp(r), 'Got note by id')
 
     def test_notes(self):

@@ -1,11 +1,11 @@
-file (GLOB COMMON_SOURCE_FILES "common/*.cpp")
+file (GLOB COMMON_SOURCE_FILES "common/*.cpp"
+                               "common/http_headers/*.cpp")
 file (GLOB API_SOURCE_FILES "api/*.cpp"
                             "api/handlers/*.cpp")
 file (GLOB DB_SOURCE_FILES "db/*.cpp")
 file (GLOB MODELS_SOURCE_FILES "models/*.cpp")
 file (GLOB MAIN_SOURCE_FILES "*.cpp")
 file (GLOB INITIALIZER_MAIN_SOURCE_FILES "db/initializer/*.cpp")
-
 
 
 SET(Boost_USE_STATIC_LIBS ON)

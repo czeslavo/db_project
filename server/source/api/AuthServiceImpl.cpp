@@ -1,5 +1,6 @@
 #include "api/AuthService.h"
 #include "common/Logger.h"
+#include "common/http_headers/AuthToken.h"
 
 namespace api
 {
@@ -131,5 +132,6 @@ void AuthServiceImpl::forceIsFlatUser(const Net::Rest::Request& req)
     if (not flatAccess->isFlatUser(flatId, userMail))
         throw AuthServiceException("You are not this flat's user");
 }
+
 
 }

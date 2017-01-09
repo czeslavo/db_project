@@ -17,7 +17,7 @@ FlatHandler::FlatHandler(std::shared_ptr<db::DatabaseAccessor> db,
 void FlatHandler::create(const Net::Rest::Request& req,
             Net::Http::ResponseWriter resp)
 {
-    common::setJsonMime(resp);
+    common::prepareCommonResponse(resp);
     auth->authToken(req);
 
     auto flatAccess = db->getFlatAccessor();
@@ -38,7 +38,7 @@ void FlatHandler::create(const Net::Rest::Request& req,
 void FlatHandler::update(const Net::Rest::Request& req,
             Net::Http::ResponseWriter resp)
 {
-    common::setJsonMime(resp);
+    common::prepareCommonResponse(resp);
     auth->forceIsFlatAdmin(req);
 
     auto flatAccess = db->getFlatAccessor();
@@ -58,7 +58,7 @@ void FlatHandler::update(const Net::Rest::Request& req,
 void FlatHandler::remove(const Net::Rest::Request& req,
             Net::Http::ResponseWriter resp)
 {
-    common::setJsonMime(resp);
+    common::prepareCommonResponse(resp);
     auth->forceIsFlatAdmin(req);
 
     auto flatAccess = db->getFlatAccessor();
@@ -74,7 +74,7 @@ void FlatHandler::remove(const Net::Rest::Request& req,
 void FlatHandler::addUser(const Net::Rest::Request& req,
              Net::Http::ResponseWriter resp)
 {
-    common::setJsonMime(resp);
+    common::prepareCommonResponse(resp);
     auth->forceIsFlatAdmin(req);
 
     auto flatAccess = db->getFlatAccessor();
@@ -98,7 +98,7 @@ void FlatHandler::removeUser(const Net::Rest::Request& req,
 void FlatHandler::getUsers(const Net::Rest::Request& req,
               Net::Http::ResponseWriter resp)
 {
-    common::setJsonMime(resp);
+    common::prepareCommonResponse(resp);
     LOG_DEBUG << "Handling request in FlatHandler::getUsers";
 
     auth->forceIsFlatUser(req);
