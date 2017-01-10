@@ -4,3 +4,4 @@ server/artifacts
 *.log
 *.pyc
 *.*~
+client/.idea/
