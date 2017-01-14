@@ -12,6 +12,7 @@
 
         service.getUsersFlats = getUsersFlats;
         service.create = create;
+        service.remove = remove;
 
         return service;
 
@@ -29,6 +30,18 @@
 
         function create(data, successCallback, failureCallback) {
             return $http.post(api + '/create', data).then(
+                function(response) {
+                    successCallback(response);
+                    console.log(response.data);
+                },
+                function(response) {
+                    failureCallback(response);
+                }
+            );
+        }
+
+        function remove(id, successCallback, failureCallback) {
+            return $http.delete(api + '/remove/' + id).then(
                 function(response) {
                     successCallback(response);
                     console.log(response.data);

@@ -1,6 +1,6 @@
 <h2>Your flats</h2>
 
-<table ng-if="flats.length > 0" class="table table-striped">
+<table ng-if="flats.length > 0" class="table table-hover table-responsive">
     <thead>
       <tr>
         <th>ID</th>
@@ -11,8 +11,9 @@
     <tbody>
       <tr ng-repeat="flat in flats">
         <td>{{ flat.id }}</td>
-        <td>{{ flat.name }}</td>
+        <td class="with-pointer" ng-click="goToFlat(flat.id)">{{ flat.name }}</td>
         <td>{{ flat.admin_mail }}</td>
+        <td><i class="fa fa-times with-pointer" aria-hidden="true" ng-click="removeFlat(flat.id)"></i></td>
       </tr>
     </tbody>
 </table>

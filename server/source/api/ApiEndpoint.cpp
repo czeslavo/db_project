@@ -106,7 +106,7 @@ void ApiEndpoint::createDescription()
             .response(Net::Http::Code::Ok, "Successfully updated flat");
 
         flatPath
-            .route(desc.del("/remove"))
+            .route(desc.del("/remove/:id"))
             .bind(&FlatHandler::remove, &flatHandler)
             .produces(MIME(Application, Json))
             .response(Net::Http::Code::Ok, "Successfully removed flat");

@@ -10,18 +10,18 @@
     function config($routeProvider, $locationProvider) {
         $routeProvider
             .when('/flats', {
-                controller: 'FlatController',
+                controller: 'FlatsController',
                 templateUrl: 'app/flat/flats.view.html'
+            })
+
+            .when('/flats/create', {
+                controller: 'FlatsController',
+                templateUrl: 'app/flat/create_flat.view.html'
             })
 
             .when('/flat/:id', {
                 controller: 'FlatController',
                 templateUrl: 'app/flat/flat.view.html'
-            })
-
-            .when('/flat/create', {
-                controller: 'FlatController',
-                templateUrl: 'app/flat/create_flat.view.html'
             })
 
             .when('/login', {

@@ -110,8 +110,18 @@ void AuthServiceImpl::forceIsFlatAdmin(const Net::Rest::Request& req)
 
     auto flatAccess = db->getFlatAccessor();
 
-    auto body = json::parse(req.body());
-    auto flat = flatAccess->get(body["flat_id"]);
+    int flatId;
+    try {
+        auto body = json::parse(req.body());
+        flatId = body["flat_id"];
+    }
+    catch (...)
+    {
+        // as fallback get id from url
+        flatId = req.param(":id").as<int>();
+    }
+
+    auto flat = flatAccess->get(flatId);
 
     std::string mail;
     std::tie(mail, std::ignore) = common::getTokenInfoFromRequest(req);

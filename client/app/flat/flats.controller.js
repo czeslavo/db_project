@@ -3,10 +3,10 @@
 
     angular
         .module('flatMate')
-        .controller('FlatController', FlatController);
+        .controller('FlatsController', FlatsController);
 
-    FlatController.$inject = ['$scope', '$route', '$location', 'FlatService'];
-    function FlatController($scope, $route, $location, FlatService) {
+    FlatsController.$inject = ['$scope', '$route', '$location', 'FlatService'];
+    function FlatsController($scope, $route, $location, FlatService) {
 
         $scope.getUsersFlats = getUsersFlats;
         $scope.createFlat = createFlat;
