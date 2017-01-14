@@ -12,20 +12,17 @@
         vm.login = login;
 
         (function initController() {
-            // reset login status
             AuthService.ClearCredentials();
         })();
 
         function login() {
             vm.dataLoading = true;
             AuthService.Login(vm.mail, vm.password,
-                // success
-                function (response) {
-                    AuthService.SetCredentials(vm.mail, vm.password);
-                    $location.path('/');
-                // failure
-                }, function(response) {
-                    console.log('slabo');
+                function (successResponse) {
+                    AuthService.SetCredentials(vm.mail, successResponse.data['apiToken']);
+                    $location.path('/flats');
+
+                }, function(failureResponse) {
                     vm.dataLoading = false;
                 });
 

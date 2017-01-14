@@ -24,6 +24,7 @@ public:
     virtual void removeUser(const int flatId, const std::string& userMail) = 0;
     virtual bool isFlatUser(const int flatId, const std::string& userMail) = 0;
     virtual std::vector<models::User> getUsers(const int id) = 0;
+    virtual std::vector<models::Flat> getUsersFlats(const std::string& userMail) = 0;
 };
 
 
@@ -41,6 +42,7 @@ public:
     void removeUser(const int flatId, const std::string& userMail) override;
     bool isFlatUser(const int flatId, const std::string& userMail) override;
     std::vector<models::User> getUsers(const int id) override;
+    std::vector<models::Flat> getUsersFlats(const std::string& userMail) override;
 
 private:
     void prepareStatements();

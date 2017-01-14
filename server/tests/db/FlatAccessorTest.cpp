@@ -91,3 +91,9 @@ TEST_F(FlatAccessorTest, whenUserIsNotFlatUser_shouldTellThatIsNot)
 {
     EXPECT_FALSE(sut.isFlatUser(existingFlat.id, newUser.mail));
 }
+
+TEST_F(FlatAccessorTest, whenUserHasFlats_shouldGetThemAll)
+{
+    const auto flats = sut.getUsersFlats(existingUser.mail);
+    EXPECT_EQ(flats.size(), 1);
+}

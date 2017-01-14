@@ -1,5 +1,6 @@
 #include "api/Common.h"
 #include "common/http_headers/AuthToken.h"
+#include "common/Logger.h"
 
 namespace common
 {
@@ -18,7 +19,7 @@ std::pair<std::string, std::string> getTokenInfoFromRequest(const Net::Rest::Req
 
     auto authToken = req.headers().get<AuthToken>();
 
-    json reqBody = json::parse(req.body());
+    LOG_DEBUG << "Got token info from request";
     return { authToken->getMail(),
              authToken->getToken() };
 }

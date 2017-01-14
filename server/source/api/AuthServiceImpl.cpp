@@ -113,7 +113,9 @@ void AuthServiceImpl::forceIsFlatAdmin(const Net::Rest::Request& req)
     auto body = json::parse(req.body());
     auto flat = flatAccess->get(body["flat_id"]);
 
-    if (flat.admin_mail.compare(body["mail"]) != 0)
+    std::string mail;
+    std::tie(mail, std::ignore) = common::getTokenInfoFromRequest(req);
+    if (flat.admin_mail.compare(mail) != 0)
         throw AuthServiceException("You are not this flat's owner");
 }
 

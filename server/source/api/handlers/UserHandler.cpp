@@ -51,6 +51,8 @@ void UserHandler::signup(const Net::Rest::Request& req,
         reqBody["password"]
     };
 
+    LOG_DEBUG << user;
+
     try
     {
         auto userAccess = db->getUserAccessor();
@@ -154,10 +156,13 @@ void UserHandler::logout(const Net::Rest::Request& req,
     std::string mail, apiToken;
     std::tie(mail, apiToken) = common::getTokenInfoFromRequest(req);
 
+    LOG_DEBUG << "Read mail and api token " << mail << " " << apiToken;
     try
     {
         auth->authToken(req);
+        LOG_DEBUG << "Authorized token";
         auth->logout(mail);
+        LOG_DEBUG << "Logged out";
 
         json respBody = {{"response", "Successfully logged out"}};
         resp.send(Net::Http::Code::Ok, respBody.dump());

@@ -1,0 +1,22 @@
+<h2>Your flats</h2>
+
+<table ng-if="flats.length > 0" class="table table-striped">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Flat name</th>
+        <th>Admin</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="flat in flats">
+        <td>{{ flat.id }}</td>
+        <td>{{ flat.name }}</td>
+        <td>{{ flat.admin_mail }}</td>
+      </tr>
+    </tbody>
+</table>
+
+<p ng-if="flats.length < 1">You don't belong to any flat yet. Create one or ask somebody to invite you!</p>
+
+<button ng-click="startCreating()" class="btn btn-primary">Create flat</button>

@@ -129,6 +129,12 @@ void ApiEndpoint::createDescription()
             .produces(MIME(Application, Json))
             .response(Net::Http::Code::Ok, "Users of flat");
 
+        flatPath
+            .route(desc.get("/getforuser"))
+            .bind(&FlatHandler::getUsersFlats, &flatHandler)
+            .produces(MIME(Application, Json))
+            .response(Net::Http::Code::Ok, "User's flats");
+
     auto notePath = versionPath.path("/note");
 
         notePath

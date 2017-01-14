@@ -3,13 +3,11 @@ project (flat_mate_server)
 
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-add_compile_options("-std=c++1z")
 
 include_directories (${CMAKE_CURRENT_SOURCE_DIR}/include
                      ${CMAKE_CURRENT_SOURCE_DIR}/tests/include
                      ${CMAKE_CURRENT_SOURCE_DIR}/externals/json)
 file(GLOB HEADER_FILES "include/*.h")
-
 file(COPY ../scripts/init_db.sql DESTINATION /tmp/)
 file(COPY ../scripts/fill_db.sql DESTINATION /tmp/)
 

@@ -4,6 +4,7 @@ import unittest
 import requests as req
 import subprocess
 import os
+import json
 
 class Payload:
 
@@ -12,14 +13,18 @@ class Payload:
     add_user = open('./bodies/addFlatUser.json').read()
     get_users = open('./bodies/getFlatUsers.json').read()
 
+
 class Urls:
 
     api_url = 'http://localhost:9080/v1'
 
     login = api_url + '/user/login'
+    logout = api_url + '/user/logout'
     create_flat = api_url + '/flat/create'
     add_user = api_url + '/flat/adduser'
     get_users = api_url + '/flat/2/getusers'
+    get_users_flats = api_url + '/flat/getforuser'
+
 
 class Headers:
 
@@ -38,11 +43,16 @@ class FlatApiTests(unittest.TestCase):
         try:
             return resp.json()['response']
         except:
+            print resp.text
             return ''
 
     def login(self):
         r = req.post(Urls.login, data=Payload.login)
         self.assertEqual(self.get_resp(r), 'Successfully logged in')
+
+    def logout(self):
+        r = req.post(Urls.logout, headers=Headers.auth_token)
+        self.assertRegexpMatches(self.get_resp(r), 'Successfully')
 
     def create_flat(self):
         r = req.post(Urls.create_flat, data=Payload.create_flat, headers=Headers.auth_token)
@@ -56,11 +66,17 @@ class FlatApiTests(unittest.TestCase):
         r = req.get(Urls.get_users, data=Payload.get_users, headers=Headers.auth_token)
         self.assertRegexpMatches(self.get_resp(r), 'Got users of flat')
 
+    def get_users_flats(self):
+        r = req.get(Urls.get_users_flats, headers=Headers.auth_token)
+        self.assertRegexpMatches(self.get_resp(r), 'Got user\'s flats')
+
     def test_shouldCreateFlatAndAddUsers(self):
         self.login()
         self.create_flat()
         self.add_user()
         self.get_users()
+        self.get_users_flats()
+        self.logout()
 
 
 if __name__ == '__main__':

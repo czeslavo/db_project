@@ -9,10 +9,19 @@
     config.$inject = ['$routeProvider', '$locationProvider'];
     function config($routeProvider, $locationProvider) {
         $routeProvider
-            .when('/', {
-                controller: 'HomeController',
-                templateUrl: 'app/home/home.view.html',
-                controllerAs: 'vm'
+            .when('/flats', {
+                controller: 'FlatController',
+                templateUrl: 'app/flat/flats.view.html'
+            })
+
+            .when('/flat/:id', {
+                controller: 'FlatController',
+                templateUrl: 'app/flat/flat.view.html'
+            })
+
+            .when('/flat/create', {
+                controller: 'FlatController',
+                templateUrl: 'app/flat/create_flat.view.html'
             })
 
             .when('/login', {
@@ -32,15 +41,14 @@
 
     run.$inject = ['$rootScope', '$location', '$cookies', '$http'];
     function run($rootScope, $location, $cookies, $http) {
-        // keep user logged in after page refresh
         $rootScope.globals = $cookies.getObject('globals') || {};
+        console.log('in run function');
         if ($rootScope.globals.currentUser) {
             $http.defaults.headers.common['Auth-Token'] = $rootScope.globals.currentUser.mail + ':' +
                 $rootScope.globals.currentUser.token;
         }
 
         $rootScope.$on('$locationChangeStart', function (event, next, current) {
-            // redirect to login page if not logged in and trying to access a restricted page
             var restrictedPage = $.inArray($location.path(), ['/login', '/register']) === -1;
             var loggedIn = $rootScope.globals.currentUser;
             if (restrictedPage && !loggedIn) {

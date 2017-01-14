@@ -7,7 +7,8 @@ namespace
 constexpr auto createFlatQuery{
     "INSERT INTO flat_mate.flat \
         (name, flat_admin_mail) \
-        VALUES($1, $2);"};
+        VALUES($1, $2) \
+        RETURNING id;"};
 
 constexpr auto updateFlatQuery{
     "UPDATE flat_mate.flat \
@@ -46,6 +47,12 @@ constexpr auto isFlatUserQuery{
         WHERE fu.flat_id = $1 AND \
               u.mail = $2;"};
 
+constexpr auto getUsersFlatsQuery{
+    "SELECT f.id, f.name, f.flat_admin_mail FROM flat_mate.flat_user fu \
+        JOIN flat_mate.flat f ON \
+            f.id = fu.flat_id \
+        WHERE fu.user_mail = $1;"};
+
 }
 
 
@@ -69,18 +76,30 @@ void FlatAccessorImpl::prepareStatements()
     connection->prepare("deleteUserFromFlat", deleteUserFromFlatQuery);
     connection->prepare("getFlatUsers", getFlatUsersQuery);
     connection->prepare("isFlatUser", isFlatUserQuery);
+    connection->prepare("getUsersFlats", getUsersFlatsQuery);
 }
 
 
 void FlatAccessorImpl::create(const models::Flat& flat)
 {
+    LOG_DEBUG << "FlatAccessor::create";
     pqxx::work w(*connection);
 
-    const auto result = w.prepared("createFlat")
-                                  (flat.name)
-                                  (flat.admin_mail).exec();
+    const auto creatingResult = w.prepared("createFlat")
+                                          (flat.name)
+                                          (flat.admin_mail).exec();
+    LOG_DEBUG << "creating flat";
+
+    const auto flatId = creatingResult.at(0)["id"].as<int>();
+    LOG_DEBUG << "reading result of creating";
+
+    const auto addingToFlatResult = w.prepared("addUserToFlat")
+                                              (flatId)
+                                              (flat.admin_mail).exec();
+
+    LOG_DEBUG << "adding user result";
     w.commit();
-    helpers::logStatementResult(result);
+    helpers::logStatementResult(creatingResult);
 }
 
 void FlatAccessorImpl::update(const models::Flat& flat)
@@ -183,6 +202,31 @@ bool FlatAccessorImpl::isFlatUser(const int flatId, const std::string& userMail)
     helpers::logStatementResult(result);
 
     return result.size() == 1;
+}
+
+std::vector<models::Flat> FlatAccessorImpl::getUsersFlats(const std::string& userMail)
+{
+    pqxx::work w(*connection);
+
+    const auto result = w.prepared("getUsersFlats")
+                                  (userMail).exec();
+    w.commit();
+    helpers::logStatementResult(result);
+
+    std::vector<models::Flat> flats;
+    flats.reserve(result.size());
+
+    std::for_each(std::cbegin(result), std::cend(result),
+        [&](const pqxx::tuple row){
+            flats.push_back(models::Flat{
+                row["id"].as<int>(),
+                row["name"].as<std::string>(),
+                row["flat_admin_mail"].as<std::string>()
+            });
+        }
+    );
+
+    return flats;
 }
 
 }
