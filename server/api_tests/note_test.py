@@ -25,7 +25,7 @@ class Urls:
     create_note = api_url + '/note/add'
     remove_note = api_url + '/note/remove'
     update_note = api_url + '/note/update'
-    get_notes_for_flat = api_url + '/note/getforflat'
+    get_notes_for_flat = api_url + '/note/getforflat/1'
     get_note_by_id = api_url + '/note/get'
 
 

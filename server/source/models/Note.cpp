@@ -10,6 +10,7 @@ json Note::toJson() const
     return json{
         {"id", id},
         {"flat_id", flatId},
+        {"content", content},
         {"date", date},
         {"active", active},
         {"author_mail", authorMail}

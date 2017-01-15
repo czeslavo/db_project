@@ -156,7 +156,7 @@ void ApiEndpoint::createDescription()
             .response(Net::Http::Code::Ok, "Successfully removed note");
 
         notePath
-            .route(desc.get("/getforflat"))
+            .route(desc.get("/getforflat/:id"))
             .bind(&NoteHandler::getForFlat, &noteHandler)
             .produces(MIME(Application, Json))
             .response(Net::Http::Code::Ok, "Notes which belong to the flat");

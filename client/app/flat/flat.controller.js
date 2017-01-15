@@ -5,62 +5,38 @@
         .module('flatMate')
         .controller('FlatController', FlatController);
 
-    FlatController.$inject = ['$scope', '$route', '$location', 'FlatService'];
-    function FlatController($scope, $route, $location, FlatService) {
+    FlatController.$inject = ['$scope', '$routeParams', '$location', 'FlatService', 'NotesService'];
+    function FlatController($scope, $routeParams, $location, FlatService, NotesService) {
+        var flatId = $routeParams.id;
 
-        $scope.getUsersFlats = getUsersFlats;
-        $scope.createFlat = createFlat;
-        $scope.startCreating = startCreating;
-        $scope.goToFlat = goToFlat;
-        $scope.removeFlat = removeFlat;
-
-        function startCreating() {
-            $location.path('/flats/create');
-        }
-
-        function getUsersFlats() {
-            FlatService.getUsersFlats(
-                function onSuccess(resp) {
-                    $scope.flats = resp.data.flats;
-                    console.log(resp);
+        function getFlatInfo() {
+            FlatService.getById(flatId,
+                function(flat) {
+                    $scope.flat = flat;
                 },
-                function onFailure(resp) {
-                    $scope.flats = [];
-                    console.log(resp);
+                function()
+                {
+                    $scope.flat = {};
                 }
             );
         }
 
-        function createFlat() {
-            var data = {flat: $scope.flat};
-
-            FlatService.create(data,
-                function(successResp) {
-                    $location.path('/flats');
-                    getUsersFlats();
+        function getNotes() {
+            NotesService.getFlatNotes(flatId,
+                function(notes) {
+                    console.log(notes);
+                    $scope.notes = notes;
                 },
-                function(failureResp) {
-                    console.log('Couldn\'t create flat');
-                });
-        }
-
-        function goToFlat(flatId) {
-            $location.path('/flat/' + flatId);
-        }
-
-        function removeFlat(flatId) {
-            FlatService.remove(flatId,
-                function(successResp) {
-                    $route.reload();
-                },
-                function(failureResp) {
-
+                function(resp) {
+                    console.log(resp);
+                    $scope.notes = [];
                 }
             );
-        }
+        };
 
         (function initController() {
-            getUsersFlats();
+            getFlatInfo();
+            getNotes();
         })();
     }
 

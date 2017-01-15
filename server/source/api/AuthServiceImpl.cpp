@@ -110,6 +110,20 @@ void AuthServiceImpl::forceIsFlatAdmin(const Net::Rest::Request& req)
 
     auto flatAccess = db->getFlatAccessor();
 
+    const auto flatId = getFlatIdFromRequest(req);
+    auto flat = flatAccess->get(flatId);
+
+    std::string mail;
+    std::tie(mail, std::ignore) = common::getTokenInfoFromRequest(req);
+    if (flat.admin_mail.compare(mail) != 0)
+        throw AuthServiceException("You are not this flat's owner");
+}
+
+int AuthServiceImpl::getFlatIdFromRequest(const Net::Rest::Request& req) const
+{
+    LOG_DEBUG << "In getFlatIdFromRequest";
+    using json = nlohmann::json;
+
     int flatId;
     try {
         auto body = json::parse(req.body());
@@ -121,12 +135,8 @@ void AuthServiceImpl::forceIsFlatAdmin(const Net::Rest::Request& req)
         flatId = req.param(":id").as<int>();
     }
 
-    auto flat = flatAccess->get(flatId);
-
-    std::string mail;
-    std::tie(mail, std::ignore) = common::getTokenInfoFromRequest(req);
-    if (flat.admin_mail.compare(mail) != 0)
-        throw AuthServiceException("You are not this flat's owner");
+    LOG_DEBUG << "Got flat id: " << flatId;
+    return flatId;
 }
 
 void AuthServiceImpl::forceIsFlatUser(const Net::Rest::Request& req)
@@ -137,11 +147,12 @@ void AuthServiceImpl::forceIsFlatUser(const Net::Rest::Request& req)
 
     auto flatAccess = db->getFlatAccessor();
 
-    auto body = json::parse(req.body());
-    auto flatId = body["flat_id"];
-    auto userMail = body["mail"];
+    const auto flatId = getFlatIdFromRequest(req);
 
-    if (not flatAccess->isFlatUser(flatId, userMail))
+    std::string mail;
+    std::tie(mail, std::ignore) = common::getTokenInfoFromRequest(req);
+
+    if (not flatAccess->isFlatUser(flatId, mail))
         throw AuthServiceException("You are not this flat's user");
 }
 

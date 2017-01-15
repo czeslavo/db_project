@@ -69,6 +69,7 @@ public:
 private:
     std::string generateApiToken() const;
     void forceUserLoggedIn(const std::string& username) const;
+    int getFlatIdFromRequest(const Net::Rest::Request& req) const;
 
     std::unordered_map<std::string, std::string> loggedIn;
     std::shared_ptr<db::DatabaseAccessor> db;

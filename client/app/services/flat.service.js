@@ -13,6 +13,7 @@
         service.getUsersFlats = getUsersFlats;
         service.create = create;
         service.remove = remove;
+        service.getById = getById;
 
         return service;
 
@@ -44,12 +45,30 @@
             return $http.delete(api + '/remove/' + id).then(
                 function(response) {
                     successCallback(response);
-                    console.log(response.data);
+                    console.log(response.ta);
                 },
                 function(response) {
                     failureCallback(response);
                 }
             );
+        }
+
+        function getById(id, successCallback, failureCallback) {
+            getUsersFlats(
+                function(successResp) {
+                    var flats = successResp.data.flats;
+                    for (var i = 0; i < flats.length; i++)
+                    {
+                        console.log(flats[i]);
+                        if (flats[i].id == id) {
+                            successCallback(flats[i]);
+                        }
+                    }
+                },
+                function(failureResp) {
+                    failureCallback();
+                }
+           );
         }
 
     }

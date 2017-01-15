@@ -90,10 +90,10 @@ void NoteHandler::getForFlat(const Net::Rest::Request& req,
     auth->authToken(req);
     auth->forceIsFlatUser(req);
 
-    auto body = json::parse(req.body());
+    const auto flatId = req.param(":id").as<int>();
 
     auto noteAccess = db->getNoteAccessor();
-    auto notes = noteAccess->getForFlat(body["flat_id"]);
+    auto notes = noteAccess->getForFlat(flatId);
 
     json notesJson = json::array();
     std::for_each(std::cbegin(notes), std::cend(notes), [&](const models::Note n)
