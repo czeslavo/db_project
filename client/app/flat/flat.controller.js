@@ -5,9 +5,17 @@
         .module('flatMate')
         .controller('FlatController', FlatController);
 
-    FlatController.$inject = ['$scope', '$routeParams', '$location', 'FlatService', 'NotesService'];
-    function FlatController($scope, $routeParams, $location, FlatService, NotesService) {
+    FlatController.$inject = ['$scope', '$route', '$routeParams', '$location', 'FlatService', 'NotesService'];
+    function FlatController($scope, $route, $routeParams, $location, FlatService, NotesService) {
         var flatId = $routeParams.id;
+
+        $scope.addNote = addNote;
+
+        function addNote() {
+            $scope.notes.push({content: "Please fill and save me.",
+                               author_mail: "mariusz@weq.pl",
+                               date: Date.now()});
+        }
 
         function getFlatInfo() {
             FlatService.getById(flatId,
