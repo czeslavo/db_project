@@ -23,10 +23,10 @@ class Urls:
 
     login = api_url + '/user/login'
     create_note = api_url + '/note/add'
-    remove_note = api_url + '/note/remove'
+    remove_note = api_url + '/note/remove/1/1'
     update_note = api_url + '/note/update'
     get_notes_for_flat = api_url + '/note/getforflat/1'
-    get_note_by_id = api_url + '/note/get'
+    get_note_by_id = api_url + '/note/get/2'
 
 
 class Headers:

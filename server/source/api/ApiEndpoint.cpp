@@ -106,7 +106,7 @@ void ApiEndpoint::createDescription()
             .response(Net::Http::Code::Ok, "Successfully updated flat");
 
         flatPath
-            .route(desc.del("/remove/:id"))
+            .route(desc.del("/remove/:flat_id"))
             .bind(&FlatHandler::remove, &flatHandler)
             .produces(MIME(Application, Json))
             .response(Net::Http::Code::Ok, "Successfully removed flat");
@@ -150,19 +150,19 @@ void ApiEndpoint::createDescription()
             .response(Net::Http::Code::Ok, "Successfully updated note");
 
         notePath
-            .route(desc.del("/remove"))
+            .route(desc.del("/remove/:flat_id/:note_id"))
             .bind(&NoteHandler::remove, &noteHandler)
             .produces(MIME(Application, Json))
             .response(Net::Http::Code::Ok, "Successfully removed note");
 
         notePath
-            .route(desc.get("/getforflat/:id"))
+            .route(desc.get("/getforflat/:flat_id"))
             .bind(&NoteHandler::getForFlat, &noteHandler)
             .produces(MIME(Application, Json))
             .response(Net::Http::Code::Ok, "Notes which belong to the flat");
 
         notePath
-            .route(desc.get("/get"))
+            .route(desc.get("/get/:note_id"))
             .bind(&NoteHandler::get, &noteHandler)
             .produces(MIME(Application, Json))
             .response(Net::Http::Code::Ok, "Note with given id");

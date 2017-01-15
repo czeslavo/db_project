@@ -22,9 +22,12 @@ void NoteHandler::add(const Net::Rest::Request& req,
     auth->authToken(req);
     auth->forceIsFlatUser(req);
 
+    try {
     auto body = json::parse(req.body());
 
+    LOG_DEBUG << "Parsed request body";
     auto newNote = body["note"];
+    LOG_DEBUG << "Extracted note from body";
     models::Note note{
         0,
         newNote["content"],
@@ -36,7 +39,12 @@ void NoteHandler::add(const Net::Rest::Request& req,
 
     auto noteAccess = db->getNoteAccessor();
     noteAccess->create(note);
-
+    }
+    catch (const std::exception& e)
+    {
+        LOG_DEBUG << "Exception caught" << e.what();
+        throw;
+    }
     json respBody{{"response", "Successfully created note"}};
     resp.send(Net::Http::Code::Created, respBody.dump());
 }
@@ -48,7 +56,8 @@ void NoteHandler::remove(const Net::Rest::Request& req,
     auth->authToken(req);
     auth->forceIsFlatUser(req);
 
-    const int noteId = json::parse(req.body())["note_id"];
+    const int noteId = req.param(":note_id").as<int>();
+    const int flatId = req.param(":flat_id").as<int>();
 
     auto noteAccess = db->getNoteAccessor();
     noteAccess->drop(noteId);
@@ -90,7 +99,7 @@ void NoteHandler::getForFlat(const Net::Rest::Request& req,
     auth->authToken(req);
     auth->forceIsFlatUser(req);
 
-    const auto flatId = req.param(":id").as<int>();
+    const auto flatId = req.param(":flat_id").as<int>();
 
     auto noteAccess = db->getNoteAccessor();
     auto notes = noteAccess->getForFlat(flatId);
@@ -111,10 +120,10 @@ void NoteHandler::get(const Net::Rest::Request& req,
     auth->authToken(req);
     auth->forceIsFlatUser(req);
 
-    auto body = json::parse(req.body());
+    auto noteId = req.param(":note_id").as<int>();
 
     auto noteAccess = db->getNoteAccessor();
-    auto note = noteAccess->get(body["note_id"]);
+    auto note = noteAccess->get(noteId);
 
     json respBody{{"response", "Got note by id"},
                   {"note", note.toJson()}};

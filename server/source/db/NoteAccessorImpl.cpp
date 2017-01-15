@@ -5,7 +5,8 @@ namespace
 {
 constexpr auto createNoteQuery{
     "INSERT INTO flat_mate.note (date, content, active, author_mail, flat_id) \
-        VALUES($1, $2, $3, $4, $5);"};
+        VALUES(cast(extract(epoch from CURRENT_TIMESTAMP) as integer), \
+            $1, $2, $3, $4);"};
 
 constexpr auto removeNoteQuery{
     "DELETE FROM flat_mate.note \
@@ -13,7 +14,8 @@ constexpr auto removeNoteQuery{
 
 constexpr auto updateNoteQuery{
     "UPDATE flat_mate.note \
-        SET content = $1, active = $2 \
+        SET date = cast(extract(epoch from CURRENT_TIMESTAMP) as integer), \
+        content = $1, active = $2 \
         WHERE id = $3;"};
 
 constexpr auto getNotesForFlatQuery{
@@ -49,7 +51,6 @@ void NoteAccessorImpl::create(const models::Note& note)
 {
    pqxx::work w{*connection};
    const auto result = w.prepared("createNote")
-                                 (note.date)
                                  (note.content)
                                  (note.active)
                                  (note.authorMail)

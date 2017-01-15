@@ -2,3 +2,11 @@
     cursor: pointer
 }
 
+.bottom-buffer {
+    margin-bottom: 20px;
+}
+
+.note-header {
+    padding: 0px 10px;
+    text-align: right;
+}

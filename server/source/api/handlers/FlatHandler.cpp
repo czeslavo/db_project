@@ -65,7 +65,7 @@ void FlatHandler::remove(const Net::Rest::Request& req,
 
     auto flatAccess = db->getFlatAccessor();
 
-    const auto flatId = req.param(":id").as<int>();
+    const auto flatId = req.param(":flat_id").as<int>();
     flatAccess->drop(flatId);
 
     json respBody{{"response", "Successfully removed flat"}};

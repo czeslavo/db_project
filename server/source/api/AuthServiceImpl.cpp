@@ -126,13 +126,15 @@ int AuthServiceImpl::getFlatIdFromRequest(const Net::Rest::Request& req) const
 
     int flatId;
     try {
+        LOG_DEBUG << "Trying to get flat_id from request body";
         auto body = json::parse(req.body());
         flatId = body["flat_id"];
     }
     catch (...)
     {
+        LOG_DEBUG << "Trying to get flat_id from request url";
         // as fallback get id from url
-        flatId = req.param(":id").as<int>();
+        flatId = req.param(":flat_id").as<int>();
     }
 
     LOG_DEBUG << "Got flat id: " << flatId;
