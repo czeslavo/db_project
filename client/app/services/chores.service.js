@@ -11,7 +11,7 @@
         var api = 'http://localhost:9090/v1/chore';
 
         service.getFlatChores = getFlatChores;
-        service.createChore = createChore;
+        service.addChore = addChore;
         service.removeChore = removeChore;
 
         return service;
@@ -28,8 +28,8 @@
             );
         }
 
-        function createChore(chore, successCallback, failureCallback) {
-            var body = {flat_id: chore.flat_id,
+        function addChore(chore, flatId, successCallback, failureCallback) {
+            var body = {flat_id: flatId,
                         chore: chore};
 
             $http.post(api + '/add', body).then(
@@ -43,11 +43,11 @@
             );
         }
 
-        function removeChore(chore, successCallback, failureCallback) {
-            $http.delete(api + '/remove/' + chore.flat_id + '/' + chore.id).then(
+        function removeChore(chore, flatId, successCallback, failureCallback) {
+            $http.delete(api + '/remove/' + flatId + '/' + chore.id).then(
                 function(successResp) {
                     console.log(successResp);
-                    successCallback(successResp.data.chores);
+                    successCallback(successResp.data);
                 },
                 function(failureResp) {
                     failureCallback(failureResp);

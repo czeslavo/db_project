@@ -5,63 +5,13 @@
         .module('flatMate')
         .controller('ChoresController', ChoresController);
 
-    ChoresController.$inject = ['$scope', '$route', '$routeParams', '$location', '$rootScope', 'FlatService', 'NotesService'];
-    function ChoresController($scope, $route, $routeParams, $location, $rootScope, FlatService, NotesService) {
+    ChoresController.$inject = ['$scope', '$route', '$routeParams', '$location', '$rootScope', 'FlatService', 'ChoresService'];
+    function ChoresController($scope, $route, $routeParams, $location, $rootScope, FlatService, ChoresService) {
         var flatId = +$routeParams.id;
 
-        $scope.addNote = addNote;
-        $scope.removeNote = removeNote;
-        $scope.updateNote = updateNote;
-        $scope.goToChores = goToChores;
-
-        function addNote() {
-            var newNote = {
-                content: "Please fill me.",
-                author_mail: $rootScope.globals.currentUser.mail,
-                date: Date.now(),
-                active: true,
-                flat_id: flatId
-            }
-
-            createNote(newNote);
-        }
-
-        function createNote(note) {
-            NotesService.createNote(note,
-                function(successResp) {
-                    console.log("Added note");
-                    getNotes();
-                },
-                function(failureResp) {
-                    console.log("Failed to add note");
-                }
-            );
-        }
-
-        function removeNote(note) {
-            NotesService.removeNote(note,
-                function(successResp) {
-                    console.log("Removed note");
-                    getNotes();
-                },
-                function(failureResp) {
-                    console.log("Couldn't remove note");
-                }
-            );
-        }
-
-        function updateNote(note) {
-            NotesService.updateNote(note,
-                function(successResp) {
-                    console.log("Updated note");
-                    getNotes();
-                },
-                function(failureResp) {
-                    console.log("Couldn't update note");
-                }
-            );
-
-        }
+        $scope.removeChore = removeChore;
+        $scope.goToAddChore = goToAddChore;
+        $scope.addChore = addChore;
 
         function getFlatInfo() {
             FlatService.getById(flatId,
@@ -75,31 +25,54 @@
             );
         }
 
-        function getNotes() {
-            NotesService.getFlatNotes(flatId,
-                function(notes) {
-                    console.log(notes);
-                    for (var i = 0; i < notes.length; i++)
-                    {
-                        notes[i].date *= 1000;
-                    }
-
-                    $scope.notes = notes;
+        function getChores() {
+            ChoresService.getFlatChores(flatId,
+                function(chores) {
+                    console.log(chores);
+                    $scope.chores = chores;
                 },
                 function(resp) {
                     console.log(resp);
-                    $scope.notes = [];
+                    $scope.chores = [];
                 }
             );
         }
 
-        function goToChores() {
-            $location.path('/flat/' + flatId + '/chores/');
+        function removeChore(chore) {
+            ChoresService.removeChore(chore, flatId,
+                function(success) {
+                    getChores();
+                    //$route.reload();
+                },
+                function(failure) {
+                }
+            );
+        }
+
+        function goToAddChore() {
+            $location.path('/flat/' + flatId + '/chores/add');
+        }
+
+        function addChore() {
+            var newChore = {
+                name: $scope.chore.name,
+                frequency_id: $scope.chore.frequency_id,
+                flat_id: flatId
+            };
+
+            ChoresService.addChore(newChore, flatId,
+                function(success) {
+                    $location.path('/flat/' + flatId + '/chores');
+                },
+                function(failure) {
+
+                }
+            );
         }
 
         (function initController() {
             getFlatInfo();
-            getNotes();
+            getChores();
         })();
     }
 

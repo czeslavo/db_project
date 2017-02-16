@@ -29,6 +29,11 @@
                 templateUrl: 'app/chores/chores.view.html'
             })
 
+            .when('/flat/:id/chores/add', {
+                controller: 'ChoresController',
+                templateUrl: 'app/chores/add_chore.view.html'
+            })
+
             .when('/login', {
                 controller: 'LoginController',
                 templateUrl: 'app/login/login.view.html',
