@@ -1,36 +1,42 @@
 <div class="container">
     <div class="row">
-        <h2>{{flat.name}}</h2>
+        <h2>{{flat.name}} - chores</h2>
     </div>
 
     <div class="row">
-        <div class="col-md-4">
-            <h3>Notes</h3>
+        <div class="col-md-6">
+            <h3>Defined chores</h3>
             <div class="bottom-buffer">
             <button type="button" class="btn btn-primary btn-xs" ng-click="addNote()">
                 <i class="fa fa-plus-square" aria-hidden="true"></i> Add
             </button>
             </div>
 
-            <div class="panel panel-default" ng-repeat="note in notes | orderBy:'-date'">
-                <div class="panel-heading note-header">
-                    <div><i class="fa fa-times with-pointer text-danger" aria-hidden="true"
-                    ng-click="removeNote(note)"></i></div>
-                </div>
-                <div contenteditable ng-model="note.content" ng-blur="updateNote(note)" class="panel-body">
-                    {{ note.content }}
-                </div>
-                <div class="panel-footer text-right">
-                    <div>Author: {{ note.author_mail }}</div>
-                    <div>Last edited: {{ note.date | date : 'dd.MM.yyyy, H:mm' }}</div>
-                </div>
-            </div>
+            <table class="table table-hover table-responsive">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Chore name</th>
+                    <th>Frequency</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>1</td>
+                    <td class="with-pointer">Robienie duzo</td>
+                    <td>Weekly</td>
+                    <td><i class="fa fa-times with-pointer" aria-hidden="true" ng-click="removeFlat(flat.id)"></i></td>
+                  </tr>
+                </tbody>
+            </table>
+
         </div>
-        <div class="col-md-8">
-            <h3>Chores</h3>
+        <div class="col-md-6">
+            <h3>Scheduled chores</h3>
             <div class="bottom-buffer">
             <button type="button" class="btn btn-primary btn-xs" ng-click="goToChores()">
-                Go to chores panel
+                Schedule
             </button>
             </div>
 

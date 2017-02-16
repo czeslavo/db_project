@@ -35,4 +35,11 @@ std::unique_ptr<NoteAccessor> DatabaseAccessorImpl::getNoteAccessor()
     );
 }
 
+std::unique_ptr<ChoreAccessor> DatabaseAccessorImpl::getChoreAccessor()
+{
+    return std::make_unique<ChoreAccessorImpl>(
+        std::make_unique<pqxx::connection>(dbOpts)
+    );
+}
+
 }

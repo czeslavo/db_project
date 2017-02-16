@@ -1,0 +1,8 @@
+{
+    "flat_id": 1,
+    "chore": {
+        "name": "Chore name",
+        "frequency_id": "WEEKLY",
+        "flat_id": 1
+    }
+}

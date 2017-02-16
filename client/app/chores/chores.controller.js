@@ -3,10 +3,10 @@
 
     angular
         .module('flatMate')
-        .controller('FlatController', FlatController);
+        .controller('ChoresController', ChoresController);
 
-    FlatController.$inject = ['$scope', '$route', '$routeParams', '$location', '$rootScope', 'FlatService', 'NotesService'];
-    function FlatController($scope, $route, $routeParams, $location, $rootScope, FlatService, NotesService) {
+    ChoresController.$inject = ['$scope', '$route', '$routeParams', '$location', '$rootScope', 'FlatService', 'NotesService'];
+    function ChoresController($scope, $route, $routeParams, $location, $rootScope, FlatService, NotesService) {
         var flatId = +$routeParams.id;
 
         $scope.addNote = addNote;

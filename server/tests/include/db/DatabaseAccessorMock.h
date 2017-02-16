@@ -17,6 +17,7 @@ public:
     MOCK_METHOD0(getUserAccessorProxy, UserAccessor*());
     MOCK_METHOD0(getFlatAccessor, std::unique_ptr<FlatAccessor>());
     MOCK_METHOD0(getNoteAccessor, std::unique_ptr<NoteAccessor>());
+    MOCK_METHOD0(getChoreAccessor, std::unique_ptr<ChoreAccessor>());
 };
 
 }

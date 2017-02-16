@@ -167,6 +167,26 @@ void ApiEndpoint::createDescription()
             .produces(MIME(Application, Json))
             .response(Net::Http::Code::Ok, "Note with given id");
 
+    auto chorePath = versionPath.path("/chore");
+
+        chorePath
+            .route(desc.post("/add"))
+            .bind(&ChoreHandler::add, &choreHandler)
+            .produces(MIME(Application, Json))
+            .response(Net::Http::Code::Ok, "Successfully created chore");
+
+        chorePath
+            .route(desc.del("/remove/:flat_id/:chore_id"))
+            .bind(&ChoreHandler::remove, &choreHandler)
+            .produces(MIME(Application, Json))
+            .response(Net::Http::Code::Ok, "Successfully removed chore");
+
+        chorePath
+            .route(desc.get("/getforflat/:flat_id"))
+            .bind(&ChoreHandler::getForFlat, &choreHandler)
+            .produces(MIME(Application, Json))
+            .response(Net::Http::Code::Ok, "Chores which belong to the flat");
+
 }
 
 

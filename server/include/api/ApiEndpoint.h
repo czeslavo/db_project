@@ -13,6 +13,7 @@
 #include "api/handlers/UserHandler.h"
 #include "api/handlers/FlatHandler.h"
 #include "api/handlers/NoteHandler.h"
+#include "api/handlers/ChoreHandler.h"
 
 #include "db/PostgreConfig.h"
 
@@ -41,6 +42,7 @@ private:
     UserHandler userHandler{db, auth};
     FlatHandler flatHandler{db, auth};
     NoteHandler noteHandler{db, auth};
+    ChoreHandler choreHandler{db, auth};
 
     Net::Rest::Description desc;
     Net::Rest::Router router;

@@ -24,6 +24,11 @@
                 templateUrl: 'app/flat/flat.view.html'
             })
 
+            .when('/flat/:id/chores', {
+                controller: 'ChoresController',
+                templateUrl: 'app/chores/chores.view.html'
+            })
+
             .when('/login', {
                 controller: 'LoginController',
                 templateUrl: 'app/login/login.view.html',
