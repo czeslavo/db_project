@@ -32,6 +32,7 @@ public:
 
     virtual void forceIsFlatAdmin(const Net::Rest::Request& req) = 0;
     virtual void forceIsFlatUser(const Net::Rest::Request& req) = 0;
+    virtual void forceIsFlatUser(const int flatId, const Net::Rest::Request& req) = 0;
 
 };
 
@@ -57,6 +58,7 @@ public:
 
     void forceIsFlatAdmin(const Net::Rest::Request& req) override;
     void forceIsFlatUser(const Net::Rest::Request& req) override;
+    void forceIsFlatUser(const int flatId, const Net::Rest::Request& req) override;
 
     class AuthServiceException : public std::runtime_error {
     public:

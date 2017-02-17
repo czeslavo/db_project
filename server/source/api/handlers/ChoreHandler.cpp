@@ -74,20 +74,18 @@ void ChoreHandler::update(const Net::Rest::Request& req,
     auth->forceIsFlatUser(req);
 
     auto body = json::parse(req.body());
-/*
+
     auto updateChore = body["chore"];
     models::Chore chore{
         updateChore["id"],
-        updateChore["content"],
-        body["flat_id"],
-        0,
-        updateChore["active"],
-        ""
+        updateChore["name"],
+        updateChore["frequency_id"],
+        body["flat_id"]
     };
 
     auto choreAccess = db->getChoreAccessor();
     choreAccess->update(chore);
-*/
+
     json respBody{{"response", "Successfully updated chore"}};
     resp.send(Net::Http::Code::Ok, respBody.dump());
 }
@@ -118,12 +116,13 @@ void ChoreHandler::get(const Net::Rest::Request& req,
 {
     common::prepareCommonResponse(resp);
     auth->authToken(req);
-    auth->forceIsFlatUser(req);
 
     auto choreId = req.param(":chore_id").as<int>();
 
     auto choreAccess = db->getChoreAccessor();
     auto chore = choreAccess->get(choreId);
+
+    auth->forceIsFlatUser(chore.flatId, req);
 
     json respBody{{"response", "Got chore by id"},
                   {"chore", chore.toJson()}};

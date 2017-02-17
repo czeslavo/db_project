@@ -13,6 +13,8 @@
         service.getFlatChores = getFlatChores;
         service.addChore = addChore;
         service.removeChore = removeChore;
+        service.updateChore = updateChore;
+        service.getChoreById = getChoreById;
 
         return service;
 
@@ -21,6 +23,18 @@
                 function(successResp) {
                     console.log(successResp);
                     successCallback(successResp.data.chores);
+                },
+                function(failureResp) {
+                    failureCallback(failureResp);
+                }
+            );
+        }
+
+        function getChoreById(choreId, successCallback, failureCallback) {
+            $http.get(api + '/get/' + choreId).then(
+                function(successResp) {
+                    console.log(successResp);
+                    successCallback(successResp.data.chore);
                 },
                 function(failureResp) {
                     failureCallback(failureResp);
@@ -51,6 +65,19 @@
                 },
                 function(failureResp) {
                     failureCallback(failureResp);
+                }
+            );
+        }
+
+        function updateChore(chore, flatId, successCallback, failureCallback) {
+            var body = {flat_id: flatId, chore: chore};
+
+            $http.put(api + "/update", body).then(
+                function(success) {
+                    successCallback(success);
+                },
+                function(failure) {
+                    failureCallback(failure);
                 }
             );
         }

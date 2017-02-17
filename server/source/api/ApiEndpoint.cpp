@@ -187,6 +187,18 @@ void ApiEndpoint::createDescription()
             .produces(MIME(Application, Json))
             .response(Net::Http::Code::Ok, "Chores which belong to the flat");
 
+        chorePath
+            .route(desc.put("/update"))
+            .bind(&ChoreHandler::update, &choreHandler)
+            .produces(MIME(Application, Json))
+            .response(Net::Http::Code::Ok, "Successfully updated chore");
+
+        chorePath
+            .route(desc.get("/get/:chore_id"))
+            .bind(&ChoreHandler::get, &choreHandler)
+            .produces(MIME(Application, Json))
+            .response(Net::Http::Code::Ok, "Chore with given id");
+
 }
 
 

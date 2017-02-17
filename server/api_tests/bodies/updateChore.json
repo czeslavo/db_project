@@ -1,0 +1,11 @@
+{
+    "mail": "czeslavo@gmail.com",
+    "apiToken": "dummyapitoken",
+    "flat_id": 1,
+    "chore": {
+        "id": 2,
+        "name": "New note content",
+        "frequency_id": "DAILY",
+        "flat_id": 1
+    }
+}

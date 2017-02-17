@@ -13,8 +13,7 @@ constexpr auto removeChoreQuery{
 
 constexpr auto updateChoreQuery{
     "UPDATE flat_mate.chore \
-        SET date = cast(extract(epoch from CURRENT_TIMESTAMP) as integer), \
-        content = $1, active = $2 \
+        SET name = $1, frequency_id = $2 \
         WHERE id = $3;"};
 
 constexpr auto getChoresForFlatQuery{
@@ -23,9 +22,9 @@ constexpr auto getChoresForFlatQuery{
         WHERE flat_id = $1;"};
 
 constexpr auto getChoreByIdQuery{
-    "SELECT n.id, n.date, n.content, n.active, n.author_mail, n.flat_id \
-        FROM flat_mate.chore n \
-        WHERE n.id = $1;"};
+    "SELECT c.id, c.name, c.frequency_id, c.flat_id \
+        FROM flat_mate.chore c \
+        WHERE c.id = $1;"};
 }
 
 namespace db
@@ -42,9 +41,9 @@ void ChoreAccessorImpl::prepareStatements()
     connection->prepare("createChore", createChoreQuery);
     connection->prepare("removeChore", removeChoreQuery);
 
-    //connection->prepare("updateChore", updateChoreQuery);
+    connection->prepare("updateChore", updateChoreQuery);
     connection->prepare("getChoresForFlat", getChoresForFlatQuery);
-    //connection->prepare("getChoreById", getChoreByIdQuery);
+    connection->prepare("getChoreById", getChoreByIdQuery);
 }
 
 void ChoreAccessorImpl::create(const models::Chore& chore)
@@ -69,15 +68,14 @@ void ChoreAccessorImpl::drop(const int choreId)
 
 void ChoreAccessorImpl::update(const models::Chore& chore)
 {
-    /*
+
    pqxx::work w{*connection};
    const auto result = w.prepared("updateChore")
-                                 (chore.content)
-                                 (chore.active)
+                                 (chore.name)
+                                 (chore.frequencyId)
                                  (chore.id).exec();
    w.commit();
    helpers::logStatementResult(result);
-*/
 }
 
 std::vector<models::Chore> ChoreAccessorImpl::getForFlat(const int flatId)
@@ -116,16 +114,13 @@ models::Chore ChoreAccessorImpl::get(const int choreId)
     helpers::logStatementResult(result);
 
     auto row = result.at(0);
-/*
+
     return models::Chore{
         row["id"].as<int>(),
-        row["content"].as<std::string>(),
-        row["flat_id"].as<int>(),
-        row["date"].as<int>(),
-        row["active"].as<bool>(),
-        row["author_mail"].as<std::string>()
+        row["name"].as<std::string>(),
+        row["frequency_id"].as<std::string>(),
+        row["flat_id"].as<int>()
     };
-*/
 }
 
 }

@@ -141,10 +141,20 @@ int AuthServiceImpl::getFlatIdFromRequest(const Net::Rest::Request& req) const
     return flatId;
 }
 
+void AuthServiceImpl::forceIsFlatUser(const int flatId, const Net::Rest::Request& req)
+{
+    authToken(req);
+
+    std::string mail;
+    std::tie(mail, std::ignore) = common::getTokenInfoFromRequest(req);
+
+    auto flatAccess = db->getFlatAccessor();
+    if (not flatAccess->isFlatUser(flatId, mail))
+        throw AuthServiceException("You are not this flat's user");
+}
+
 void AuthServiceImpl::forceIsFlatUser(const Net::Rest::Request& req)
 {
-    using json = nlohmann::json;
-
     authToken(req);
 
     auto flatAccess = db->getFlatAccessor();

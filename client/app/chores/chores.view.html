@@ -24,9 +24,12 @@
                 <tbody>
                   <tr ng-repeat="chore in chores">
                     <td>{{ chore.id }}</td>
-                    <td class="with-pointer">{{ chore.name }}</td>
+                    <td>{{ chore.name }}</td>
                     <td>{{ chore.frequency_id }}</td>
-                    <td><i class="fa fa-times with-pointer" aria-hidden="true" ng-click="removeChore(chore)"></i></td>
+                    <td>
+                        <i class="fa fa-pencil with-pointer" aria-hidden="true" ng-click="goToEditChore(chore.id)"></i>
+                        <i class="fa fa-times with-pointer" aria-hidden="true" ng-click="removeChore(chore)"></i>
+                    </td>
                   </tr>
                 </tbody>
             </table>

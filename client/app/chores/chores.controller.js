@@ -12,6 +12,7 @@
         $scope.removeChore = removeChore;
         $scope.goToAddChore = goToAddChore;
         $scope.addChore = addChore;
+        $scope.goToEditChore = goToEditChore;
 
         function getFlatInfo() {
             FlatService.getById(flatId,
@@ -42,7 +43,6 @@
             ChoresService.removeChore(chore, flatId,
                 function(success) {
                     getChores();
-                    //$route.reload();
                 },
                 function(failure) {
                 }
@@ -68,6 +68,12 @@
 
                 }
             );
+        }
+
+        function goToEditChore(chore_id) {
+            var destinationPath = '/flat/' + flatId + '/chores/edit/' + chore_id;
+            console.log(destinationPath);
+            $location.path(destinationPath);
         }
 
         (function initController() {
