@@ -280,3 +280,106 @@ NOT DEFERRABLE;
 
 CREATE EXTENSION IF NOT EXISTS pgcrypto
     WITH SCHEMA flat_mate;
+
+
+-- Funkcje
+
+-- Zwraca id mieszkania dla podanego obowiązku
+CREATE OR REPLACE FUNCTION get_flat_id_for_chore(chore_id integer)
+    RETURNS TABLE (
+        id integer
+    ) 
+AS
+$$
+BEGIN
+    RETURN QUERY (SELECT flat_id FROM chore c WHERE c.id = chore_id);
+END;
+$$
+LANGUAGE 'plpgsql' IMMUTABLE;
+
+
+-- Zwraca maile użytkowników danego mieszkania
+CREATE OR REPLACE FUNCTION get_flat_users(_flat_id integer)
+    RETURNS TABLE (
+        mail VARCHAR(50)
+        ) AS
+$$
+BEGIN
+    RETURN QUERY (SELECT user_mail FROM flat_user fu WHERE fu.flat_id = _flat_id);
+END;
+$$
+LANGUAGE 'plpgsql' IMMUTABLE;
+
+
+-- Zwraca aktualna date
+CREATE OR REPLACE FUNCTION get_current_date()
+    RETURNS DOUBLE PRECISION
+    AS
+$$
+BEGIN
+    RETURN EXTRACT(EPOCH FROM CURRENT_TIMESTAMP);
+END;
+$$
+LANGUAGE 'plpgsql' IMMUTABLE;
+
+
+-- Planuje dany obowiązek na daną datę i użytkownika
+CREATE OR REPLACE FUNCTION schedule_chore(_chore_id integer, _date integer, _user_mail VARCHAR(50))
+RETURNS BOOLEAN
+AS
+$$
+BEGIN
+    -- Upewnij się, że planowa data nie jest wcześniejsza niż dzisiejsza
+    IF (_date < get_current_date()) THEN
+	    RETURN FALSE;
+    END IF;
+    
+    INSERT INTO chores_plan (date, chore_id, assigned_mail, done) 
+        VALUES(_date, _chore_id, _user_mail, FALSE);
+    
+	RETURN TRUE;
+END;
+$$
+LANGUAGE 'plpgsql';
+
+
+-- Planuje dany obowiązek dla całego mieszkania w zadanym przedziale czasu
+CREATE OR REPLACE FUNCTION schedule_chore_from_to(_chore_id integer, _from integer, _to integer)
+RETURNS BOOLEAN
+AS
+$$      
+DECLARE 
+    users VARCHAR(50)[];
+    userr VARCHAR(50);
+    _current_date integer = _from;
+BEGIN
+    -- Upewnij się, że 'od' jest mniejsze niż 'do'
+    IF (_from < get_current_date() AND _from > _to) THEN
+	    RETURN FALSE;
+    END IF;
+  
+    -- losujemy kolejkę do zadania  
+    users := array(SELECT get_flat_users(get_flat_id_for_chore(_chore_id)) 
+            ORDER BY RANDOM()
+    ); 
+    
+    FOREACH userr IN ARRAY users LOOP
+        RAISE NOTICE 'Calling for user: (%)', userr;
+
+        INSERT INTO chores_plan (date, chore_id, assigned_mail, done) 
+            VALUES(_current_date, _chore_id, userr, FALSE);
+        
+        _current_date := _current_date + 100;
+
+    END LOOP;
+      
+
+	RETURN TRUE;
+END;
+$$
+LANGUAGE 'plpgsql';
+
+
+
+
+
