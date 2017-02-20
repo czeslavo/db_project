@@ -22,7 +22,7 @@ deep-clean: server/build
 	rm -rf server/build
 
 deploy_client:
-	rm -rf /data/www/client && cp -r client /data/www/
+	rm -rf /data/www/flat_mate && mkdir /data/www/flat_mate && cp -r client/* /data/www/flat_mate
 
 list_targets:
 	@$(MAKE) -pRrq -f $(lastword $(MAKEFILE_LIST)) : 2>/dev/null | awk -v RS= -F: '/^# File/,/^# Finished Make database/ {if ($$1 !~ "^[#.]") {print $$1}}' | sort | egrep -v -e '^[^[:alnum:]]' -e '^$@$$' | xargs
