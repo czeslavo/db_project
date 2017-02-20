@@ -6,9 +6,9 @@
         .controller('ScheduleController', ScheduleController);
 
     ScheduleController.$inject = ['$scope', '$route', '$routeParams', '$location', '$rootScope', 'FlatService',
-    'ChoresService', 'uibDateParser'];
+        'ChoresService', 'uibDateParser', 'AlertsService'];
     function ScheduleController($scope, $route, $routeParams, $location, $rootScope, FlatService, ChoresService,
-    uibDateParser) {
+        uibDateParser, AlertsService) {
         var flatId = +$routeParams.id;
         var choreId = +$routeParams.chore_id;
 
@@ -49,6 +49,7 @@
                 function(success) {
                     console.log(success);
                     $location.path('/flat/' + flatId + '/chores');
+                    AlertsService.add("success", "Successfully scheduled chore: " + $scope.chore.name);
                 },
                 function(failure) {
                     console.log(failure);

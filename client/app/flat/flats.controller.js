@@ -38,6 +38,7 @@
                 function(successResp) {
                     $location.path('/flats');
                     getUsersFlats();
+                    AlertsService.add("success", "Successfully created flat: " + $scope.flat.name);
                 },
                 function(failureResp) {
                     console.log('Couldn\'t create flat');
@@ -52,6 +53,7 @@
             FlatService.remove(flatId,
                 function(successResp) {
                     $route.reload();
+                    AlertsService.add("success", "Successfully removed flat");
                 },
                 function(failureResp) {
 

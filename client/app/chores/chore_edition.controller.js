@@ -5,8 +5,10 @@
         .module('flatMate')
         .controller('ChoreEditionController', ChoreEditionController);
 
-    ChoreEditionController.$inject = ['$scope', '$route', '$routeParams', '$location', '$rootScope', 'FlatService', 'ChoresService'];
-    function ChoreEditionController($scope, $route, $routeParams, $location, $rootScope, FlatService, ChoresService) {
+    ChoreEditionController.$inject = ['$scope', '$route', '$routeParams', '$location', '$rootScope',
+        'FlatService', 'ChoresService', 'AlertsService'];
+    function ChoreEditionController($scope, $route, $routeParams, $location, $rootScope,
+        FlatService, ChoresService, AlertsService) {
         var flatId = +$routeParams.id;
         var choreId = +$routeParams.chore_id;
 
@@ -40,9 +42,11 @@
         function updateChore() {
             ChoresService.updateChore($scope.chore, flatId,
                 function(success) {
+                    AlertsService.add("success", "Successfully updated chore: " + $scope.chore.name);
                     $location.path('/flat/' + flatId + '/chores');
                 },
                 function(failure) {
+                    AlertsService.add("danger", "Failed updating chore");
                 }
             );
         }

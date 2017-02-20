@@ -85,5 +85,4 @@
             $location.path('/login');
         });
     }
-
 })();

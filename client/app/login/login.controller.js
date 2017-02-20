@@ -5,8 +5,8 @@
         .module('flatMate')
         .controller('LoginController', LoginController);
 
-    LoginController.$inject = ['$location', 'AuthService'];
-    function LoginController($location, AuthService) {
+    LoginController.$inject = ['$location', 'AuthService', 'AlertsService'];
+    function LoginController($location, AuthService, AlertsService) {
         var vm = this;
 
         vm.login = login;
@@ -21,9 +21,11 @@
                 function (successResponse) {
                     AuthService.SetCredentials(vm.mail, successResponse.data['apiToken']);
                     $location.path('/flats');
+                    AlertsService.add("success", "Successfully logged in. Welcome " + vm.mail + "!");
 
                 }, function(failureResponse) {
                     vm.dataLoading = false;
+                    AlertsService.add("danger", "Couldn't log in: " + failureResponse.data['response']);
                 });
 
         }

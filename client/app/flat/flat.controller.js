@@ -130,6 +130,7 @@
             FlatService.addFlatUser(flatId, $scope.newFlatMate.mail,
                 function(success) {
                     getFlatUsers();
+                    AlertsService.add("success", "Successfully added flat mate: " + $scope.newFlatMate.mail);
                 },
                 function(failure) {
                 }

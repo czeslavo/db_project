@@ -22,6 +22,7 @@
     <script src="app/services/flat.service.js"></script>
     <script src="app/services/notes.service.js"></script>
     <script src="app/services/chores.service.js"></script>
+    <script src="app/services/alerts.service.js"></script>
 
     <script src="app/directives/contenteditable.directive.js"></script>
 
@@ -32,6 +33,7 @@
 <div ng-include src=" 'app/menu/menu.view.html' "></div>
 
 <div class="container">
+    <div ng-include src=" 'app/alerts/alerts.view.html' "></div>
     <div ng-view></div>
 </div>
 
@@ -43,6 +45,7 @@
 <script src="app/menu/menu.controller.js"></script>
 <script src="app/login/login.controller.js"></script>
 <script src="app/register/register.controller.js"></script>
+<script src="app/alerts/alerts.controller.js"></script>
 
 </body>
 

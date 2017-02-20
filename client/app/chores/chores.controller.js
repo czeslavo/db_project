@@ -5,8 +5,10 @@
         .module('flatMate')
         .controller('ChoresController', ChoresController);
 
-    ChoresController.$inject = ['$scope', '$route', '$routeParams', '$location', '$rootScope', 'FlatService', 'ChoresService'];
-    function ChoresController($scope, $route, $routeParams, $location, $rootScope, FlatService, ChoresService) {
+    ChoresController.$inject = ['$scope', '$route', '$routeParams', '$location', '$rootScope',
+        'FlatService', 'ChoresService', 'AlertsService'];
+    function ChoresController($scope, $route, $routeParams, $location, $rootScope,
+        FlatService, ChoresService, AlertsService) {
         var flatId = +$routeParams.id;
 
         $scope.removeChore = removeChore;
@@ -49,6 +51,7 @@
                     getChores();
                     getScheduledChores();
                     getRecentlyDoneChores();
+                    AlertsService.add("success", "Successfully deleted chore: " + chore.name);
                 },
                 function(failure) {
                 }
@@ -69,6 +72,7 @@
             ChoresService.addChore(newChore, flatId,
                 function(success) {
                     $location.path('/flat/' + flatId + '/chores');
+                    AlertsService.add("success", "Successfully added chore: " + newChore.name);
                 },
                 function(failure) {
 
@@ -112,10 +116,11 @@
             );
         }
 
-        function resetScheduleForChore(choreId) {
-            ChoresService.resetScheduleForChore(flatId, choreId,
+        function resetScheduleForChore(chore) {
+            ChoresService.resetScheduleForChore(flatId, chore.id,
                 function(success) {
                     getScheduledChores();
+                    AlertsService.add("success", "Successfully reset schedule for chore: " + chore.name);
                 },
                 function(failure) {
                 }
