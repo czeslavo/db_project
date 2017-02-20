@@ -16,6 +16,7 @@
         service.getById = getById;
         service.getFlatUsers = getFlatUsers;
         service.isFlatAdmin = isFlatAdmin;
+        service.addFlatUser = addFlatUser;
 
         return service;
 
@@ -95,6 +96,24 @@
                 }
             );
 
+        }
+
+        function addFlatUser(flatId, userMail, successCallback, failureCallback) {
+            var body = {
+                add: {
+                    user_mail: userMail
+                },
+                flat_id: flatId
+            };
+
+            return $http.post(api + '/adduser', body).then(
+                function(success) {
+                    successCallback(success);
+                },
+                function(failure) {
+                    failureCallback(failure);
+                }
+            );
         }
 
     }

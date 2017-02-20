@@ -13,6 +13,11 @@
         $scope.removeNote = removeNote;
         $scope.updateNote = updateNote;
         $scope.goToChores = goToChores;
+        $scope.addFlatMate = addFlatMate;
+
+        $scope.newFlatMate = {
+            mail: ""
+        };
 
         function addNote() {
             var newNote = {
@@ -115,6 +120,16 @@
                 },
                 function(failure) {
                     $scope.users = [];
+                }
+            );
+        }
+
+        function addFlatMate() {
+            FlatService.addFlatUser(flatId, $scope.newFlatMate.mail,
+                function(success) {
+                    getFlatUsers();
+                },
+                function(failure) {
                 }
             );
         }

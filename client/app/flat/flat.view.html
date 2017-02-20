@@ -4,14 +4,32 @@
     </div>
 
     <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-3">
             <h3>Flat info</h3>
-            <p ng-if="isFlatAdmin">You're this flat's administrator.</p>
+            <div ng-if="isFlatAdmin">
+                <p>You're this flat's administrator.</p>
+            </div>
             <p ng-if="users.length > 1">Flat mates:</p>
             <ul ng-if="users.length > 1">
                 <li ng-repeat="user in users">{{ user.mail }}</li>
             </ul>
 
+            <div ng-if="isFlatAdmin">
+            <h3>Add new flat mate</h3>
+
+            <div class="form-group" ng-class="{ 'has-error': form.name.$dirty && form.name.$error.required }">
+                <form name="flatMateForm" ng-submit="addFlatMate()" role="form">
+                    <label for="flatMateMail">New flat mate's e-mail</label>
+                    <input type="email" name="flatMateMail" id="flatMateMail" class="form-control"
+                    ng-model="newFlatMate.mail" required />
+                    <button type="submit" class="btn btn-primary btn-xs" ng-disabled="flatMateForm.$invalid">
+                        <i class="fa fa-plus-square" aria-hidden="true"></i> Add flat mate
+                    </button>
+                </form>
+            </div>
+            </div>
+        </div>
+        <div class="col-md-4">
             <h3>Notes</h3>
             <div class="bottom-buffer">
             <button type="button" class="btn btn-primary btn-xs" ng-click="addNote()">
@@ -33,7 +51,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-8">
+        <div class="col-md-5">
             <h3>Chores</h3>
             <div class="bottom-buffer">
             <button type="button" class="btn btn-primary btn-xs" ng-click="goToChores()">
