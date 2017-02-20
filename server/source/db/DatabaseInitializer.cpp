@@ -3,7 +3,7 @@
 #include "db/DatabaseInitializer.h"
 #include "common/Logger.h"
 
-namespace 
+namespace
 {
 constexpr auto initSqlPath{"/tmp/init_db.sql"};
 constexpr auto fillSqlPath{"/tmp/fill_db.sql"};
@@ -44,14 +44,14 @@ void DatabaseInitializer::execute(const std::string& file)
     }
 
     pqxx::work w(connection);
-    
+
     std::string inputString;
     for(std::string line; std::getline(input, line); )
     {
         inputString += line + "\n";
     }
-     
-    try 
+
+    try
     {
         w.exec(inputString);
         w.commit();

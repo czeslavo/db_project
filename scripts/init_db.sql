@@ -283,13 +283,13 @@ CREATE EXTENSION IF NOT EXISTS pgcrypto
 
 -- Widoki
 
--- Widok liczący częstość dla każdego obowiązku
-CREATE OR REPLACE VIEW frequency_of_chore 
+9-- Widok liczący częstość dla każdego obowiązku
+CREATE OR REPLACE VIEW frequency_of_chore
 AS (
-    SELECT c.id AS chore_id, extract(epoch from i.days::integer * interval '1 day' + 
+    SELECT c.id AS chore_id, extract(epoch from i.days::integer * interval '1 day' +
                                     i.weeks::integer * interval '1 week' +
-                                    i.months::integer * interval '1 month') AS frequency  
-        FROM chore_frequency i
+                                    i.months::integer * interval '1 month') AS frequency
+        FROM flat_mate.chore_frequency i
         JOIN chore c ON c.frequency_id = i.id
 );
 
@@ -300,10 +300,10 @@ CREATE OR REPLACE FUNCTION get_flat_id_for_chore(chore_id integer)
     RETURNS INTEGER
 AS
 $$
-DECLARE 
+DECLARE
     _flat_id INTEGER;
 BEGIN
-    SELECT flat_id INTO _flat_id FROM chore c WHERE c.id = chore_id;
+    SELECT flat_id INTO _flat_id FROM flat_mate.chore c WHERE c.id = chore_id;
     RETURN _flat_id;
 END;
 $$
@@ -317,7 +317,7 @@ CREATE OR REPLACE FUNCTION get_flat_users(_flat_id integer)
         ) AS
 $$
 BEGIN
-    RETURN QUERY (SELECT user_mail FROM flat_user fu WHERE fu.flat_id = _flat_id);
+    RETURN QUERY (SELECT user_mail FROM flate_mate.flat_user fu WHERE fu.flat_id = _flat_id);
 END;
 $$
 LANGUAGE 'plpgsql' IMMUTABLE;
@@ -345,10 +345,10 @@ BEGIN
     IF (_date < get_current_date()) THEN
 	    RETURN FALSE;
     END IF;
-    
-    INSERT INTO chores_plan (date, chore_id, assigned_mail, done) 
+
+    INSERT INTO flat_mate.chores_plan (date, chore_id, assigned_mail, done)
         VALUES(_date, _chore_id, _user_mail, FALSE);
-    
+
 	RETURN TRUE;
 END;
 $$
@@ -360,9 +360,9 @@ CREATE OR REPLACE FUNCTION get_interval(_chore_id integer)
 RETURNS INTEGER
 AS
 $$
-DECLARE 
+DECLARE
     _interval INTEGER;
-BEGIN     
+BEGIN
     SELECT frequency INTO _interval FROM frequency_of_chore WHERE chore_id = _chore_id;
     RETURN _interval;
 END;
@@ -374,8 +374,8 @@ LANGUAGE 'plpgsql';
 CREATE OR REPLACE FUNCTION schedule_chore_from_to(_chore_id integer, _from integer, _to integer)
 RETURNS BOOLEAN
 AS
-$$      
-DECLARE 
+$$
+DECLARE
     _users VARCHAR(50)[];
     _user VARCHAR(50);
     _current_date integer = _from;
@@ -387,25 +387,25 @@ BEGIN
     IF (_from < get_current_date() AND _from > _to) THEN
 	    RETURN FALSE;
     END IF;
-  
-    -- losuj kolejkę do obowiązku 
-    _users := array(SELECT get_flat_users(get_flat_id_for_chore(_chore_id)) 
+
+    -- losuj kolejkę do obowiązku
+    _users := array(SELECT get_flat_users(get_flat_id_for_chore(_chore_id))
             ORDER BY RANDOM()
-    ); 
-    
+    );
+
     _howManyUsers := array_length(_users, 1);
 
     -- Dodawaj cyklicznie obowiązek ze stałym odstępem czasu
     WHILE (_current_date < _to) LOOP
 
-        INSERT INTO chores_plan (date, chore_id, assigned_mail, done) 
+        INSERT INTO flat_mate.chores_plan (date, chore_id, assigned_mail, done)
             VALUES(_current_date, _chore_id, _users[_counter], FALSE);
-        
+
         _current_date := _current_date + _interval;
         _counter := (_counter % _howManyUsers) + 1;
         RAISE NOTICE 'counter (%)', _counter;
     END LOOP;
-      
+
 	RETURN TRUE;
 END;
 $$
@@ -415,9 +415,9 @@ LANGUAGE 'plpgsql';
 CREATE OR REPLACE FUNCTION reset_chore_plan(_chore_id integer)
 RETURNS VOID
 AS
-$$      
+$$
 BEGIN
-    DELETE FROM chores_plan WHERE chore_id = _chore_id AND done = FALSE;
+    DELETE FROM flat_mate.chores_plan WHERE chore_id = _chore_id AND done = FALSE;
 END;
 $$
 LANGUAGE 'plpgsql';
@@ -426,9 +426,9 @@ LANGUAGE 'plpgsql';
 CREATE OR REPLACE FUNCTION toggle_chore_done(_chore_id integer, _date integer)
 RETURNS VOID
 AS
-$$      
+$$
 BEGIN
-    UPDATE chores_plan 
+    UPDATE flat_mate.chores_plan
         SET done = NOT done
         WHERE chore_id = _chore_id AND date = _date;
 END;
@@ -444,10 +444,10 @@ RETURNS TABLE(
     assigned_mail varchar(50),
     done boolean)
 AS
-$$      
+$$
 BEGIN
-    RETURN QUERY (SELECT cp.chore_id, (SELECT c.name FROM chore c WHERE c.id = cp.chore_id) as name, 
-       cp.date, cp.assigned_mail, cp.done FROM chores_plan cp
+    RETURN QUERY (SELECT cp.chore_id, (SELECT c.name FROM flat_mate.chore c WHERE c.id = cp.chore_id) as name,
+       cp.date, cp.assigned_mail, cp.done FROM flat_mate.chores_plan cp
        WHERE get_flat_id_for_chore(cp.chore_id) = _flat_id AND cp.done = FALSE
        ORDER BY cp.date
        LIMIT 10);
@@ -464,16 +464,14 @@ RETURNS TABLE(
     assigned_mail varchar(50),
     done boolean)
 AS
-$$      
+$$
 BEGIN
-    RETURN QUERY (SELECT cp.chore_id, (SELECT c.name FROM chore c WHERE c.id = cp.chore_id) as name, 
-       cp.date, cp.assigned_mail, cp.done FROM chores_plan cp
+    RETURN QUERY (SELECT cp.chore_id, (SELECT c.name FROM flat_mate.chore c WHERE c.id = cp.chore_id) as name,
+       cp.date, cp.assigned_mail, cp.done FROM flat_mate.chores_plan cp
        WHERE get_flat_id_for_chore(cp.chore_id) = _flat_id AND cp.done = TRUE
        ORDER BY cp.date DESC
        LIMIT 10);
 END;
 $$
 LANGUAGE 'plpgsql';
-
-
 

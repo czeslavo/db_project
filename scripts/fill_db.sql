@@ -17,12 +17,12 @@ INSERT INTO flat_user VALUES('piotr@gmail.com', 1);
 INSERT INTO flat_user VALUES('ania@gmail.com', 1);
 INSERT INTO flat_user VALUES('kasia@gmail.com', 1);
 
-INSERT INTO note (date, content, active, author_mail, flat_id) 
-	VALUES(1463313600, 'To bardzo ważna notatka na lodówce', TRUE, 'czeslavo@gmail.com', 1);
-INSERT INTO note (date, content, active, author_mail, flat_id) 
-	VALUES(1463317600, 'To bardzo ważna notatka na lodówce, która jest jeszcze ważniejsza', TRUE, 'piotr@gmail.com', 1);
 INSERT INTO note (date, content, active, author_mail, flat_id)
-	VALUES(1463323600, 'To bardzo ważna notatka, która już nie jest aktywna', FALSE, 'kasia@gmail.com', 1);
+	VALUES(1463313600, 'To bardzo ważna notatka na lodówce', TRUE, 'czeslavo@gmail.com', 1);
+INSERT INTO note (date, content, active, author_mail, flat_id)
+	VALUES(1463317600, 'To bardzo ważna notatka na lodówce nr 2', TRUE, 'piotr@gmail.com', 1);
+INSERT INTO note (date, content, active, author_mail, flat_id)
+	VALUES(1463323600, 'Kiedy impreza?', FALSE, 'kasia@gmail.com', 1);
 
 INSERT INTO equipment (name, owner_mail, flat_id, value) VALUES('Mikrofalowka', 'czeslavo@gmail.com', 1, 50);
 INSERT INTO equipment (name, owner_mail, flat_id, value) VALUES('Mikser', 'ania@gmail.com', 1, 25);
