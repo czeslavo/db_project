@@ -182,7 +182,7 @@ void ApiEndpoint::createDescription()
             .response(Net::Http::Code::Ok, "Successfully removed chore");
 
         chorePath
-            .route(desc.get("/getforflat/:flat_id"))
+            .route(desc.get("/get_for_flat/:flat_id"))
             .bind(&ChoreHandler::getForFlat, &choreHandler)
             .produces(MIME(Application, Json))
             .response(Net::Http::Code::Ok, "Chores which belong to the flat");
@@ -199,6 +199,23 @@ void ApiEndpoint::createDescription()
             .produces(MIME(Application, Json))
             .response(Net::Http::Code::Ok, "Chore with given id");
 
+        chorePath
+            .route(desc.post("/schedule/:chore_id"))
+            .bind(&ChoreHandler::schedule, &choreHandler)
+            .produces(MIME(Application, Json))
+            .response(Net::Http::Code::Ok, "Successfully scheduled chore");
+
+        chorePath
+            .route(desc.put("/toggle_done/:chore_id"))
+            .bind(&ChoreHandler::toggleDone, &choreHandler)
+            .produces(MIME(Application, Json))
+            .response(Net::Http::Code::Ok, "Successfully toggled chore's done flag");
+
+        chorePath
+            .route(desc.get("/get_scheduled/:flat_id"))
+            .bind(&ChoreHandler::getScheduledForFlat, &choreHandler)
+            .produces(MIME(Application, Json))
+            .response(Net::Http::Code::Ok, "Got scheduled chores for flat");
 }
 
 

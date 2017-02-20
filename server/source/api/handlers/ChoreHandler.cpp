@@ -129,4 +129,61 @@ void ChoreHandler::get(const Net::Rest::Request& req,
     resp.send(Net::Http::Code::Ok, respBody.dump());
 }
 
+void ChoreHandler::schedule(const Net::Rest::Request& req,
+             Net::Http::ResponseWriter resp)
+{
+    common::prepareCommonResponse(resp);
+    auth->authToken(req);
+
+    auto choreId = req.param(":chore_id").as<int>();
+
+    auto choreAccess = db->getChoreAccessor();
+    auto chore = choreAccess->get(choreId);
+    auth->forceIsFlatUser(chore.flatId, req);
+
+    auto body = json::parse(req.body());
+    const int from = body["from"];
+    const int to = body["to"];
+
+    const auto result = choreAccess->schedule(choreId, from, to);
+
+    json respBody{{"response",
+        result ? "Successfully scheduled chore" : "Failed to schedule"
+    }};
+
+    resp.send(
+        result ? Net::Http::Code::Ok : Net::Http::Code::Not_Modified,
+        respBody.dump()
+    );
+}
+
+void ChoreHandler::toggleDone(const Net::Rest::Request& req,
+         Net::Http::ResponseWriter resp)
+{
+    common::prepareCommonResponse(resp);
+    auth->authToken(req);
+
+}
+
+void ChoreHandler::getScheduledForFlat(const Net::Rest::Request& req,
+         Net::Http::ResponseWriter resp)
+{
+    common::prepareCommonResponse(resp);
+    auth->authToken(req);
+    auth->forceIsFlatUser(req);
+
+    const auto flatId = req.param(":flat_id").as<int>();
+
+    auto choreAccess = db->getChoreAccessor();
+    auto chores = choreAccess->getScheduledForFlat(flatId);
+
+    json choresJson = json::array();
+    std::for_each(std::cbegin(chores), std::cend(chores), [&](const models::ScheduledChore c)
+        { choresJson.push_back(c.toJson()); });
+
+    json respBody{{"response", "Got chores for flat"},
+                  {"chores", choresJson}};
+    resp.send(Net::Http::Code::Ok, respBody.dump());
+}
+
 }

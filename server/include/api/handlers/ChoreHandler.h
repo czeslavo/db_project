@@ -32,6 +32,15 @@ public:
     void get(const Net::Rest::Request& req,
              Net::Http::ResponseWriter resp);
 
+    void schedule(const Net::Rest::Request& req,
+             Net::Http::ResponseWriter resp);
+
+    void toggleDone(const Net::Rest::Request& req,
+             Net::Http::ResponseWriter resp);
+
+    void getScheduledForFlat(const Net::Rest::Request& req,
+             Net::Http::ResponseWriter resp);
+
 private:
     std::shared_ptr<db::DatabaseAccessor> db;
     std::shared_ptr<api::AuthService> auth;

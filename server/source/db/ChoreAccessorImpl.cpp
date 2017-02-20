@@ -25,6 +25,13 @@ constexpr auto getChoreByIdQuery{
     "SELECT c.id, c.name, c.frequency_id, c.flat_id \
         FROM flat_mate.chore c \
         WHERE c.id = $1;"};
+
+constexpr auto scheduleChoreQuery{
+    "SELECT schedule_chore_from_to($1, $2, $3) as result;"};
+
+constexpr auto getScheduledChoresForFlatQuery{
+    "SELECT * FROM get_scheduled_chores_for_flat($1);"};
+
 }
 
 namespace db
@@ -44,6 +51,10 @@ void ChoreAccessorImpl::prepareStatements()
     connection->prepare("updateChore", updateChoreQuery);
     connection->prepare("getChoresForFlat", getChoresForFlatQuery);
     connection->prepare("getChoreById", getChoreByIdQuery);
+
+    connection->prepare("scheduleChore", scheduleChoreQuery);
+    connection->prepare("getScheduledChoresForFlat", getScheduledChoresForFlatQuery);
+
 }
 
 void ChoreAccessorImpl::create(const models::Chore& chore)
@@ -121,6 +132,47 @@ models::Chore ChoreAccessorImpl::get(const int choreId)
         row["frequency_id"].as<std::string>(),
         row["flat_id"].as<int>()
     };
+}
+
+bool ChoreAccessorImpl::schedule(const int choreId, const int from, const int to)
+{
+    pqxx::work w{*connection};
+    const auto result = w.prepared("scheduleChore")
+                                  (choreId)
+                                  (from)
+                                  (to).exec();
+
+    w.commit();
+    helpers::logStatementResult(result);
+
+    return result.at(0)["result"].as<bool>();
+}
+
+std::vector<models::ScheduledChore> ChoreAccessorImpl::getScheduledForFlat(const int flatId)
+{
+    pqxx::work w{*connection};
+    const auto result = w.prepared("getScheduledChoresForFlat")
+                                 (flatId).exec();
+
+    w.commit();
+    helpers::logStatementResult(result);
+
+    std::vector<models::ScheduledChore> chores;
+    chores.reserve(result.size());
+
+    std::for_each(std::cbegin(result), std::cend(result),
+        [&](const pqxx::tuple row) {
+            chores.push_back(models::ScheduledChore{
+                row["chore_id"].as<int>(),
+                row["name"].as<std::string>(),
+                row["date"].as<int>(),
+                row["assigned_mail"].as<std::string>(),
+                row["done"].as<bool>()
+            });
+        }
+    );
+
+    return chores;
 }
 
 }

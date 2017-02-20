@@ -13,6 +13,7 @@ class Payload:
     remove_chore = open('./bodies/removeNote.json').read()
     update_chore = open('./bodies/updateChore.json').read()
     get_chore_by_id = open('./bodies/getChoreById.json').read()
+    schedule_chore = open('./bodies/scheduleChore.json').read()
 
 
 class Urls:
@@ -23,8 +24,10 @@ class Urls:
     create_chore = api_url + '/chore/add'
     remove_chore = api_url + '/chore/remove/1/1'
     update_chore = api_url + '/chore/update'
-    get_chores_for_flat = api_url + '/chore/getforflat/1'
+    get_chores_for_flat = api_url + '/chore/get_for_flat/1'
     get_chore_by_id = api_url + '/chore/get/2'
+    schedule_chore = api_url + '/chore/schedule/2'
+    get_scheduled_chores_for_flat = api_url + '/chore/get_scheduled/1'
 
 
 class Headers:
@@ -71,6 +74,15 @@ class FlatApiTests(unittest.TestCase):
         r = req.get(Urls.get_chore_by_id, data=Payload.get_chore_by_id, headers=Headers.auth_token, timeout = 1)
         self.assertRegexpMatches(self.get_resp(r), 'Got chore by id')
 
+    def schedule_chore(self):
+        r = req.post(Urls.schedule_chore, data=Payload.schedule_chore, headers=Headers.auth_token, timeout = 1)
+        self.assertRegexpMatches(self.get_resp(r), 'Successfully scheduled chore')
+
+    def get_scheduled_chores_for_flat(self):
+        r = req.get(Urls.get_scheduled_chores_for_flat, headers=Headers.auth_token, timeout=1)
+        self.assertRegexpMatches(self.get_resp(r), 'Got chores for flat')
+        print(json.dumps(r.json()['chores'], indent=4))
+
     def test_chores(self):
         self.login()
         self.create_chore()
@@ -78,6 +90,9 @@ class FlatApiTests(unittest.TestCase):
         self.update_chore()
         self.get_chores_for_flat()
         self.get_chore_by_id()
+        self.schedule_chore()
+        self.get_scheduled_chores_for_flat()
+
 
 if __name__ == '__main__':
     unittest.main()

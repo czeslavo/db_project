@@ -281,18 +281,30 @@ NOT DEFERRABLE;
 CREATE EXTENSION IF NOT EXISTS pgcrypto
     WITH SCHEMA flat_mate;
 
+-- Widoki
+
+-- Widok liczący częstość dla każdego obowiązku
+CREATE OR REPLACE VIEW frequency_of_chore 
+AS (
+    SELECT c.id AS chore_id, extract(epoch from i.days::integer * interval '1 day' + 
+                                    i.weeks::integer * interval '1 week' +
+                                    i.months::integer * interval '1 month') AS frequency  
+        FROM chore_frequency i
+        JOIN chore c ON c.frequency_id = i.id
+);
 
 -- Funkcje
 
 -- Zwraca id mieszkania dla podanego obowiązku
 CREATE OR REPLACE FUNCTION get_flat_id_for_chore(chore_id integer)
-    RETURNS TABLE (
-        id integer
-    ) 
+    RETURNS INTEGER
 AS
 $$
+DECLARE 
+    _flat_id INTEGER;
 BEGIN
-    RETURN QUERY (SELECT flat_id FROM chore c WHERE c.id = chore_id);
+    SELECT flat_id INTO _flat_id FROM chore c WHERE c.id = chore_id;
+    RETURN _flat_id;
 END;
 $$
 LANGUAGE 'plpgsql' IMMUTABLE;
@@ -343,43 +355,103 @@ $$
 LANGUAGE 'plpgsql';
 
 
+-- Podaj interwał dla danego obowiązku
+CREATE OR REPLACE FUNCTION get_interval(_chore_id integer)
+RETURNS INTEGER
+AS
+$$
+DECLARE 
+    _interval INTEGER;
+BEGIN     
+    SELECT frequency INTO _interval FROM frequency_of_chore WHERE chore_id = _chore_id;
+    RETURN _interval;
+END;
+$$
+LANGUAGE 'plpgsql';
+
+
 -- Planuje dany obowiązek dla całego mieszkania w zadanym przedziale czasu
 CREATE OR REPLACE FUNCTION schedule_chore_from_to(_chore_id integer, _from integer, _to integer)
 RETURNS BOOLEAN
 AS
 $$      
 DECLARE 
-    users VARCHAR(50)[];
-    userr VARCHAR(50);
+    _users VARCHAR(50)[];
+    _user VARCHAR(50);
     _current_date integer = _from;
+    _interval integer = get_interval(_chore_id);
+    _counter integer = 1;
+    _howManyUsers integer;
 BEGIN
     -- Upewnij się, że 'od' jest mniejsze niż 'do'
     IF (_from < get_current_date() AND _from > _to) THEN
 	    RETURN FALSE;
     END IF;
   
-    -- losujemy kolejkę do zadania  
-    users := array(SELECT get_flat_users(get_flat_id_for_chore(_chore_id)) 
+    -- losuj kolejkę do obowiązku 
+    _users := array(SELECT get_flat_users(get_flat_id_for_chore(_chore_id)) 
             ORDER BY RANDOM()
     ); 
     
-    FOREACH userr IN ARRAY users LOOP
-        RAISE NOTICE 'Calling for user: (%)', userr;
+    _howManyUsers := array_length(_users, 1);
+
+    -- Dodawaj cyklicznie obowiązek ze stałym odstępem czasu
+    WHILE (_current_date < _to) LOOP
 
         INSERT INTO chores_plan (date, chore_id, assigned_mail, done) 
-            VALUES(_current_date, _chore_id, userr, FALSE);
+            VALUES(_current_date, _chore_id, _users[_counter], FALSE);
         
-        _current_date := _current_date + 100;
-
+        _current_date := _current_date + _interval;
+        _counter := (_counter % _howManyUsers) + 1;
+        RAISE NOTICE 'counter (%)', _counter;
     END LOOP;
       
-
 	RETURN TRUE;
 END;
 $$
 LANGUAGE 'plpgsql';
 
+-- Reset dla danego obowiązku (usuń wszystkie zaplanowane)
+CREATE OR REPLACE FUNCTION reset_chore_plan(_chore_id integer)
+RETURNS VOID
+AS
+$$      
+BEGIN
+    DELETE FROM chores_plan WHERE chore_id = _chore_id AND done = FALSE;
+END;
+$$
+LANGUAGE 'plpgsql';
 
+-- Oznaczenie obowiązku jako wykonany (toggle)
+CREATE OR REPLACE FUNCTION toggle_chore_done(_chore_id integer, _date integer)
+RETURNS VOID
+AS
+$$      
+BEGIN
+    UPDATE chores_plan 
+        SET done = NOT done
+        WHERE chore_id = _chore_id AND date = _date;
+END;
+$$
+LANGUAGE 'plpgsql';
+
+-- Uzyskanie zaplanowanych obowiązków dla mieszkania
+CREATE OR REPLACE FUNCTION get_scheduled_chores_for_flat(_flat_id integer)
+RETURNS TABLE(
+    chore_id integer,
+    name varchar(50),
+    date integer,
+    assigned_mail varchar(50),
+    done boolean)
+AS
+$$      
+BEGIN
+    RETURN QUERY (SELECT cp.chore_id, (SELECT c.name FROM chore c WHERE c.id = cp.chore_id) as name, 
+       cp.date, cp.assigned_mail, cp.done FROM chores_plan cp
+       WHERE get_flat_id_for_chore(cp.chore_id) = _flat_id);
+END;
+$$
+LANGUAGE 'plpgsql';
 
 
 

@@ -19,7 +19,7 @@
         return service;
 
         function getFlatChores(flatId, successCallback, failureCallback) {
-            $http.get(api + '/getforflat/' + flatId).then(
+            $http.get(api + '/get_for_flat/' + flatId).then(
                 function(successResp) {
                     console.log(successResp);
                     successCallback(successResp.data.chores);
