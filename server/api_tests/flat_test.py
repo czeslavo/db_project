@@ -18,12 +18,14 @@ class Urls:
 
     api_url = 'http://localhost:9080/v1'
 
+    ping = api_url + '/user/ping'
     login = api_url + '/user/login'
     logout = api_url + '/user/logout'
     create_flat = api_url + '/flat/create'
     add_user = api_url + '/flat/adduser'
     get_users = api_url + '/flat/2/getusers'
     get_users_flats = api_url + '/flat/getforuser'
+    is_flat_admin = api_url + '/flat/1/is_admin'
 
 
 class Headers:
@@ -70,13 +72,29 @@ class FlatApiTests(unittest.TestCase):
         r = req.get(Urls.get_users_flats, headers=Headers.auth_token)
         self.assertRegexpMatches(self.get_resp(r), 'Got user\'s flats')
 
+    def is_flat_admin(self):
+        r = req.get(Urls.is_flat_admin, headers=Headers.auth_token)
+        self.assertRegexpMatches(self.get_resp(r), "Is user flat admin response")
+        self.assertEqual(r.json()['isAdmin'], True)
+
+    def ping(self):
+        r = req.get(Urls.ping, headers=Headers.auth_token)
+        self.assertRegexpMatches(self.get_resp(r), "You're logged in")
+
+    def ping_fail(self):
+        r = req.get(Urls.ping, headers=Headers.auth_token)
+        self.assertRegexpMatches(self.get_resp(r), "Not logged in")
+
     def test_shouldCreateFlatAndAddUsers(self):
         self.login()
         self.create_flat()
         self.add_user()
         self.get_users()
         self.get_users_flats()
+        self.is_flat_admin()
+        self.ping()
         self.logout()
+        self.ping_fail()
 
 
 if __name__ == '__main__':

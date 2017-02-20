@@ -38,7 +38,8 @@ public:
     void getUsersFlats(const Net::Rest::Request& req,
                        Net::Http::ResponseWriter resp);
 
-
+    void isAdmin(const Net::Rest::Request& req,
+                       Net::Http::ResponseWriter resp);
 
 private:
     std::shared_ptr<db::DatabaseAccessor> db;

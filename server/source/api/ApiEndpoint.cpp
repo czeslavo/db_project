@@ -90,6 +90,12 @@ void ApiEndpoint::createDescription()
             .produces(MIME(Application, Json))
             .response(Net::Http::Code::Ok, "User with a given e-mail");
 
+        userPath
+            .route(desc.get("/ping"))
+            .bind(&UserHandler::ping, &userHandler)
+            .produces(MIME(Application, Json))
+            .response(Net::Http::Code::Ok, "User with a given e-mail");
+
 
     auto flatPath = versionPath.path("/flat");
 
@@ -134,6 +140,12 @@ void ApiEndpoint::createDescription()
             .bind(&FlatHandler::getUsersFlats, &flatHandler)
             .produces(MIME(Application, Json))
             .response(Net::Http::Code::Ok, "User's flats");
+
+        flatPath
+            .route(desc.get("/:flat_id/is_admin"))
+            .bind(&FlatHandler::isAdmin, &flatHandler)
+            .produces(MIME(Application, Json))
+            .response(Net::Http::Code::Ok, "Is user flat's admin response");
 
     auto notePath = versionPath.path("/note");
 

@@ -23,7 +23,7 @@
         });
 
         $scope.$on('userLoggedOut', function() {
-            $scope.loogedIn = false;
+            $scope.loggedIn = false;
         });
 
 

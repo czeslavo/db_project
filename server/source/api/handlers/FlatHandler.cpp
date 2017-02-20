@@ -127,6 +127,8 @@ void FlatHandler::getUsersFlats(const Net::Rest::Request& req,
     common::prepareCommonResponse(resp);
     LOG_DEBUG << "Handling request in FlatHandler::getUsersFlats";
 
+    auth->authToken(req);
+
     std::string mail, apiToken;
     std::tie(mail, apiToken) = common::getTokenInfoFromRequest(req);
 
@@ -140,6 +142,27 @@ void FlatHandler::getUsersFlats(const Net::Rest::Request& req,
     json respBody{{"response", "Got user's flats"},
                   {"flats", usersJson}};
 
+    resp.send(Net::Http::Code::Ok, respBody.dump());
+}
+
+void FlatHandler::isAdmin(const Net::Rest::Request& req,
+                                Net::Http::ResponseWriter resp)
+{
+    common::prepareCommonResponse(resp);
+    auth->authToken(req);
+
+    bool isFlatAdmin = true;
+    try
+    {
+        auth->forceIsFlatAdmin(req);
+    }
+    catch (const AuthServiceImpl::AuthServiceException& e)
+    {
+        isFlatAdmin = false;
+    }
+
+    json respBody = {{"response", "Is user flat admin response"},
+                     {"isAdmin", isFlatAdmin}};
     resp.send(Net::Http::Code::Ok, respBody.dump());
 }
 

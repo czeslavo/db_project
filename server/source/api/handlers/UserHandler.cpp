@@ -175,5 +175,23 @@ void UserHandler::logout(const Net::Rest::Request& req,
     }
 }
 
+void UserHandler::ping(const Net::Rest::Request& req,
+                       Net::Http::ResponseWriter resp)
+{
+    common::prepareCommonResponse(resp);
+
+    try
+    {
+        auth->authToken(req);
+    }
+    catch (const AuthServiceImpl::AuthServiceException& e)
+    {
+        json respBody = {{"response", "Not logged in"}};
+        resp.send(Net::Http::Code::Unauthorized, respBody.dump());
+    }
+
+    json respBody = {{"response", "You're logged in"}};
+    resp.send(Net::Http::Code::Ok, respBody.dump());
+}
 
 }

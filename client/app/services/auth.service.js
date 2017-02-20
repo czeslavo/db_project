@@ -5,8 +5,8 @@
         .module('flatMate')
         .factory('AuthService', AuthService);
 
-    AuthService.$inject = ['$http', '$cookies', '$rootScope', 'UserService'];
-    function AuthService($http, $cookies, $rootScope, UserService) {
+    AuthService.$inject = ['$http', '$cookies', '$rootScope', 'UserService', '$location'];
+    function AuthService($http, $cookies, $rootScope, UserService, $location) {
         var service = {};
         var api = 'http://localhost:9090/v1/user'
 
@@ -14,6 +14,7 @@
         service.SetCredentials = SetCredentials;
         service.ClearCredentials = ClearCredentials;
         service.Logout = Logout;
+        service.Ping = Ping
 
         return service;
 
@@ -60,6 +61,20 @@
             $rootScope.globals = {};
             $cookies.remove('globals');
             $http.defaults.headers.common['Auth-Token'] = '';
+            $rootScope.$broadcast('userLoggedOut');
+        }
+
+        function Ping() {
+            $http.get(api + '/ping').then(
+                function(success) {
+                    console.log('Ping successfully');
+                },
+                function(failure) {
+                    console.log('Ping not ok, clearing credentials');
+                    ClearCredentials();
+                    $location.path('/login');
+                }
+            );
         }
     }
 })();

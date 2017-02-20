@@ -59,8 +59,8 @@
             .otherwise({ redirectTo: '/login' });
     }
 
-    run.$inject = ['$rootScope', '$location', '$cookies', '$http'];
-    function run($rootScope, $location, $cookies, $http) {
+    run.$inject = ['$rootScope', '$location', '$cookies', '$http', 'AuthService'];
+    function run($rootScope, $location, $cookies, $http, AuthService) {
         $rootScope.globals = $cookies.getObject('globals') || {};
         console.log('in run function');
         if ($rootScope.globals.currentUser) {
@@ -70,10 +70,19 @@
 
         $rootScope.$on('$locationChangeStart', function (event, next, current) {
             var restrictedPage = $.inArray($location.path(), ['/login', '/register']) === -1;
+
+            if (restrictedPage) {
+                AuthService.Ping();
+            }
+
             var loggedIn = $rootScope.globals.currentUser;
             if (restrictedPage && !loggedIn) {
                 $location.path('/login');
             }
+        });
+
+        $rootScope.$on('userLoggedOut', function(event, next, current) {
+            $location.path('/login');
         });
     }
 

@@ -71,6 +71,18 @@
            );
         }
 
+        function getFlatUsers(flatId, successCallback, failureCallback) {
+            return $http.get(api + '/' + flatId + '/getusers').then(
+                function(response) {
+                    successCallback(response);
+                    console.log(response.data);
+                },
+                function(response) {
+                    failureCallback(response);
+                }
+            );
+        }
+
     }
 
 })();
