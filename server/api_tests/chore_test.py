@@ -78,7 +78,7 @@ class FlatApiTests(unittest.TestCase):
         self.assertRegexpMatches(self.get_resp(r), 'Got chore by id')
 
     def schedule_chore(self):
-        r = req.post(Urls.schedule_chore, data=Payload.schedule_chore, headers=Headers.auth_token, timeout = 1)
+        r = req.post(Urls.schedule_chore, data=Payload.schedule_chore, headers=Headers.auth_token, timeout = 5)
         self.assertRegexpMatches(self.get_resp(r), 'Successfully scheduled chore')
 
     def get_scheduled_chores_for_flat(self):

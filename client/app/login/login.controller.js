@@ -25,7 +25,7 @@
 
                 }, function(failureResponse) {
                     vm.dataLoading = false;
-                    AlertsService.add("danger", "Couldn't log in: " + failureResponse.data['response']);
+                    AlertsService.add("danger", "Couldn't log in!");
                 });
 
         }

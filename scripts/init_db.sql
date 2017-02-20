@@ -278,8 +278,7 @@ REFERENCES flat_mate.flat (id)
 ON DELETE CASCADE
 NOT DEFERRABLE;
 
-CREATE EXTENSION IF NOT EXISTS pgcrypto
-    WITH SCHEMA flat_mate;
+CREATE EXTENSION IF NOT EXISTS pgcrypto;
 
 -- Widoki
 
@@ -317,7 +316,7 @@ CREATE OR REPLACE FUNCTION get_flat_users(_flat_id integer)
         ) AS
 $$
 BEGIN
-    RETURN QUERY (SELECT user_mail FROM flate_mate.flat_user fu WHERE fu.flat_id = _flat_id);
+    RETURN QUERY (SELECT user_mail FROM flat_mate.flat_user fu WHERE fu.flat_id = _flat_id);
 END;
 $$
 LANGUAGE 'plpgsql' IMMUTABLE;

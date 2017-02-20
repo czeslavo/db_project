@@ -12,7 +12,7 @@
     <tbody>
       <tr ng-repeat="flat in flats">
         <td>{{ flat.id }}</td>
-        <td class="with-pointer" ng-click="goToFlat(flat.id)">{{ flat.name }}</td>
+        <td class="with-pointer" ng-click="goToFlat(flat.id)"><a href="">{{ flat.name }}</a></td>
         <td>{{ flat.admin_mail }}</td>
         <td><i class="fa fa-times with-pointer" aria-hidden="true" ng-click="removeFlat(flat.id)"></i></td>
       </tr>
