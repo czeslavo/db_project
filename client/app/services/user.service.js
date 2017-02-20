@@ -8,7 +8,7 @@
     UserService.$inject = ['$http'];
     function UserService($http) {
         var service = {};
-        var api = 'http://localhost:9090/v1/user';
+        var api = 'http://burzynski.it:9090/v1/user';
 
         service.getByMail = getByMail;
         service.register = register;

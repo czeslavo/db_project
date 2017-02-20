@@ -8,7 +8,7 @@
     ChoresService.$inject = ['$http'];
     function ChoresService($http) {
         var service = {};
-        var api = 'http://localhost:9090/v1/chore';
+        var api = 'http://burzynski.it:9090/v1/chore';
 
         service.getFlatChores = getFlatChores;
         service.addChore = addChore;

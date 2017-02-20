@@ -8,7 +8,7 @@
     NotesService.$inject = ['$http'];
     function NotesService($http) {
         var service = {};
-        var api = 'http://localhost:9090/v1/note';
+        var api = 'http://burzynski.it:9090/v1/note';
 
         service.getFlatNotes = getFlatNotes;
         service.createNote = createNote;

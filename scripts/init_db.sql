@@ -283,14 +283,14 @@ CREATE EXTENSION IF NOT EXISTS pgcrypto
 
 -- Widoki
 
-9-- Widok liczący częstość dla każdego obowiązku
+-- Widok liczący częstość dla każdego obowiązku
 CREATE OR REPLACE VIEW frequency_of_chore
 AS (
     SELECT c.id AS chore_id, extract(epoch from i.days::integer * interval '1 day' +
                                     i.weeks::integer * interval '1 week' +
                                     i.months::integer * interval '1 month') AS frequency
         FROM flat_mate.chore_frequency i
-        JOIN chore c ON c.frequency_id = i.id
+        JOIN flat_mate.chore c ON c.frequency_id = i.id
 );
 
 -- Funkcje

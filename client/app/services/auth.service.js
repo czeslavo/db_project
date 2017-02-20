@@ -8,7 +8,7 @@
     AuthService.$inject = ['$http', '$cookies', '$rootScope', 'UserService', '$location'];
     function AuthService($http, $cookies, $rootScope, UserService, $location) {
         var service = {};
-        var api = 'http://localhost:9090/v1/user'
+        var api = 'http://burzynski.it:9090/v1/user'
 
         service.Login = Login;
         service.SetCredentials = SetCredentials;

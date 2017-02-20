@@ -8,7 +8,7 @@ constexpr auto createUserQuery{
     "INSERT INTO flat_mate.system_user \
         (mail, nickname, name, surname, password) \
         VALUES($1, $2, $3, $4, \
-        flat_mate.crypt($5, flat_mate.gen_salt('bf', 8)));"}; // hash with random salt
+        crypt($5, gen_salt('bf', 8)));"}; // hash with random salt
 
 constexpr auto deleteUserQuery{
     "DELETE FROM flat_mate.system_user \
@@ -17,7 +17,7 @@ constexpr auto deleteUserQuery{
 constexpr auto updateUserQuery{
     "UPDATE flat_mate.system_user \
         SET nickname = $1, name = $2, surname = $3, \
-            password = flat_mate.crypt($4, flat_mate.gen_salt('bf', 8)) \
+            password = crypt($4, gen_salt('bf', 8)) \
         WHERE mail = $5;"};
 
 constexpr auto getUserByEmailQuery{
@@ -29,7 +29,7 @@ constexpr auto authUserQuery{
     "SELECT mail, nickname, name, surname, password \
         FROM flat_mate.system_user \
         WHERE mail = $1 AND \
-              password = flat_mate.crypt($2, password);"};
+              password = crypt($2, password);"};
 }
 
 namespace db
