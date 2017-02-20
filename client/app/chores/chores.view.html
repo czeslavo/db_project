@@ -1,11 +1,11 @@
 <div class="container">
     <div class="row">
-        <h2>{{flat.name}} - chores</h2>
+        <h2><a href="#!/flat/{{flat.id}}">{{flat.name}}</a> - chores</h2>
     </div>
 
     <div class="row">
         <div class="col-md-6">
-            <h3>Defined chores</h3>
+            <h3>Defined</h3>
             <div class="bottom-buffer">
             <button type="button" class="btn btn-primary btn-xs" ng-click="goToAddChore()">
                 <i class="fa fa-plus-square" aria-hidden="true"></i> Add
@@ -41,11 +41,11 @@
         </div>
 
         <div class="col-md-6">
-            <h3>Scheduled chores</h3>
+            <h3>Scheduled</h3>
             <div class="bottom-buffer">
             </div>
 
-            <table class="table table-hover table-responsive">
+            <table ng-if="scheduledChores.length > 0" class="table table-hover table-responsive">
                 <thead>
                   <tr>
                     <th>ID</th>
@@ -68,6 +68,38 @@
                   </tr>
                 </tbody>
             </table>
+
+            <p ng-if="scheduledChores.length == 0">You have no scheduled chores. You can schedule your chores using
+            'schedule' action.</p>
+
+            <h3>Recently done</h3>
+            <div class="bottom-buffer">
+            </div>
+
+            <table ng-if="recentlyDoneChores.length > 0" class="table table-hover table-responsive">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Chore name</th>
+                    <th>Due date</th>
+                    <th>Responsible</th>
+                    <th>Done</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr ng-repeat="chore in recentlyDoneChores">
+                    <td>{{ chore.id }}</td>
+                    <td>{{ chore.name }}</td>
+                    <td>{{ chore.date * 1000 | date : 'dd.MM.yyyy (EEEE)' }}</td>
+                    <td>{{ chore.assigned_mail }}</td>
+                    <td>
+                        <button type="button" class="btn btn-danger btn-xs" ng-click="toggleChoreDone(chore)">
+                            <i class="fa fa-check" aria-hidden="true"></i> Mark undone
+                    </td>
+                  </tr>
+                </tbody>
+            </table>
+            <p ng-if="recentlyDoneChores.length == 0">You have no recently done chores.</p>
 
         </div>
 

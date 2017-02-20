@@ -23,7 +23,7 @@ public:
     virtual bool schedule(const int choreId, const int from, const int to) = 0;
     virtual void resetScheduled(const int choreId) = 0;
     virtual void toggleDone(const int choreId, const int date) = 0;
-    virtual std::vector<models::ScheduledChore> getScheduledForFlat(const int flatId) = 0;
+    virtual std::vector<models::ScheduledChore> getScheduledForFlat(const int flatId, bool done = false) = 0;
 };
 
 class ChoreAccessorImpl : public ChoreAccessor
@@ -39,7 +39,7 @@ public:
     bool schedule(const int choreId, const int from, const int to) override;
     void resetScheduled(const int choreId) override;
     void toggleDone(const int choreId, const int date) override;
-    std::vector<models::ScheduledChore> getScheduledForFlat(const int flatId) override;
+    std::vector<models::ScheduledChore> getScheduledForFlat(const int flatId, bool done = false) override;
 
 private:
     void prepareStatements();

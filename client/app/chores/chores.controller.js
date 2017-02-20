@@ -17,6 +17,7 @@
         $scope.resetScheduleForChore = resetScheduleForChore;
         $scope.toggleChoreDone = toggleChoreDone;
 
+
         function getFlatInfo() {
             FlatService.getById(flatId,
                 function(flat) {
@@ -47,6 +48,7 @@
                 function(success) {
                     getChores();
                     getScheduledChores();
+                    getRecentlyDoneChores();
                 },
                 function(failure) {
                 }
@@ -97,6 +99,19 @@
             );
         }
 
+        function getRecentlyDoneChores() {
+            ChoresService.getRecentlyDoneChoresForFlat(flatId,
+                function(chores) {
+                    console.log(chores);
+                    $scope.recentlyDoneChores = chores;
+                },
+                function(resp) {
+                    console.log(resp);
+                    $scope.recentlyDoneChores = [];
+                }
+            );
+        }
+
         function resetScheduleForChore(choreId) {
             ChoresService.resetScheduleForChore(flatId, choreId,
                 function(success) {
@@ -111,6 +126,7 @@
             ChoresService.toggleChoreDone(flatId, chore.id, chore.date,
                 function(success) {
                     getScheduledChores();
+                    getRecentlyDoneChores();
                 },
                 function(failure) {
                 }
@@ -121,6 +137,7 @@
             getFlatInfo();
             getChores();
             getScheduledChores();
+            getRecentlyDoneChores();
         })();
     }
 

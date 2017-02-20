@@ -455,5 +455,25 @@ END;
 $$
 LANGUAGE 'plpgsql';
 
+-- Uzyskanie ostatnio wykonanych obowiązków dla mieszkania
+CREATE OR REPLACE FUNCTION get_recently_done_chores_for_flat(_flat_id integer)
+RETURNS TABLE(
+    chore_id integer,
+    name varchar(50),
+    date integer,
+    assigned_mail varchar(50),
+    done boolean)
+AS
+$$      
+BEGIN
+    RETURN QUERY (SELECT cp.chore_id, (SELECT c.name FROM chore c WHERE c.id = cp.chore_id) as name, 
+       cp.date, cp.assigned_mail, cp.done FROM chores_plan cp
+       WHERE get_flat_id_for_chore(cp.chore_id) = _flat_id AND cp.done = TRUE
+       ORDER BY cp.date DESC
+       LIMIT 10);
+END;
+$$
+LANGUAGE 'plpgsql';
+
 
 

@@ -9,13 +9,13 @@
             <div ng-if="isFlatAdmin">
                 <p>You're this flat's administrator.</p>
             </div>
-            <p ng-if="users.length > 1">Flat mates:</p>
+            <h4 ng-if="users.length > 1">Flat mates:</h4>
             <ul ng-if="users.length > 1">
                 <li ng-repeat="user in users">{{ user.mail }}</li>
             </ul>
 
             <div ng-if="isFlatAdmin">
-            <h3>Add new flat mate</h3>
+            <h4>Add new flat mate</h4>
 
             <div class="form-group" ng-class="{ 'has-error': form.name.$dirty && form.name.$error.required }">
                 <form name="flatMateForm" ng-submit="addFlatMate()" role="form">
@@ -59,25 +59,44 @@
             </button>
             </div>
 
-            <table class="table table-hover table-responsive">
+
+            <h4>To do</h4>
+            <table ng-if="choresToDo.length > 0" class="table table-hover table-responsive">
                 <thead>
                   <tr>
-                    <th>ID</th>
                     <th>Chore name</th>
                     <th>Due date</th>
                     <th>Responsible</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td>1</td>
-                    <td class="with-pointer">Robienie duzo</td>
-                    <td>26.12.2017</td>
-                    <td>andzrj@gmail.com</td>
+                  <tr ng-repeat="chore in choresToDo | limitTo: 4">
+                    <td>{{ chore.name }}</td>
+                    <td>{{ chore.date * 1000 | date : 'dd.MM.yyyy (EEEE)' }}</td>
+                    <td>{{ chore.assigned_mail }}</td>
                   </tr>
                 </tbody>
             </table>
+            <p ng-if="choresToDo.length == 0">You have no scheduled chores.</p>
 
+            <h4>Recently done</h4>
+            <table ng-if="recentlyDoneChores.length > 0" class="table table-hover table-responsive">
+                <thead>
+                  <tr>
+                    <th>Chore name</th>
+                    <th>Due date</th>
+                    <th>Responsible</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr ng-repeat="chore in recentlyDoneChores | limitTo: 4">
+                    <td>{{ chore.name }}</td>
+                    <td>{{ chore.date * 1000 | date : 'dd.MM.yyyy (EEEE)' }}</td>
+                    <td>{{ chore.assigned_mail }}</td>
+                  </tr>
+                </tbody>
+            </table>
+            <p ng-if="recentlyDoneChores == 0">You have no recently done chores.</p>
         </div>
 
     </div>

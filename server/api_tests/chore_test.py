@@ -28,6 +28,7 @@ class Urls:
     get_chore_by_id = api_url + '/chore/get/2'
     schedule_chore = api_url + '/chore/schedule/2'
     get_scheduled_chores_for_flat = api_url + '/chore/get_scheduled/1'
+    get_recently_done_chores_for_flat = api_url + '/chore/get_recently_done/1'
     reset_scheduled = api_url + '/chore/reset_scheduled/1/2'
     toggle_done = api_url + '/chore/toggle_done/1/2/1800481458'
 
@@ -93,6 +94,10 @@ class FlatApiTests(unittest.TestCase):
         r = req.put(Urls.toggle_done, headers=Headers.auth_token, timeout=1)
         self.assertRegexpMatches(self.get_resp(r), 'Successfully toggled chore\'s done flag')
 
+    def get_recently_done(self):
+        r = req.get(Urls.get_recently_done_chores_for_flat, headers=Headers.auth_token, timeout=1)
+        self.assertRegexpMatches(self.get_resp(r), 'Got recently done chores for flat')
+
 
     def test_chores(self):
         self.login()
@@ -106,6 +111,8 @@ class FlatApiTests(unittest.TestCase):
         self.reset_scheduled()
         self.schedule_chore()
         self.toggle_done()
+        self.get_recently_done()
+
 
 if __name__ == '__main__':
     unittest.main()

@@ -5,8 +5,10 @@
         .module('flatMate')
         .controller('FlatController', FlatController);
 
-    FlatController.$inject = ['$scope', '$route', '$routeParams', '$location', '$rootScope', 'FlatService', 'NotesService'];
-    function FlatController($scope, $route, $routeParams, $location, $rootScope, FlatService, NotesService) {
+    FlatController.$inject = ['$scope', '$route', '$routeParams', '$location', '$rootScope', 'FlatService',
+        'NotesService', 'ChoresService'];
+    function FlatController($scope, $route, $routeParams, $location, $rootScope, FlatService, NotesService,
+        ChoresService) {
         var flatId = +$routeParams.id;
 
         $scope.addNote = addNote;
@@ -134,11 +136,39 @@
             );
         }
 
+        function getScheduledChores() {
+            ChoresService.getScheduledFlatChores(flatId,
+                function(chores) {
+                    console.log(chores);
+                    $scope.choresToDo = chores;
+                },
+                function(resp) {
+                    console.log(resp);
+                    $scope.choresToDo = [];
+                }
+            );
+        }
+
+        function getRecentlyDoneChores() {
+            ChoresService.getRecentlyDoneChoresForFlat(flatId,
+                function(chores) {
+                    console.log(chores);
+                    $scope.recentlyDoneChores = chores;
+                },
+                function(resp) {
+                    console.log(resp);
+                    $scope.recentlyDoneChores = [];
+                }
+            );
+        }
+
         (function initController() {
             getFlatInfo();
             getNotes();
             checkIfIsFlatAdmin();
             getFlatUsers();
+            getScheduledChores();
+            getRecentlyDoneChores();
         })();
     }
 

@@ -234,6 +234,12 @@ void ApiEndpoint::createDescription()
             .bind(&ChoreHandler::getScheduledForFlat, &choreHandler)
             .produces(MIME(Application, Json))
             .response(Net::Http::Code::Ok, "Got scheduled chores for flat");
+
+        chorePath
+            .route(desc.get("/get_recently_done/:flat_id"))
+            .bind(&ChoreHandler::getRecentlyDoneForFlat, &choreHandler)
+            .produces(MIME(Application, Json))
+            .response(Net::Http::Code::Ok, "Got recently done chores for flat");
 }
 
 

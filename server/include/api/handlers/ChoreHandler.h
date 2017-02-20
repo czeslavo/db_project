@@ -44,6 +44,9 @@ public:
     void getScheduledForFlat(const Net::Rest::Request& req,
              Net::Http::ResponseWriter resp);
 
+    void getRecentlyDoneForFlat(const Net::Rest::Request& req,
+             Net::Http::ResponseWriter resp);
+
 private:
     std::shared_ptr<db::DatabaseAccessor> db;
     std::shared_ptr<api::AuthService> auth;

@@ -211,4 +211,26 @@ void ChoreHandler::getScheduledForFlat(const Net::Rest::Request& req,
     resp.send(Net::Http::Code::Ok, respBody.dump());
 }
 
+void ChoreHandler::getRecentlyDoneForFlat(const Net::Rest::Request& req,
+         Net::Http::ResponseWriter resp)
+{
+    common::prepareCommonResponse(resp);
+    auth->authToken(req);
+    auth->forceIsFlatUser(req);
+
+    const auto flatId = req.param(":flat_id").as<int>();
+
+    auto choreAccess = db->getChoreAccessor();
+    const bool done = true;
+    auto chores = choreAccess->getScheduledForFlat(flatId, done);
+
+    json choresJson = json::array();
+    std::for_each(std::cbegin(chores), std::cend(chores), [&](const models::ScheduledChore c)
+        { choresJson.push_back(c.toJson()); });
+
+    json respBody{{"response", "Got recently done chores for flat"},
+                  {"chores", choresJson}};
+    resp.send(Net::Http::Code::Ok, respBody.dump());
+}
+
 }

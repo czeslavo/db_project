@@ -32,6 +32,9 @@ constexpr auto scheduleChoreQuery{
 constexpr auto getScheduledChoresForFlatQuery{
     "SELECT * FROM get_scheduled_chores_for_flat($1);"};
 
+constexpr auto getRecentlyDoneChoresForFlatQuery{
+    "SELECT * FROM get_recently_done_chores_for_flat($1);"};
+
 constexpr auto resetChoreScheduleQuery{
     "SELECT reset_chore_plan($1);"};
 
@@ -61,6 +64,7 @@ void ChoreAccessorImpl::prepareStatements()
     connection->prepare("scheduleChore", scheduleChoreQuery);
     connection->prepare("resetChoreSchedule", resetChoreScheduleQuery);
     connection->prepare("getScheduledChoresForFlat", getScheduledChoresForFlatQuery);
+    connection->prepare("getRecentlyDoneChoresForFlat", getRecentlyDoneChoresForFlatQuery);
     connection->prepare("toggleDone", toggleDoneQuery);
 }
 
@@ -176,10 +180,10 @@ void ChoreAccessorImpl::toggleDone(const int choreId, const int date)
     helpers::logStatementResult(result);
 }
 
-std::vector<models::ScheduledChore> ChoreAccessorImpl::getScheduledForFlat(const int flatId)
+std::vector<models::ScheduledChore> ChoreAccessorImpl::getScheduledForFlat(const int flatId, bool done)
 {
     pqxx::work w{*connection};
-    const auto result = w.prepared("getScheduledChoresForFlat")
+    const auto result = w.prepared(done ? "getRecentlyDoneChoresForFlat" : "getScheduledChoresForFlat")
                                  (flatId).exec();
 
     w.commit();
