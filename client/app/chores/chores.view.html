@@ -28,6 +28,7 @@
                     <td>{{ chore.frequency_id }}</td>
                     <td>
                         <i class="fa fa-pencil with-pointer" aria-hidden="true" ng-click="goToEditChore(chore.id)"></i>
+                        <i class="fa fa-calendar with-pointer" aria-hidden="true" ng-click="goToSchedule(chore.id)"></i>
                         <i class="fa fa-times with-pointer" aria-hidden="true" ng-click="removeChore(chore)"></i>
                     </td>
                   </tr>
@@ -40,9 +41,6 @@
         <div class="col-md-6">
             <h3>Scheduled chores</h3>
             <div class="bottom-buffer">
-            <button type="button" class="btn btn-primary btn-xs" ng-click="goToChores()">
-                Schedule
-            </button>
             </div>
 
             <table class="table table-hover table-responsive">
@@ -52,14 +50,16 @@
                     <th>Chore name</th>
                     <th>Due date</th>
                     <th>Responsible</th>
+                    <th>Done</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td>1</td>
-                    <td class="with-pointer">Robienie duzo</td>
-                    <td>26.12.2017</td>
-                    <td>andzrj@gmail.com</td>
+                  <tr ng-repeat="chore in scheduledChores">
+                    <td>{{ chore.id }}</td>
+                    <td>{{ chore.name }}</td>
+                    <td>{{ chore.date | date : 'dd.MM.yyyy (EEEE)' }}</td>
+                    <td>{{ chore.assigned_mail }}</td>
+                    <td class="with-pointer"><i ng-if="chore.done" class="fa fa-check" aria-hidden="true"></i></td>
                   </tr>
                 </tbody>
             </table>

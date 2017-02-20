@@ -13,6 +13,7 @@
         $scope.goToAddChore = goToAddChore;
         $scope.addChore = addChore;
         $scope.goToEditChore = goToEditChore;
+        $scope.goToSchedule = goToSchedule;
 
         function getFlatInfo() {
             FlatService.getById(flatId,
@@ -43,6 +44,7 @@
             ChoresService.removeChore(chore, flatId,
                 function(success) {
                     getChores();
+                    getScheduledChores();
                 },
                 function(failure) {
                 }
@@ -72,13 +74,36 @@
 
         function goToEditChore(chore_id) {
             var destinationPath = '/flat/' + flatId + '/chores/edit/' + chore_id;
-            console.log(destinationPath);
             $location.path(destinationPath);
+        }
+
+        function goToSchedule(chore_id) {
+            var destinationPath = '/flat/' + flatId + '/chores/schedule/' + chore_id;
+            $location.path(destinationPath);
+        }
+
+        function getScheduledChores() {
+            ChoresService.getScheduledFlatChores(flatId,
+                function(chores) {
+                    console.log(chores);
+                    for (var i = 0; i < chores.length; i++)
+                    {
+                        chores[i].date *= 1000;
+                    }
+                    $scope.scheduledChores = chores;
+                },
+                function(resp) {
+                    console.log(resp);
+                    $scope.chores = [];
+                }
+            );
+
         }
 
         (function initController() {
             getFlatInfo();
             getChores();
+            getScheduledChores();
         })();
     }
 

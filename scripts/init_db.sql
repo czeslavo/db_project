@@ -268,7 +268,7 @@ NOT DEFERRABLE;
 ALTER TABLE flat_mate.chores_plan ADD CONSTRAINT chore_chores_plan_fk
 FOREIGN KEY (chore_id)
 REFERENCES flat_mate.chore (id)
-ON DELETE NO ACTION
+ON DELETE CASCADE
 ON UPDATE NO ACTION
 NOT DEFERRABLE;
 
@@ -448,7 +448,8 @@ $$
 BEGIN
     RETURN QUERY (SELECT cp.chore_id, (SELECT c.name FROM chore c WHERE c.id = cp.chore_id) as name, 
        cp.date, cp.assigned_mail, cp.done FROM chores_plan cp
-       WHERE get_flat_id_for_chore(cp.chore_id) = _flat_id);
+       WHERE get_flat_id_for_chore(cp.chore_id) = _flat_id
+       ORDER BY cp.date);
 END;
 $$
 LANGUAGE 'plpgsql';

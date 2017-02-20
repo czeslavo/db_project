@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('flatMate', ['ngRoute', 'ngCookies'])
+        .module('flatMate', ['ngRoute', 'ngCookies', 'ui.bootstrap'])
         .config(config)
         .run(run);
 
@@ -37,6 +37,11 @@
             .when('/flat/:id/chores/edit/:chore_id', {
                 controller: 'ChoreEditionController',
                 templateUrl: 'app/chores/edit_chore.view.html'
+            })
+
+            .when('/flat/:id/chores/schedule/:chore_id', {
+                controller: 'ScheduleController',
+                templateUrl: 'app/chores/schedule.view.html'
             })
 
             .when('/login', {

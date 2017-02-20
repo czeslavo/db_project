@@ -1,0 +1,37 @@
+<div class="container">
+    <div class="row">
+        <h2>{{flat.name}}</h2>
+        <h3>Schedule {{ chore.name }}</h3>
+        <h4>It will be scheduled with {{ chore.frequency_id }} frequency</h4>
+    </div>
+
+    <div class="row">
+
+    <form name="form" ng-submit="schedule()" role="form">
+        <label for="from">Date from</label>
+        <p class="input-group">
+            <input type="text" class="form-control" uib-datepicker-popup="{{format}}" ng-model="from"
+                is-open="popupFrom.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close"/>
+            <span class="input-group-btn">
+            <button type="button" class="btn btn-default" ng-click="openFrom()"><i class="glyphicon
+        glyphicon-calendar"></i></button>
+        </span>
+        </p>
+
+        <label for="to">Date to</label>
+        <p class="input-group">
+            <input type="text" class="form-control" uib-datepicker-popup="{{format}}" ng-model="to"
+                is-open="popupTo.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close"/>
+            <span class="input-group-btn">
+            <button type="button" class="btn btn-default" ng-click="openTo()"><i class="glyphicon
+        glyphicon-calendar"></i></button>
+        </span>
+        </p>
+        <div class="form-actions">
+            <button type="submit" ng-disabled="form.$invalid || dataLoading" class="btn btn-primary">Schedule</button>
+            <a href="#!/flat/{{ flat.id }}/chores" class="btn btn-link">Cancel</a>
+        </div>
+    </form>
+    </div>
+
+</div>
