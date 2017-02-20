@@ -97,9 +97,33 @@
             $location.path('/flat/' + flatId + '/chores/');
         }
 
+        function checkIfIsFlatAdmin() {
+            FlatService.isFlatAdmin(flatId,
+                function(success) {
+                    $scope.isFlatAdmin = success.data.isAdmin;
+                },
+                function (failure) {
+                    $scope.isFlatAdmin = false;
+                }
+            );
+        }
+
+        function getFlatUsers() {
+            FlatService.getFlatUsers(flatId,
+                function(success) {
+                    $scope.users = success.data.users;
+                },
+                function(failure) {
+                    $scope.users = [];
+                }
+            );
+        }
+
         (function initController() {
             getFlatInfo();
             getNotes();
+            checkIfIsFlatAdmin();
+            getFlatUsers();
         })();
     }
 

@@ -14,6 +14,8 @@
         service.create = create;
         service.remove = remove;
         service.getById = getById;
+        service.getFlatUsers = getFlatUsers;
+        service.isFlatAdmin = isFlatAdmin;
 
         return service;
 
@@ -81,6 +83,18 @@
                     failureCallback(response);
                 }
             );
+        }
+
+        function isFlatAdmin(flatId, successCallback, failureCallback) {
+            return $http.get(api + '/' + flatId + '/is_admin').then(
+                function(success) {
+                    successCallback(success);
+                },
+                function(failure) {
+                    failureCallback(failure);
+                }
+            );
+
         }
 
     }
