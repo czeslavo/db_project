@@ -59,9 +59,12 @@
                   <tr ng-repeat="chore in scheduledChores">
                     <td>{{ chore.id }}</td>
                     <td>{{ chore.name }}</td>
-                    <td>{{ chore.date | date : 'dd.MM.yyyy (EEEE)' }}</td>
+                    <td>{{ chore.date * 1000 | date : 'dd.MM.yyyy (EEEE)' }}</td>
                     <td>{{ chore.assigned_mail }}</td>
-                    <td class="with-pointer"><i ng-if="chore.done" class="fa fa-check" aria-hidden="true"></i></td>
+                    <td>
+                        <button type="button" class="btn btn-success btn-xs" ng-click="toggleChoreDone(chore)">
+                            <i class="fa fa-check" aria-hidden="true"></i> Mark done
+                    </td>
                   </tr>
                 </tbody>
             </table>

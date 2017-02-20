@@ -17,6 +17,8 @@
         service.getChoreById = getChoreById;
         service.getScheduledFlatChores = getScheduledFlatChores;
         service.scheduleChore = scheduleChore;
+        service.resetScheduleForChore = resetScheduleForChore;
+        service.toggleChoreDone = toggleChoreDone;
 
         return service;
 
@@ -100,6 +102,28 @@
             var body = {from: from, to: to};
 
             $http.post(api + "/schedule/" + choreId, body).then(
+                function(success) {
+                    successCallback(success);
+                },
+                function(failure) {
+                    failureCallback(failure);
+                }
+            );
+        }
+
+        function resetScheduleForChore(flatId, choreId, successCallback, failureCallback) {
+            $http.put(api + "/reset_scheduled/" + flatId + "/" + choreId).then(
+                function(success) {
+                    successCallback(success);
+                },
+                function(failure) {
+                    failureCallback(failure);
+                }
+            );
+        }
+
+        function toggleChoreDone(flatId, choreId, date, successCallback, failureCallback) {
+            $http.put(api + "/toggle_done/" + flatId + "/" + choreId + "/" + date).then(
                 function(success) {
                     successCallback(success);
                 },
