@@ -162,7 +162,32 @@ void ChoreHandler::toggleDone(const Net::Rest::Request& req,
 {
     common::prepareCommonResponse(resp);
     auth->authToken(req);
+    auth->forceIsFlatUser(req);
 
+    const auto choreId = req.param(":chore_id").as<int>();
+    const auto date = req.param(":date").as<int>();
+
+    auto choreAccess = db->getChoreAccessor();
+    choreAccess->toggleDone(choreId, date);
+
+    json respBody{{"response", "Successfully toggled chore's done flag"}};
+    resp.send(Net::Http::Code::Ok, respBody.dump());
+}
+
+void ChoreHandler::resetScheduled(const Net::Rest::Request& req,
+         Net::Http::ResponseWriter resp)
+{
+    common::prepareCommonResponse(resp);
+    auth->authToken(req);
+    auth->forceIsFlatUser(req);
+
+    const auto choreId = req.param(":chore_id").as<int>();
+
+    auto choreAccess = db->getChoreAccessor();
+    choreAccess->resetScheduled(choreId);
+
+    json respBody{{"response", "Successfully reset chore schedule"}};
+    resp.send(Net::Http::Code::Ok, respBody.dump());
 }
 
 void ChoreHandler::getScheduledForFlat(const Net::Rest::Request& req,

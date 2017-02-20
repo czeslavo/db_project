@@ -32,6 +32,12 @@ constexpr auto scheduleChoreQuery{
 constexpr auto getScheduledChoresForFlatQuery{
     "SELECT * FROM get_scheduled_chores_for_flat($1);"};
 
+constexpr auto resetChoreScheduleQuery{
+    "SELECT reset_chore_plan($1);"};
+
+constexpr auto toggleDoneQuery{
+    "SELECT toggle_chore_done($1, $2);"};
+
 }
 
 namespace db
@@ -53,8 +59,9 @@ void ChoreAccessorImpl::prepareStatements()
     connection->prepare("getChoreById", getChoreByIdQuery);
 
     connection->prepare("scheduleChore", scheduleChoreQuery);
+    connection->prepare("resetChoreSchedule", resetChoreScheduleQuery);
     connection->prepare("getScheduledChoresForFlat", getScheduledChoresForFlatQuery);
-
+    connection->prepare("toggleDone", toggleDoneQuery);
 }
 
 void ChoreAccessorImpl::create(const models::Chore& chore)
@@ -146,6 +153,27 @@ bool ChoreAccessorImpl::schedule(const int choreId, const int from, const int to
     helpers::logStatementResult(result);
 
     return result.at(0)["result"].as<bool>();
+}
+
+void ChoreAccessorImpl::resetScheduled(const int choreId)
+{
+    pqxx::work w{*connection};
+    const auto result = w.prepared("resetChoreSchedule")
+                                  (choreId).exec();
+
+    w.commit();
+    helpers::logStatementResult(result);
+}
+
+void ChoreAccessorImpl::toggleDone(const int choreId, const int date)
+{
+    pqxx::work w{*connection};
+    const auto result = w.prepared("toggleDone")
+                                  (choreId)
+                                  (date).exec();
+
+    w.commit();
+    helpers::logStatementResult(result);
 }
 
 std::vector<models::ScheduledChore> ChoreAccessorImpl::getScheduledForFlat(const int flatId)

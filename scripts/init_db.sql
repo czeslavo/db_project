@@ -448,8 +448,9 @@ $$
 BEGIN
     RETURN QUERY (SELECT cp.chore_id, (SELECT c.name FROM chore c WHERE c.id = cp.chore_id) as name, 
        cp.date, cp.assigned_mail, cp.done FROM chores_plan cp
-       WHERE get_flat_id_for_chore(cp.chore_id) = _flat_id
-       ORDER BY cp.date);
+       WHERE get_flat_id_for_chore(cp.chore_id) = _flat_id AND cp.done = FALSE
+       ORDER BY cp.date
+       LIMIT 10);
 END;
 $$
 LANGUAGE 'plpgsql';

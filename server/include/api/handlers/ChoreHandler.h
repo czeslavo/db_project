@@ -38,6 +38,9 @@ public:
     void toggleDone(const Net::Rest::Request& req,
              Net::Http::ResponseWriter resp);
 
+    void resetScheduled(const Net::Rest::Request& req,
+             Net::Http::ResponseWriter resp);
+
     void getScheduledForFlat(const Net::Rest::Request& req,
              Net::Http::ResponseWriter resp);
 

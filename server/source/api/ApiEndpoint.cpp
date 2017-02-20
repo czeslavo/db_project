@@ -218,10 +218,16 @@ void ApiEndpoint::createDescription()
             .response(Net::Http::Code::Ok, "Successfully scheduled chore");
 
         chorePath
-            .route(desc.put("/toggle_done/:chore_id"))
+            .route(desc.put("/toggle_done/:flat_id/:chore_id/:date"))
             .bind(&ChoreHandler::toggleDone, &choreHandler)
             .produces(MIME(Application, Json))
             .response(Net::Http::Code::Ok, "Successfully toggled chore's done flag");
+
+        chorePath
+            .route(desc.put("/reset_scheduled/:flat_id/:chore_id"))
+            .bind(&ChoreHandler::resetScheduled, &choreHandler)
+            .produces(MIME(Application, Json))
+            .response(Net::Http::Code::Ok, "Successfully reset chore schedule");
 
         chorePath
             .route(desc.get("/get_scheduled/:flat_id"))

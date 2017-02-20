@@ -21,6 +21,8 @@ public:
     virtual std::vector<models::Chore> getForFlat(const int flatId) = 0;
     virtual models::Chore get(const int choreId) = 0;
     virtual bool schedule(const int choreId, const int from, const int to) = 0;
+    virtual void resetScheduled(const int choreId) = 0;
+    virtual void toggleDone(const int choreId, const int date) = 0;
     virtual std::vector<models::ScheduledChore> getScheduledForFlat(const int flatId) = 0;
 };
 
@@ -35,6 +37,8 @@ public:
     std::vector<models::Chore> getForFlat(const int flatId) override;
     models::Chore get(const int choreId) override;
     bool schedule(const int choreId, const int from, const int to) override;
+    void resetScheduled(const int choreId) override;
+    void toggleDone(const int choreId, const int date) override;
     std::vector<models::ScheduledChore> getScheduledForFlat(const int flatId) override;
 
 private:
