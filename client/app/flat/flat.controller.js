@@ -133,6 +133,7 @@
                     AlertsService.add("success", "Successfully added flat mate: " + $scope.newFlatMate.mail);
                 },
                 function(failure) {
+                    AlertsService.add("danger", "Failed to add flat mate: " + $scope.newFlatMate.mail + ". New flat mate has to already registered.");
                 }
             );
         }

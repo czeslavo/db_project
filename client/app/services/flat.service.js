@@ -8,7 +8,7 @@
     FlatService.$inject = ['$http'];
     function FlatService($http) {
         var service = {};
-        var api = 'http://burzynski.it:9090/v1/flat';
+        var api = 'http://burzynski.it/flat_mate_api/v1/flat';
 
         service.getUsersFlats = getUsersFlats;
         service.create = create;
