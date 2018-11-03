@@ -17,26 +17,26 @@ public:
     FlatHandler(std::shared_ptr<db::DatabaseAccessor> db,
                 std::shared_ptr<api::AuthService> auth);
 
-    void create(const Net::Rest::Request& req,
-                Net::Http::ResponseWriter resp);
+    void create(const Pistache::Rest::Request& req,
+                Pistache::Http::ResponseWriter resp);
 
-    void update(const Net::Rest::Request& req,
-                Net::Http::ResponseWriter resp);
+    void update(const Pistache::Rest::Request& req,
+                Pistache::Http::ResponseWriter resp);
 
-    void remove(const Net::Rest::Request& req,
-                Net::Http::ResponseWriter resp);
+    void remove(const Pistache::Rest::Request& req,
+                Pistache::Http::ResponseWriter resp);
 
-    void addUser(const Net::Rest::Request& req,
-                 Net::Http::ResponseWriter resp);
+    void addUser(const Pistache::Rest::Request& req,
+                 Pistache::Http::ResponseWriter resp);
 
-    void removeUser(const Net::Rest::Request& req,
-                    Net::Http::ResponseWriter resp);
+    void removeUser(const Pistache::Rest::Request& req,
+                    Pistache::Http::ResponseWriter resp);
 
-    void getUsers(const Net::Rest::Request& req,
-                  Net::Http::ResponseWriter resp);
+    void getUsers(const Pistache::Rest::Request& req,
+                  Pistache::Http::ResponseWriter resp);
 
-    void getUsersFlats(const Net::Rest::Request& req,
-                       Net::Http::ResponseWriter resp);
+    void getUsersFlats(const Pistache::Rest::Request& req,
+                       Pistache::Http::ResponseWriter resp);
 
 
 

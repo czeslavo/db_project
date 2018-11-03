@@ -3,7 +3,7 @@
 #include "pistache/net.h"
 #include "pistache/http_headers.h"
 
-class AuthToken : public Net::Http::Header::Header
+class AuthToken : public Pistache::Http::Header::Header
 {
 public:
     NAME("Auth-Token");

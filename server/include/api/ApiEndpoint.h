@@ -22,7 +22,7 @@ namespace api
 class ApiEndpoint
 {
 public:
-    ApiEndpoint(Net::Address addres);
+    ApiEndpoint(Pistache::Address addres);
 
     void init(std::size_t threads = 2);
     void start();
@@ -32,7 +32,7 @@ private:
     void createDescription();
     void registerHttpHeaders();
 
-    std::shared_ptr<Net::Http::Endpoint> httpEndpoint;
+    std::shared_ptr<Pistache::Http::Endpoint> httpEndpoint;
     std::shared_ptr<db::DatabaseAccessor> db{
         std::make_shared<db::DatabaseAccessorImpl>(config::db_opts)};
     std::shared_ptr<api::AuthService> auth{
@@ -42,8 +42,8 @@ private:
     FlatHandler flatHandler{db, auth};
     NoteHandler noteHandler{db, auth};
 
-    Net::Rest::Description desc;
-    Net::Rest::Router router;
+    Pistache::Rest::Description desc;
+    Pistache::Rest::Router router;
 };
 
 }

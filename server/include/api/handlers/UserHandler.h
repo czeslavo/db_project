@@ -17,23 +17,23 @@ public:
     UserHandler(std::shared_ptr<db::DatabaseAccessor> db,
                 std::shared_ptr<api::AuthService> auth);
 
-    void getByEmail(const Net::Rest::Request& req,
-                    Net::Http::ResponseWriter resp);
+    void getByEmail(const Pistache::Rest::Request& req,
+                    Pistache::Http::ResponseWriter resp);
 
-    void signup(const Net::Rest::Request& req,
-                    Net::Http::ResponseWriter resp);
+    void signup(const Pistache::Rest::Request& req,
+                    Pistache::Http::ResponseWriter resp);
 
-    void deleteByEmail(const Net::Rest::Request& req,
-                    Net::Http::ResponseWriter resp);
+    void deleteByEmail(const Pistache::Rest::Request& req,
+                    Pistache::Http::ResponseWriter resp);
 
-    void update(const Net::Rest::Request& req,
-                    Net::Http::ResponseWriter resp);
+    void update(const Pistache::Rest::Request& req,
+                    Pistache::Http::ResponseWriter resp);
 
-    void login(const Net::Rest::Request& req,
-                    Net::Http::ResponseWriter resp);
+    void login(const Pistache::Rest::Request& req,
+                    Pistache::Http::ResponseWriter resp);
 
-    void logout(const Net::Rest::Request& req,
-                    Net::Http::ResponseWriter resp);
+    void logout(const Pistache::Rest::Request& req,
+                    Pistache::Http::ResponseWriter resp);
 
 private:
     std::shared_ptr<db::DatabaseAccessor> db;

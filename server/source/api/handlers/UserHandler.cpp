@@ -14,8 +14,8 @@ UserHandler::UserHandler(std::shared_ptr<db::DatabaseAccessor> db,
 {
 }
 
-void UserHandler::getByEmail(const Net::Rest::Request& req,
-                    Net::Http::ResponseWriter resp)
+void UserHandler::getByEmail(const Pistache::Rest::Request& req,
+                    Pistache::Http::ResponseWriter resp)
 {
     LOG_DEBUG << "Handling request in UserHandler::getByEmail";
     common::prepareCommonResponse(resp);
@@ -27,16 +27,16 @@ void UserHandler::getByEmail(const Net::Rest::Request& req,
     try
     {
         const auto user = userAccess->getByEmail(mail).toJson();
-        resp.send(Net::Http::Code::Ok, user.dump());
+        resp.send(Pistache::Http::Code::Ok, user.dump());
     }
     catch (const std::exception& e)
     {
-        resp.send(Net::Http::Code::Not_Found);
+        resp.send(Pistache::Http::Code::Not_Found);
     }
 }
 
-void UserHandler::signup(const Net::Rest::Request& req,
-                    Net::Http::ResponseWriter resp)
+void UserHandler::signup(const Pistache::Rest::Request& req,
+                    Pistache::Http::ResponseWriter resp)
 {
     LOG_DEBUG << "Handling request in UserHandler::create";
     common::prepareCommonResponse(resp);
@@ -60,16 +60,16 @@ void UserHandler::signup(const Net::Rest::Request& req,
 
         json respBody = {{"response", "User " + user.mail +
             " created successfully"}};
-        resp.send(Net::Http::Code::Created, respBody.dump());
+        resp.send(Pistache::Http::Code::Created, respBody.dump());
     }
     catch (const std::exception& e)
     {
-        resp.send(Net::Http::Code::Not_Modified, "Couldn't create user");
+        resp.send(Pistache::Http::Code::Not_Modified, "Couldn't create user");
     }
 }
 
-void UserHandler::deleteByEmail(const Net::Rest::Request& req,
-                                Net::Http::ResponseWriter resp)
+void UserHandler::deleteByEmail(const Pistache::Rest::Request& req,
+                                Pistache::Http::ResponseWriter resp)
 {
     LOG_DEBUG << "Handling request in UserHandler::deleteByEmail";
     common::prepareCommonResponse(resp);
@@ -83,16 +83,16 @@ void UserHandler::deleteByEmail(const Net::Rest::Request& req,
         userAccess->drop(reqBody["mail"]);
 
         json respBody = {{"response", "User deleted successfully"}};
-        resp.send(Net::Http::Code::Ok, respBody.dump());
+        resp.send(Pistache::Http::Code::Ok, respBody.dump());
     }
     catch (const std::exception& e)
     {
-        resp.send(Net::Http::Code::Not_Found, "User with given email not found");
+        resp.send(Pistache::Http::Code::Not_Found, "User with given email not found");
     }
 }
 
-void UserHandler::update(const Net::Rest::Request& req,
-                         Net::Http::ResponseWriter resp)
+void UserHandler::update(const Pistache::Rest::Request& req,
+                         Pistache::Http::ResponseWriter resp)
 {
     LOG_DEBUG << "Handling request in UserHandler::update";
     common::prepareCommonResponse(resp);
@@ -116,16 +116,16 @@ void UserHandler::update(const Net::Rest::Request& req,
         userAccess->update(user);
 
         json respBody = {{"response", "User successfully updated"}};
-        resp.send(Net::Http::Code::Ok, respBody.dump());
+        resp.send(Pistache::Http::Code::Ok, respBody.dump());
     }
     catch (const std::exception& e)
     {
-        resp.send(Net::Http::Code::Not_Found, "Failed to update user");
+        resp.send(Pistache::Http::Code::Not_Found, "Failed to update user");
     }
 }
 
-void UserHandler::login(const Net::Rest::Request& req,
-                        Net::Http::ResponseWriter resp)
+void UserHandler::login(const Pistache::Rest::Request& req,
+                        Pistache::Http::ResponseWriter resp)
 {
     LOG_DEBUG << "Handling request in UserHandler::login";
     common::prepareCommonResponse(resp);
@@ -137,18 +137,18 @@ void UserHandler::login(const Net::Rest::Request& req,
         json respBody = {{"response", "Successfully logged in"},
                          {"apiToken", apiToken}};
 
-        resp.send(Net::Http::Code::Ok, respBody.dump());
+        resp.send(Pistache::Http::Code::Ok, respBody.dump());
     }
     catch (const api::AuthServiceImpl::AuthServiceException& e)
     {
         json respBody = {{"response",
                           "Couldn't log in. Invalid credentials provided."}};
-        resp.send(Net::Http::Code::Unauthorized, respBody.dump());
+        resp.send(Pistache::Http::Code::Unauthorized, respBody.dump());
     }
 }
 
-void UserHandler::logout(const Net::Rest::Request& req,
-                         Net::Http::ResponseWriter resp)
+void UserHandler::logout(const Pistache::Rest::Request& req,
+                         Pistache::Http::ResponseWriter resp)
 {
     LOG_DEBUG << "Handling request in UserHandler::logout";
     common::prepareCommonResponse(resp);
@@ -165,13 +165,13 @@ void UserHandler::logout(const Net::Rest::Request& req,
         LOG_DEBUG << "Logged out";
 
         json respBody = {{"response", "Successfully logged out"}};
-        resp.send(Net::Http::Code::Ok, respBody.dump());
+        resp.send(Pistache::Http::Code::Ok, respBody.dump());
     }
     catch (const api::AuthServiceImpl::AuthServiceException& e)
     {
         json respBody = {{"response",
                           "You are not logged in"}};
-        resp.send(Net::Http::Code::Unauthorized, respBody.dump());
+        resp.send(Pistache::Http::Code::Unauthorized, respBody.dump());
     }
 }
 

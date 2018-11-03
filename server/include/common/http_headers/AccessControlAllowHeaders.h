@@ -3,7 +3,7 @@
 #include "pistache/net.h"
 #include "pistache/http_headers.h"
 
-class AccessControlAllowHeaders : public Net::Http::Header::Header
+class AccessControlAllowHeaders : public Pistache::Http::Header::Header
 {
 public:
     NAME("Access-Control-Allow-Headers");

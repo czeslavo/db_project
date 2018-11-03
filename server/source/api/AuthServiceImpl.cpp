@@ -29,7 +29,7 @@ std::string AuthServiceImpl::login(const std::string& mail, const std::string& p
     return loggedIn[mail];
 }
 
-std::string AuthServiceImpl::login(const Net::Rest::Request& req)
+std::string AuthServiceImpl::login(const Pistache::Rest::Request& req)
 {
     std::string mail, password;
     std::tie(mail, password) = common::getLoginInfoFromRequest(req);
@@ -50,7 +50,7 @@ void AuthServiceImpl::logout(const std::string& mail)
     LOG_INFO << "User [" << mail << "] logged in";
 }
 
-void AuthServiceImpl::logout(const Net::Rest::Request& req)
+void AuthServiceImpl::logout(const Pistache::Rest::Request& req)
 {
     authToken(req);
 
@@ -59,7 +59,7 @@ void AuthServiceImpl::logout(const Net::Rest::Request& req)
     logout(mail);
 }
 
-void AuthServiceImpl::authToken(const Net::Rest::Request& req)
+void AuthServiceImpl::authToken(const Pistache::Rest::Request& req)
 {
     std::string mail, token;
     std::tie(mail, token) = common::getTokenInfoFromRequest(req);
@@ -95,14 +95,14 @@ void AuthServiceImpl::forceUserLoggedIn(const std::string& username) const
             "The user is not logged in: " + username);
 }
 
-void AuthServiceImpl::authPassword(const Net::Rest::Request& req)
+void AuthServiceImpl::authPassword(const Pistache::Rest::Request& req)
 {
     std::string mail, password;
     std::tie(mail, password) = common::getLoginInfoFromRequest(req);
     authPassword(mail, password);
 }
 
-void AuthServiceImpl::forceIsFlatAdmin(const Net::Rest::Request& req)
+void AuthServiceImpl::forceIsFlatAdmin(const Pistache::Rest::Request& req)
 {
     using json = nlohmann::json;
 
@@ -119,7 +119,7 @@ void AuthServiceImpl::forceIsFlatAdmin(const Net::Rest::Request& req)
         throw AuthServiceException("You are not this flat's owner");
 }
 
-int AuthServiceImpl::getFlatIdFromRequest(const Net::Rest::Request& req) const
+int AuthServiceImpl::getFlatIdFromRequest(const Pistache::Rest::Request& req) const
 {
     LOG_DEBUG << "In getFlatIdFromRequest";
     using json = nlohmann::json;
@@ -141,7 +141,7 @@ int AuthServiceImpl::getFlatIdFromRequest(const Net::Rest::Request& req) const
     return flatId;
 }
 
-void AuthServiceImpl::forceIsFlatUser(const Net::Rest::Request& req)
+void AuthServiceImpl::forceIsFlatUser(const Pistache::Rest::Request& req)
 {
     using json = nlohmann::json;
 

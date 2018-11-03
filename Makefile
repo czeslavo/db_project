@@ -7,7 +7,7 @@ server/build:
 	mkdir server/build
 
 compile: server/build
-	cd server/build && cmake .. && make install
+	cd server/build && cmake .. && make -j $(nproc) install
 
 ut: compile
 	cd server/build && env GTEST_COLOR=1 ctest -V

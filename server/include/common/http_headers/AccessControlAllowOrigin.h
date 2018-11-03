@@ -3,7 +3,7 @@
 #include "pistache/net.h"
 #include "pistache/http_headers.h"
 
-class AccessControlAllowOrigin : public Net::Http::Header::Header
+class AccessControlAllowOrigin : public Pistache::Http::Header::Header
 {
 public:
     NAME("Access-Control-Allow-Origin");

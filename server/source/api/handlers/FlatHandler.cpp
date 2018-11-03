@@ -14,8 +14,8 @@ FlatHandler::FlatHandler(std::shared_ptr<db::DatabaseAccessor> db,
 {
 }
 
-void FlatHandler::create(const Net::Rest::Request& req,
-            Net::Http::ResponseWriter resp)
+void FlatHandler::create(const Pistache::Rest::Request& req,
+            Pistache::Http::ResponseWriter resp)
 {
     common::prepareCommonResponse(resp);
     auth->authToken(req);
@@ -34,11 +34,11 @@ void FlatHandler::create(const Net::Rest::Request& req,
     flatAccess->create(flat);
 
     json respBody{{"response", "Successfully created flat"}};
-    resp.send(Net::Http::Code::Created, respBody.dump());
+    resp.send(Pistache::Http::Code::Created, respBody.dump());
 }
 
-void FlatHandler::update(const Net::Rest::Request& req,
-            Net::Http::ResponseWriter resp)
+void FlatHandler::update(const Pistache::Rest::Request& req,
+            Pistache::Http::ResponseWriter resp)
 {
     common::prepareCommonResponse(resp);
     auth->forceIsFlatAdmin(req);
@@ -54,11 +54,11 @@ void FlatHandler::update(const Net::Rest::Request& req,
     flatAccess->update(updateFlat);
 
     json respBody{{"response", "Successfully updated flat"}};
-    resp.send(Net::Http::Code::Ok, respBody.dump());
+    resp.send(Pistache::Http::Code::Ok, respBody.dump());
 }
 
-void FlatHandler::remove(const Net::Rest::Request& req,
-            Net::Http::ResponseWriter resp)
+void FlatHandler::remove(const Pistache::Rest::Request& req,
+            Pistache::Http::ResponseWriter resp)
 {
     common::prepareCommonResponse(resp);
     auth->forceIsFlatAdmin(req);
@@ -69,11 +69,11 @@ void FlatHandler::remove(const Net::Rest::Request& req,
     flatAccess->drop(flatId);
 
     json respBody{{"response", "Successfully removed flat"}};
-    resp.send(Net::Http::Code::Ok, respBody.dump());
+    resp.send(Pistache::Http::Code::Ok, respBody.dump());
 }
 
-void FlatHandler::addUser(const Net::Rest::Request& req,
-             Net::Http::ResponseWriter resp)
+void FlatHandler::addUser(const Pistache::Rest::Request& req,
+             Pistache::Http::ResponseWriter resp)
 {
     common::prepareCommonResponse(resp);
     auth->forceIsFlatAdmin(req);
@@ -89,17 +89,17 @@ void FlatHandler::addUser(const Net::Rest::Request& req,
     flatAccess->addUser(flatId, userMail);
 
     json respBody{{"response", "Successfully added user " + userMail}};
-    resp.send(Net::Http::Code::Ok, respBody.dump());
+    resp.send(Pistache::Http::Code::Ok, respBody.dump());
 }
 
-void FlatHandler::removeUser(const Net::Rest::Request& req,
-                Net::Http::ResponseWriter resp)
+void FlatHandler::removeUser(const Pistache::Rest::Request& req,
+                Pistache::Http::ResponseWriter resp)
 {
 
 }
 
-void FlatHandler::getUsers(const Net::Rest::Request& req,
-              Net::Http::ResponseWriter resp)
+void FlatHandler::getUsers(const Pistache::Rest::Request& req,
+              Pistache::Http::ResponseWriter resp)
 {
     common::prepareCommonResponse(resp);
     LOG_DEBUG << "Handling request in FlatHandler::getUsers";
@@ -118,11 +118,11 @@ void FlatHandler::getUsers(const Net::Rest::Request& req,
     json respBody{{"response", "Got users of flat"},
                   {"users", usersJson}};
 
-    resp.send(Net::Http::Code::Ok, respBody.dump());
+    resp.send(Pistache::Http::Code::Ok, respBody.dump());
 }
 
-void FlatHandler::getUsersFlats(const Net::Rest::Request& req,
-                                Net::Http::ResponseWriter resp)
+void FlatHandler::getUsersFlats(const Pistache::Rest::Request& req,
+                                Pistache::Http::ResponseWriter resp)
 {
     common::prepareCommonResponse(resp);
     LOG_DEBUG << "Handling request in FlatHandler::getUsersFlats";
@@ -140,7 +140,7 @@ void FlatHandler::getUsersFlats(const Net::Rest::Request& req,
     json respBody{{"response", "Got user's flats"},
                   {"flats", usersJson}};
 
-    resp.send(Net::Http::Code::Ok, respBody.dump());
+    resp.send(Pistache::Http::Code::Ok, respBody.dump());
 }
 
 }

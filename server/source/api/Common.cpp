@@ -5,7 +5,7 @@
 namespace common
 {
 
-std::pair<std::string, std::string> getLoginInfoFromRequest(const Net::Rest::Request& req)
+std::pair<std::string, std::string> getLoginInfoFromRequest(const Pistache::Rest::Request& req)
 {
     using json = nlohmann::json;
 
@@ -14,7 +14,7 @@ std::pair<std::string, std::string> getLoginInfoFromRequest(const Net::Rest::Req
              reqBody["password"].get<std::string>() };
 }
 
-std::pair<std::string, std::string> getTokenInfoFromRequest(const Net::Rest::Request& req){
+std::pair<std::string, std::string> getTokenInfoFromRequest(const Pistache::Rest::Request& req){
     using json = nlohmann::json;
 
     auto authToken = req.headers().get<AuthToken>();
@@ -24,7 +24,7 @@ std::pair<std::string, std::string> getTokenInfoFromRequest(const Net::Rest::Req
              authToken->getToken() };
 }
 
-void prepareCommonResponse(Net::Http::ResponseWriter& resp)
+void prepareCommonResponse(Pistache::Http::ResponseWriter& resp)
 {
     resp.setMime(MIME(Application, Json));
 }

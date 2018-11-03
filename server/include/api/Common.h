@@ -7,10 +7,10 @@
 namespace common
 {
 
-std::pair<std::string, std::string> getLoginInfoFromRequest(const Net::Rest::Request& req);
+std::pair<std::string, std::string> getLoginInfoFromRequest(const Pistache::Rest::Request& req);
 
-std::pair<std::string, std::string> getTokenInfoFromRequest(const Net::Rest::Request& req);
+std::pair<std::string, std::string> getTokenInfoFromRequest(const Pistache::Rest::Request& req);
 
-void prepareCommonResponse(Net::Http::ResponseWriter& resp);
+void prepareCommonResponse(Pistache::Http::ResponseWriter& resp);
 
 }

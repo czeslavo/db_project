@@ -17,20 +17,20 @@ public:
     NoteHandler(std::shared_ptr<db::DatabaseAccessor> db,
                 std::shared_ptr<api::AuthService> auth);
 
-    void add(const Net::Rest::Request& req,
-                   Net::Http::ResponseWriter resp);
+    void add(const Pistache::Rest::Request& req,
+                   Pistache::Http::ResponseWriter resp);
 
-    void remove(const Net::Rest::Request& req,
-                Net::Http::ResponseWriter resp);
+    void remove(const Pistache::Rest::Request& req,
+                Pistache::Http::ResponseWriter resp);
 
-    void update(const Net::Rest::Request& req,
-                Net::Http::ResponseWriter resp);
+    void update(const Pistache::Rest::Request& req,
+                Pistache::Http::ResponseWriter resp);
 
-    void getForFlat(const Net::Rest::Request& req,
-                    Net::Http::ResponseWriter resp);
+    void getForFlat(const Pistache::Rest::Request& req,
+                    Pistache::Http::ResponseWriter resp);
 
-    void get(const Net::Rest::Request& req,
-             Net::Http::ResponseWriter resp);
+    void get(const Pistache::Rest::Request& req,
+             Pistache::Http::ResponseWriter resp);
 
 private:
     std::shared_ptr<db::DatabaseAccessor> db;

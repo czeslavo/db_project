@@ -15,8 +15,8 @@ NoteHandler::NoteHandler(std::shared_ptr<db::DatabaseAccessor> db,
 {
 }
 
-void NoteHandler::add(const Net::Rest::Request& req,
-                      Net::Http::ResponseWriter resp)
+void NoteHandler::add(const Pistache::Rest::Request& req,
+                      Pistache::Http::ResponseWriter resp)
 {
     common::prepareCommonResponse(resp);
     auth->authToken(req);
@@ -46,11 +46,11 @@ void NoteHandler::add(const Net::Rest::Request& req,
         throw;
     }
     json respBody{{"response", "Successfully created note"}};
-    resp.send(Net::Http::Code::Created, respBody.dump());
+    resp.send(Pistache::Http::Code::Created, respBody.dump());
 }
 
-void NoteHandler::remove(const Net::Rest::Request& req,
-                         Net::Http::ResponseWriter resp)
+void NoteHandler::remove(const Pistache::Rest::Request& req,
+                         Pistache::Http::ResponseWriter resp)
 {
     common::prepareCommonResponse(resp);
     auth->authToken(req);
@@ -63,11 +63,11 @@ void NoteHandler::remove(const Net::Rest::Request& req,
     noteAccess->drop(noteId);
 
     json respBody{{"response", "Successfully removed note"}};
-    resp.send(Net::Http::Code::Ok, respBody.dump());
+    resp.send(Pistache::Http::Code::Ok, respBody.dump());
 }
 
-void NoteHandler::update(const Net::Rest::Request& req,
-                         Net::Http::ResponseWriter resp)
+void NoteHandler::update(const Pistache::Rest::Request& req,
+                         Pistache::Http::ResponseWriter resp)
 {
     common::prepareCommonResponse(resp);
     auth->authToken(req);
@@ -89,11 +89,11 @@ void NoteHandler::update(const Net::Rest::Request& req,
     noteAccess->update(note);
 
     json respBody{{"response", "Successfully updated note"}};
-    resp.send(Net::Http::Code::Ok, respBody.dump());
+    resp.send(Pistache::Http::Code::Ok, respBody.dump());
 }
 
-void NoteHandler::getForFlat(const Net::Rest::Request& req,
-                             Net::Http::ResponseWriter resp)
+void NoteHandler::getForFlat(const Pistache::Rest::Request& req,
+                             Pistache::Http::ResponseWriter resp)
 {
     common::prepareCommonResponse(resp);
     auth->authToken(req);
@@ -110,11 +110,11 @@ void NoteHandler::getForFlat(const Net::Rest::Request& req,
 
     json respBody{{"response", "Got notes for flat"},
                   {"notes", notesJson}};
-    resp.send(Net::Http::Code::Ok, respBody.dump());
+    resp.send(Pistache::Http::Code::Ok, respBody.dump());
 }
 
-void NoteHandler::get(const Net::Rest::Request& req,
-                      Net::Http::ResponseWriter resp)
+void NoteHandler::get(const Pistache::Rest::Request& req,
+                      Pistache::Http::ResponseWriter resp)
 {
     common::prepareCommonResponse(resp);
     auth->authToken(req);
@@ -127,7 +127,7 @@ void NoteHandler::get(const Net::Rest::Request& req,
 
     json respBody{{"response", "Got note by id"},
                   {"note", note.toJson()}};
-    resp.send(Net::Http::Code::Ok, respBody.dump());
+    resp.send(Pistache::Http::Code::Ok, respBody.dump());
 }
 
 }
